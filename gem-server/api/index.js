@@ -1,12 +1,20 @@
 import config from 'dotenv';
 import express from 'express';
 import bodyParser from 'body-parser';
+import helmet from 'helmet';
+import cors from 'cors';
+import morgan from 'morgan';
+
+
 import categoryRoutes from './server/routes/CategoryRoutes';
 
 config.config();
 
 const app = express();
 
+app.use(helmet());
+app.use(cors());
+app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
