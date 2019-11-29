@@ -7,6 +7,7 @@ import morgan from 'morgan';
 
 
 import categoryRoutes from './server/routes/CategoryRoutes';
+import gemRoutes from './server/routes/gemRoutes';
 
 config.config();
 
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const port = process.env.PORT || 8000;
 
 app.use('/api/v1/categories', categoryRoutes);
+app.use('/api/v1/gems', gemRoutes);
 
 // when a random route is inputed
 app.get('*', (req, res) => res.status(200).send({

@@ -8,7 +8,12 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING
   }, {});
   Category.associate = function(models) {
-    // associations can be defined here
+    Category.belongsToMany(models.Gem, {
+      through: 'GemCategory',
+      as: 'gems',
+      foreignKey: 'categoryId',
+      otherKey: 'gemId'
+    });
   };
   return Category;
 };
