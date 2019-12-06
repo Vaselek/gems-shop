@@ -20,11 +20,11 @@ class GemController {
   }
 
   static async addGem(req, res) {
-    console.log('---------------------------')
     const isNotValidated = !req.body.title
                         || !req.body.description
                         || !req.body.price
                         || !req.body.image
+                        || !req.body.categoryIds
                         || !req.body.weight;
     if (isNotValidated) {
       util.setError(400, 'Please provide complete details');

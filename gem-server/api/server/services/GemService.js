@@ -3,7 +3,9 @@ import database from '../src/models';
 class GemService {
   static async getAllGems() {
     try {
-      return await database.Gem.findAll();
+      return await database.Gem.findAll({
+        include: ['categories']
+      });
     } catch (error) {
       throw error;
     }
@@ -11,10 +13,22 @@ class GemService {
 
   static async addGem(newGem) {
     try {
-      return await database.Gem.create(newGem);
+      const categoryIds = newGem.categoryIds;
+      const gem = await database.Gem.create(newGem);
+      categoryIds.map((categoryId) => this.createAssociatedGemCategory(categoryId, gem.id));
+      return gem;
     } catch (error) {
       throw error;
     }
+  }
+
+  static async createAssociatedGemCategory(categoryId, gemId) {
+    const category = await database.Category.findOne({ where: { id: categoryId } });
+    const gemCategoryData = {
+      categoryId: category.id,
+      gemId
+    };
+    database.GemCategory.create(gemCategoryData);
   }
 
   static async updateGem(id, updateGem) {
