@@ -8,6 +8,7 @@ import morgan from 'morgan';
 
 import categoryRoutes from './server/routes/CategoryRoutes';
 import gemRoutes from './server/routes/gemRoutes';
+import coatingRoutes from "./server/routes/CoatingRoutes";
 
 config.config();
 
@@ -23,6 +24,7 @@ const port = process.env.PORT || 8000;
 
 app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1/gems', gemRoutes);
+app.use('/api/v1/coatings', coatingRoutes);
 
 // when a random route is inputed
 app.get('*', (req, res) => res.status(200).send({
