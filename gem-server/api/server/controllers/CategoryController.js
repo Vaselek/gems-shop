@@ -19,10 +19,11 @@ class CategoryController {
     }
   }
 
-  static async addCategory(req, res) {if (!req.body.title) {
-    util.setError(400, 'Please provide complete details');
-    return util.send(res);
-  }
+  static async addCategory(req, res) {
+    if (!req.body.title) {
+      util.setError(400, 'Please provide complete details');
+      return util.send(res);
+    }
     const newCategory = req.body;
     try {
       const createdCategory = await CategoryService.addCategory(newCategory);
@@ -42,7 +43,8 @@ class CategoryController {
       return util.send(res);
     }
     try {
-      const updateCategory = await CategoryService.updateCategory(id, alteredCategory);      if (!updateCategory) {
+      const updateCategory = await CategoryService.updateCategory(id, alteredCategory);
+      if (!updateCategory) {
         util.setError(404, `Cannot find category with the id: ${id}`);
       } else {
         util.setSuccess(200, 'Category updated', updateCategory);
