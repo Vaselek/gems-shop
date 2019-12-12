@@ -12,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       through: 'GemCategory',
       as: 'gems',
       foreignKey: 'categoryId',
-      otherKey: 'gemId'
+      otherKey: 'gemId',
+      onDelete: 'CASCADE',
+      hooks: 'true'
     });
   };
   return Category;

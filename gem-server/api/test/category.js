@@ -56,13 +56,28 @@ describe('Testing the category endpoints:', () => {
     expect(res.body.data[0]['title']).to.equal(category.title);
   });
 
-  it('It should get a particular category', async () => {
+  it('It should get a particular category with associated gems', async () => {
     const category = await categoryFactory();
+
+    const gem = {
+      title: 'First Awesome gem',
+      price: 100,
+      weight: 10,
+      description: 'Nice gem',
+      image: 'gem.png',
+      categoryIds: [category.id]
+    };
+    await chai.request(app)
+      .post('/api/v1/gems')
+      .set('Accept', 'application/json')
+      .send(gem);
+
     const res = await chai.request(app)
       .get(`/api/v1/categories/${category.id}`)
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
-    expect(res.body.data.title).to.equal(category.title)
+    expect(res.body.data.title).to.equal(category.title);
+    expect(res.body.data.gems[0].title).to.equal(gem.title);
   });
 
   it('It should not get a particular category with invalid id', (done) => {

@@ -19,15 +19,11 @@ class GemController {
     }
   }
 
+
   static async addGem(req, res) {
-    const isNotValidated = !req.body.title
-                        || !req.body.description
-                        || !req.body.price
-                        || !req.body.image
-                        || !req.body.categoryIds
-                        || !req.body.weight;
-    if (isNotValidated) {
-      util.setError(400, 'Please provide complete details');
+    const gemDataValidation = await GemService.validateGemData(req.body);
+    if (!gemDataValidation.isSuccessful) {
+      util.setError(400, 'Please provide correct details: ' + gemDataValidation.error);
       return util.send(res);
     }
     const newGem = req.body;

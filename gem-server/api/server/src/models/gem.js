@@ -12,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       through: 'GemCategory',
       as: 'categories',
       foreignKey: 'gemId',
-      otherKey: 'categoryId'
+      otherKey: 'categoryId',
+      onDelete: 'CASCADE',
+      hooks: 'true'
     });
     Gem.belongsToMany(models.Coating, {
       through: 'GemCoating',
