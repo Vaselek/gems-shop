@@ -1,4 +1,4 @@
 import models from '../../server/src/models';
 
 export default async (props = {}) =>
-  models.GemCategory.create(props);
+  models.GemCoating.create(props);

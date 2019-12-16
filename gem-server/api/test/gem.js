@@ -6,6 +6,12 @@ import gemFactory from './factories/gem';
 import db from "../server/src/models";
 import categoryFactory from "./factories/category";
 import gemCategoryFactory from "./factories/gemCategory";
+import gemMetalFactory from "./factories/gemMetal";
+import gemCoatingFactory from "./factories/gemCoating";
+import gemStoneFactory from "./factories/gemStone";
+import metalFactory from "./factories/metal";
+import stoneFactory from "./factories/stone";
+import coatingFactory from "./factories/coating";
 
 chai.use(chatHttp);
 const { expect } = chai;
@@ -23,14 +29,28 @@ describe('Testing the gem endpoints:', () => {
     const gemData = {};
 
     gemData.category = await categoryFactory();
+
     gemData.gem = await gemFactory({categoryIds: [gemData.category.id]});
     await gemCategoryFactory({categoryId: [gemData.category.id], gemId: gemData.gem.id});
+
+    gemData.metal =  await metalFactory();
+    await gemMetalFactory({metalId: [gemData.metal.id], gemId: gemData.gem.id});
+
+    gemData.stone = await stoneFactory();
+    await gemStoneFactory({stoneId: [gemData.stone.id], gemId: gemData.gem.id});
+
+    gemData.coating = await coatingFactory();
+    await gemCoatingFactory({coatingId: [gemData.coating.id], gemId: gemData.gem.id});
+
     return gemData;
   }
 
 
   it('It should create a gem', async () => {
     const category = await categoryFactory();
+    const metal =  await metalFactory();
+    const stone = await stoneFactory();
+    const coating = await coatingFactory();
 
     const gem = {
       title: 'First Awesome gem',
@@ -38,7 +58,10 @@ describe('Testing the gem endpoints:', () => {
       weight: 10,
       description: 'Nice gem',
       image: 'gem.png',
-      categoryIds: [category.id]
+      categoryIds: [category.id],
+      stoneIds: [stone.id],
+      coatingIds: [coating.id],
+      metalIds: [metal.id]
     };
     const res = await chai.request(app)
       .post('/api/v1/gems')
@@ -130,6 +153,9 @@ describe('Testing the gem endpoints:', () => {
     expect(res.status).to.equal(200);
     expect(res.body.data[0]['title']).to.equal(gemData.gem.title);
     expect(res.body.data[0].categories[0].id).to.equal(gemData.category.id);
+    expect(res.body.data[0].metals[0].id).to.equal(gemData.metal.id);
+    expect(res.body.data[0].stones[0].id).to.equal(gemData.stone.id);
+    expect(res.body.data[0].coatings[0].id).to.equal(gemData.coating.id);
   });
 
 
@@ -142,6 +168,9 @@ describe('Testing the gem endpoints:', () => {
     expect(res.status).to.equal(200);
     expect(res.body.data.title).to.equal(gemData.gem.title)
     expect(res.body.data.categories[0].id).to.equal(gemData.category.id)
+    expect(res.body.data.metals[0].id).to.equal(gemData.metal.id);
+    expect(res.body.data.stones[0].id).to.equal(gemData.stone.id);
+    expect(res.body.data.coatings[0].id).to.equal(gemData.coating.id);
   });
 
   it('It should not get a particular gem with invalid id', (done) => {
