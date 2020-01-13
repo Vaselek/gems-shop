@@ -1,5 +1,12 @@
 import database from '../src/models';
 
+const RelatedObjectMapper = {
+  "GemCategory" : "categoryId",
+  "GemCoating": "coatingId",
+  "GemStone": "stoneId",
+  "GemMetal": "metalId"
+};
+
 class GemService {
   static async getAllGems() {
     try {
@@ -55,7 +62,7 @@ class GemService {
   static async createIntermediateObject(gemId, relatedObjectId, intermediateModel) {
     try {
       await database[intermediateModel].create({
-        categoryId: relatedObjectId,
+        [RelatedObjectMapper[intermediateModel]]: relatedObjectId,
         gemId
       });
     } catch(e) {
