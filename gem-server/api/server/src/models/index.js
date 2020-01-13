@@ -14,9 +14,9 @@ const db = {};
 
 let sequelize;
 if (config.environment === 'production') {
-  sequelize = new Sequelize(
-    process.env[config.use_env_variable], config
-  );
+  // sequelize = new Sequelize(
+  //   process.env[config.use_env_variable], config
+  // );
   sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
@@ -53,6 +53,16 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
+
+// sequelize.sync({ force: true })
+//   .then(() => {
+//     console.log(`Database & tables created!`)
+//   })
+//   .catch(err => console.log(err));sequelize.sync({ force: true })
+//   .then(() => {
+//     console.log(`Database & tables created!`)
+//   })
+//   .catch(err => console.log(err));
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
