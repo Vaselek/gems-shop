@@ -12,6 +12,8 @@ import gemStoneFactory from "./factories/gemStone";
 import metalFactory from "./factories/metal";
 import stoneFactory from "./factories/stone";
 import coatingFactory from "./factories/coating";
+import {createGemWithAssociatedModels} from "./utils";
+import userFactory from "./factories/user";
 
 chai.use(chatHttp);
 const { expect } = chai;
@@ -23,30 +25,8 @@ beforeEach('Clean database', function(){
 });
 
 describe('Testing the gem endpoints:', () => {
-
-
-  async function createGemWithAssociatedModels() {
-    const gemData = {};
-
-    gemData.category = await categoryFactory();
-
-    gemData.gem = await gemFactory({categoryIds: [gemData.category.id]});
-    await gemCategoryFactory({categoryId: [gemData.category.id], gemId: gemData.gem.id});
-
-    gemData.metal =  await metalFactory();
-    await gemMetalFactory({metalId: [gemData.metal.id], gemId: gemData.gem.id});
-
-    gemData.stone = await stoneFactory();
-    await gemStoneFactory({stoneId: [gemData.stone.id], gemId: gemData.gem.id});
-
-    gemData.coating = await coatingFactory();
-    await gemCoatingFactory({coatingId: [gemData.coating.id], gemId: gemData.gem.id});
-
-    return gemData;
-  }
-
-
   it('It should create a gem', async () => {
+    const admin = await userFactory({role: 'admin'});
     const category = await categoryFactory();
     const metal =  await metalFactory();
     const stone = await stoneFactory();
@@ -65,7 +45,7 @@ describe('Testing the gem endpoints:', () => {
     };
     const res = await chai.request(app)
       .post('/api/v1/gems')
-      .set('Accept', 'application/json')
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(gem);
     expect(res.status).to.equal(201);
     expect(res.body.data).to.include({
@@ -75,6 +55,7 @@ describe('Testing the gem endpoints:', () => {
 
 
   it('It should not create a gem if title is not provided', async () => {
+    const admin = await userFactory({role: 'admin'});
     const category = await categoryFactory();
     const gem = {
       title: '',
@@ -86,13 +67,14 @@ describe('Testing the gem endpoints:', () => {
     };
     const res = await chai.request(app)
       .post('/api/v1/gems')
-      .set('Accept', 'application/json')
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(gem);
     expect(res.status).to.equal(400);
   });
 
 
   it('It should not create a gem if price is not provided', async () => {
+    const admin = await userFactory({role: 'admin'});
     const category = await categoryFactory();
     const gem = {
       title: 'First Awesome gem',
@@ -103,7 +85,7 @@ describe('Testing the gem endpoints:', () => {
     };
     const res = await chai.request(app)
       .post('/api/v1/gems')
-      .set('Accept', 'application/json')
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(gem);
     expect(res.status).to.equal(400);
   });
@@ -127,6 +109,7 @@ describe('Testing the gem endpoints:', () => {
 
 
   it('It should not create a gem if nonexistent category is  provided', async () => {
+    const admin = await userFactory({role: 'admin'});
     const gem = {
       title: 'First Awesome gem',
       price: 100,
@@ -138,7 +121,7 @@ describe('Testing the gem endpoints:', () => {
 
     const res = await chai.request(app)
       .post('/api/v1/gems')
-      .set('Accept', 'application/json')
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(gem);
     expect(res.status).to.equal(400);
   });
@@ -202,6 +185,7 @@ describe('Testing the gem endpoints:', () => {
   });
 
   it('It should update a gem', async () => {
+    const admin = await userFactory({role: 'admin'});
     const gemData = await createGemWithAssociatedModels();
     const updatedGem = {
       id: gemData.gem.id,
@@ -210,7 +194,7 @@ describe('Testing the gem endpoints:', () => {
 
     const res = await chai.request(app)
       .put(`/api/v1/gems/${gemData.gem.id}`)
-      .set('Accept', 'application/json')
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(updatedGem);
     expect(res.status).to.equal(200);
     expect(res.body.data.id).equal(updatedGem.id);
@@ -219,11 +203,12 @@ describe('Testing the gem endpoints:', () => {
 
 
   it('It should delete a gem and corresponding intermediate objects (GemCategories)', async () => {
+    const admin = await userFactory({role: 'admin'});
     const gemData = await createGemWithAssociatedModels();
 
     const resToDelete = await chai.request(app)
       .delete(`/api/v1/gems/${gemData.gem.id}`)
-      .set('Accept', 'application/json');
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
     expect(resToDelete.status).to.equal(200);
 
     const resToGetGem = await chai.request(app)
@@ -237,18 +222,16 @@ describe('Testing the gem endpoints:', () => {
     expect(resToGetCategory.body.data.gems).to.be.empty;
   });
 
-  it('It should not delete a gem with invalid id', (done) => {
+  it('It should not delete a gem with invalid id', async () => {
+    const admin = await userFactory({role: 'admin'});
     const gemId = 777;
 
-    chai.request(app)
+    const res = await chai.request(app)
       .delete(`/api/v1/gems/${gemId}`)
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        expect(res.status).to.equal(404);
-        res.body.should.have.property('message')
-          .eql(`Gem with the id ${gemId} cannot be found`);
-        done();
-      });
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
+    expect(res.status).to.equal(404);
+    res.body.should.have.property('message')
+      .eql(`Gem with the id ${gemId} cannot be found`);
   });
 
 });

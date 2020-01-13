@@ -4,6 +4,7 @@ import 'chai/register-should';
 import app from '../index';
 import metalFactory from './factories/metal';
 import db from "../server/src/models";
+import userFactory from "./factories/user";
 
 chai.use(chatHttp);
 const { expect } = chai;
@@ -15,36 +16,31 @@ afterEach('Clean database', function(){
 });
 
 describe('Testing the metal endpoints:', () => {
-  it('It should create a metal', (done) => {
+  it('It should create a metal', async () => {
+    const admin = await userFactory({role: 'admin'});
     const metal = {
       title: 'First Awesome metal'
     };
-    chai.request(app)
+    const res = await chai.request(app)
       .post('/api/v1/metals')
-      .set('Accept', 'application/json')
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(metal)
-      .end((err, res) => {
-        expect(res.status).to.equal(201);
-        expect(res.body.data).to.include({
-          id: 1,
-          title: metal.title
-        });
-        done();
+      expect(res.status).to.equal(201);
+      expect(res.body.data).to.include({
+        title: metal.title
       });
   });
 
-  it('It should not create a metal with empty title', (done) => {
+  it('It should not create a metal with empty title', async () => {
+    const admin = await userFactory({role: 'admin'});
     const metal = {
       title: ''
     };
-    chai.request(app)
+    const res = await chai.request(app)
       .post('/api/v1/metals')
-      .set('Accept', 'application/json')
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(metal)
-      .end((err, res) => {
-        expect(res.status).to.equal(400);
-        done();
-      });
+    expect(res.status).to.equal(400);
   });
 
   it('It should get all metals', async () => {
@@ -92,6 +88,7 @@ describe('Testing the metal endpoints:', () => {
   });
 
   it('It should update a metal', async () => {
+    const admin = await userFactory({role: 'admin'});
     const metal = await metalFactory();
     const updatedMetal = {
       id: metal.id,
@@ -99,7 +96,7 @@ describe('Testing the metal endpoints:', () => {
     };
     const res = await chai.request(app)
       .put(`/api/v1/metals/${metal.id}`)
-      .set('Accept', 'application/json')
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(updatedMetal)
     expect(res.status).to.equal(200);
     expect(res.body.data.id).equal(updatedMetal.id);
@@ -108,24 +105,23 @@ describe('Testing the metal endpoints:', () => {
 
 
   it('It should delete a metal', async () => {
+    const admin = await userFactory({role: 'admin'});
     const metal = await metalFactory();
     const res = await chai.request(app)
       .delete(`/api/v1/metals/${metal.id}`)
-      .set('Accept', 'application/json');
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
     expect(res.status).to.equal(200);
     expect(res.body.data).to.include({});
   });
 
-  it('It should not delete a metal with invalid id', (done) => {
+  it('It should not delete a metal with invalid id', async () => {
+    const admin = await userFactory({role: 'admin'});
     const metalId = 777;
-    chai.request(app)
+    const res = await  chai.request(app)
       .delete(`/api/v1/metals/${metalId}`)
-      .set('Accept', 'application/json')
-      .end((err, res) => {
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
         expect(res.status).to.equal(404);
         res.body.should.have.property('message')
           .eql(`Metal with the id ${metalId} cannot be found`);
-        done();
-      });
   });
 });

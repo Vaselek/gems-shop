@@ -4,6 +4,7 @@ import 'chai/register-should';
 import app from '../index';
 import coatingFactory from './factories/coating';
 import db from "../server/src/models";
+import userFactory from "./factories/user";
 
 chai.use(chatHttp);
 const { expect } = chai;
@@ -15,36 +16,31 @@ afterEach('Clean database', function(){
 });
 
 describe('Testing the coating endpoints:', () => {
-  it('It should create a coating', (done) => {
+  it('It should create a coating', async () => {
+    const admin = await userFactory({role: 'admin'});
     const coating = {
       title: 'First Awesome coating'
     };
-    chai.request(app)
+    const res = await chai.request(app)
       .post('/api/v1/coatings')
-      .set('Accept', 'application/json')
-      .send(coating)
-      .end((err, res) => {
-        expect(res.status).to.equal(201);
-        expect(res.body.data).to.include({
-          id: 1,
-          title: coating.title
-        });
-        done();
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
+      .send(coating);
+      expect(res.status).to.equal(201);
+      expect(res.body.data).to.include({
+        title: coating.title
       });
   });
 
-  it('It should not create a coating with empty title', (done) => {
+  it('It should not create a coating with empty title', async () => {
+    const admin = await userFactory({role: 'admin'});
     const coating = {
       title: ''
     };
-    chai.request(app)
+    const res = await chai.request(app)
       .post('/api/v1/coatings')
-      .set('Accept', 'application/json')
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(coating)
-      .end((err, res) => {
-        expect(res.status).to.equal(400);
-        done();
-      });
+    expect(res.status).to.equal(400);
   });
 
   it('It should get all coatings', async () => {
@@ -92,6 +88,7 @@ describe('Testing the coating endpoints:', () => {
   });
 
   it('It should update a coating', async () => {
+    const admin = await userFactory({role: 'admin'});
     const coating = await coatingFactory();
     const updatedCoating = {
       id: coating.id,
@@ -99,7 +96,7 @@ describe('Testing the coating endpoints:', () => {
     };
     const res = await chai.request(app)
       .put(`/api/v1/coatings/${coating.id}`)
-      .set('Accept', 'application/json')
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(updatedCoating)
     expect(res.status).to.equal(200);
     expect(res.body.data.id).equal(updatedCoating.id);
@@ -108,24 +105,23 @@ describe('Testing the coating endpoints:', () => {
 
 
   it('It should delete a coating', async () => {
+    const admin = await userFactory({role: 'admin'});
     const coating = await coatingFactory();
     const res = await chai.request(app)
       .delete(`/api/v1/coatings/${coating.id}`)
-      .set('Accept', 'application/json');
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
     expect(res.status).to.equal(200);
     expect(res.body.data).to.include({});
   });
 
-  it('It should not delete a coating with invalid id', (done) => {
+  it('It should not delete a coating with invalid id', async () => {
+    const admin = await userFactory({role: 'admin'});
     const coatingId = 777;
-    chai.request(app)
+    const res = await chai.request(app)
       .delete(`/api/v1/coatings/${coatingId}`)
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        expect(res.status).to.equal(404);
-        res.body.should.have.property('message')
-          .eql(`Coating with the id ${coatingId} cannot be found`);
-        done();
-      });
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
+      expect(res.status).to.equal(404);
+      res.body.should.have.property('message')
+        .eql(`Coating with the id ${coatingId} cannot be found`);
   });
 });

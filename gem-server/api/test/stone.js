@@ -4,6 +4,7 @@ import 'chai/register-should';
 import app from '../index';
 import stoneFactory from './factories/stone';
 import db from "../server/src/models";
+import userFactory from "./factories/user";
 
 chai.use(chatHttp);
 const { expect } = chai;
@@ -15,36 +16,31 @@ afterEach('Clean database', function(){
 });
 
 describe('Testing the stone endpoints:', () => {
-  it('It should create a stone', (done) => {
+  it('It should create a stone', async () => {
+    const admin = await userFactory({role: 'admin'});
     const stone = {
       title: 'First Awesome stone'
     };
-    chai.request(app)
+    const res = await chai.request(app)
       .post('/api/v1/stones')
-      .set('Accept', 'application/json')
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(stone)
-      .end((err, res) => {
-        expect(res.status).to.equal(201);
-        expect(res.body.data).to.include({
-          id: 1,
-          title: stone.title
-        });
-        done();
+      expect(res.status).to.equal(201);
+      expect(res.body.data).to.include({
+        title: stone.title
       });
   });
 
-  it('It should not create a stone with empty title', (done) => {
+  it('It should not create a stone with empty title', async () => {
+    const admin = await userFactory({role: 'admin'});
     const stone = {
       title: ''
     };
-    chai.request(app)
+    const res = await chai.request(app)
       .post('/api/v1/stones')
-      .set('Accept', 'application/json')
-      .send(stone)
-      .end((err, res) => {
-        expect(res.status).to.equal(400);
-        done();
-      });
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
+      .send(stone);
+    expect(res.status).to.equal(400);
   });
 
   it('It should get all stones', async () => {
@@ -92,6 +88,7 @@ describe('Testing the stone endpoints:', () => {
   });
 
   it('It should update a stone', async () => {
+    const admin = await userFactory({role: 'admin'});
     const stone = await stoneFactory();
     const updatedStone = {
       id: stone.id,
@@ -99,8 +96,8 @@ describe('Testing the stone endpoints:', () => {
     };
     const res = await chai.request(app)
       .put(`/api/v1/stones/${stone.id}`)
-      .set('Accept', 'application/json')
-      .send(updatedStone)
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
+      .send(updatedStone);
     expect(res.status).to.equal(200);
     expect(res.body.data.id).equal(updatedStone.id);
     expect(res.body.data.title).equal(updatedStone.title);
@@ -108,24 +105,23 @@ describe('Testing the stone endpoints:', () => {
 
 
   it('It should delete a stone', async () => {
+    const admin = await userFactory({role: 'admin'});
     const stone = await stoneFactory();
     const res = await chai.request(app)
       .delete(`/api/v1/stones/${stone.id}`)
-      .set('Accept', 'application/json');
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
     expect(res.status).to.equal(200);
     expect(res.body.data).to.include({});
   });
 
-  it('It should not delete a stone with invalid id', (done) => {
+  it('It should not delete a stone with invalid id', async () => {
+    const admin = await userFactory({role: 'admin'});
     const stoneId = 777;
-    chai.request(app)
+    const res = await chai.request(app)
       .delete(`/api/v1/stones/${stoneId}`)
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        expect(res.status).to.equal(404);
-        res.body.should.have.property('message')
-          .eql(`Stone with the id ${stoneId} cannot be found`);
-        done();
-      });
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
+    expect(res.status).to.equal(404);
+    res.body.should.have.property('message')
+        .eql(`Stone with the id ${stoneId} cannot be found`);
   });
 });

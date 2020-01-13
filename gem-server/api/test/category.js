@@ -3,7 +3,9 @@ import chatHttp from 'chai-http';
 import 'chai/register-should';
 import app from '../index';
 import categoryFactory from './factories/category';
+import userFactory from './factories/user';
 import db from "../server/src/models";
+import {createGemWithAssociatedModels} from "./utils";
 
 chai.use(chatHttp);
 const { expect } = chai;
@@ -15,36 +17,32 @@ afterEach('Clean database', function(){
 });
 
 describe('Testing the category endpoints:', () => {
-  it('It should create a category', (done) => {
+  it('It should create a category', async () => {
+    const admin = await userFactory({role: 'admin'});
     const category = {
       title: 'First Awesome category'
     };
-    chai.request(app)
+    const res = await chai.request(app)
       .post('/api/v1/categories')
-      .set('Accept', 'application/json')
-      .send(category)
-      .end((err, res) => {
-        expect(res.status).to.equal(201);
-        expect(res.body.data).to.include({
-          id: 1,
-          title: category.title
-        });
-        done();
-      });
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
+      .send(category);
+    expect(res.status).to.equal(201);
+    expect(res.body.data).to.include({
+      id: 1,
+      title: category.title
+    });
   });
 
-  it('It should not create a category with empty title', (done) => {
+  it('It should not create a category with empty title', async () => {
+    const admin = await userFactory({role: 'admin'});
     const category = {
       title: ''
     };
-    chai.request(app)
+    const res = await chai.request(app)
       .post('/api/v1/categories')
-      .set('Accept', 'application/json')
-      .send(category)
-      .end((err, res) => {
-        expect(res.status).to.equal(400);
-        done();
-      });
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
+      .send(category);
+    expect(res.status).to.equal(400);
   });
 
   it('It should get all categories', async () => {
@@ -57,27 +55,13 @@ describe('Testing the category endpoints:', () => {
   });
 
   it('It should get a particular category with associated gems', async () => {
-    const category = await categoryFactory();
-
-    const gem = {
-      title: 'First Awesome gem',
-      price: 100,
-      weight: 10,
-      description: 'Nice gem',
-      image: 'gem.png',
-      categoryIds: [category.id]
-    };
-    await chai.request(app)
-      .post('/api/v1/gems')
-      .set('Accept', 'application/json')
-      .send(gem);
-
+    const gemData = await createGemWithAssociatedModels();
     const res = await chai.request(app)
-      .get(`/api/v1/categories/${category.id}`)
+      .get(`/api/v1/categories/${gemData.category.id}`)
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
-    expect(res.body.data.title).to.equal(category.title);
-    expect(res.body.data.gems[0].title).to.equal(gem.title);
+    expect(res.body.data.title).to.equal(gemData.category.title);
+    expect(res.body.data.gems[0].title).to.equal(gemData.gem.title);
   });
 
   it('It should not get a particular category with invalid id', (done) => {
@@ -107,6 +91,7 @@ describe('Testing the category endpoints:', () => {
   });
 
   it('It should update a category', async () => {
+    const admin = await userFactory({role: 'admin'});
     const category = await categoryFactory();
     const updatedCategory = {
       id: category.id,
@@ -114,8 +99,8 @@ describe('Testing the category endpoints:', () => {
     };
     const res = await chai.request(app)
       .put(`/api/v1/categories/${category.id}`)
-      .set('Accept', 'application/json')
-      .send(updatedCategory)
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
+      .send(updatedCategory);
     expect(res.status).to.equal(200);
     expect(res.body.data.id).equal(updatedCategory.id);
     expect(res.body.data.title).equal(updatedCategory.title);
@@ -123,24 +108,23 @@ describe('Testing the category endpoints:', () => {
 
 
   it('It should delete a category', async () => {
+    const admin = await userFactory({role: 'admin'});
     const category = await categoryFactory();
     const res = await chai.request(app)
       .delete(`/api/v1/categories/${category.id}`)
-      .set('Accept', 'application/json');
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
     expect(res.status).to.equal(200);
     expect(res.body.data).to.include({});
   });
 
-  it('It should not delete a category with invalid id', (done) => {
+  it('It should not delete a category with invalid id', async () => {
+    const admin = await userFactory({role: 'admin'});
     const categoryId = 777;
-    chai.request(app)
+    const res = await chai.request(app)
       .delete(`/api/v1/categories/${categoryId}`)
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        expect(res.status).to.equal(404);
-        res.body.should.have.property('message')
-          .eql(`Category with the id ${categoryId} cannot be found`);
-        done();
-      });
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
+      expect(res.status).to.equal(404);
+      res.body.should.have.property('message')
+        .eql(`Category with the id ${categoryId} cannot be found`);
   });
 });
