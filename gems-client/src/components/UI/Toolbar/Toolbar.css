@@ -1,0 +1,44 @@
+.nav-upper-line {
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-around;
+    padding: 5px;
+}
+.nav-upper-line-tel,
+.nav-upper-line-address {
+    font-size: 10px;
+    line-height: 2.2;
+}
+.nav-upper-line-text {
+    font-family: 'Cormorant Infant', serif;
+}
+
+.nav-shop-title {
+    font-family: 'Cormorant SC', serif;
+    color: #000;
+    text-align: center;
+    font-size: 2.5em;
+    padding: 5px;
+}
+
+#app .navbar {
+    padding: 0rem 1rem;
+    height: 34px;
+}
+
+#app .nav-link {
+    padding: 0.3rem 1rem;
+}
+
+#app .navbar-collapse .navbar-nav {
+    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+}
+
+#app .navbar-dark .navbar-nav .nav-link {
+    color: #fff;
+}
+
+.nav-discount {
+    background: #bf4f4f
+}

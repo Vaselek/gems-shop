@@ -1,3 +1,10 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css?family=Cormorant+Infant:300i|Cormorant+SC:700|Roboto:400,900&subset=cyrillic-ext');
+
+.app-container {
+  margin-top: 45px;
+  display: flex;
+}
+
+.app-main-column {
+  width: 75%;
 }
