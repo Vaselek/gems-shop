@@ -44,7 +44,7 @@ describe('Testing the gem endpoints:', () => {
       metalIds: [metal.id]
     };
     const res = await chai.request(app)
-      .post('/api/v1/gems')
+      .post('/gems')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(gem);
     expect(res.status).to.equal(201);
@@ -66,7 +66,7 @@ describe('Testing the gem endpoints:', () => {
       categoryIds: [category.id]
     };
     const res = await chai.request(app)
-      .post('/api/v1/gems')
+      .post('/gems')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(gem);
     expect(res.status).to.equal(400);
@@ -84,7 +84,7 @@ describe('Testing the gem endpoints:', () => {
       categoryIds: [category.id]
     };
     const res = await chai.request(app)
-      .post('/api/v1/gems')
+      .post('/gems')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(gem);
     expect(res.status).to.equal(400);
@@ -101,7 +101,7 @@ describe('Testing the gem endpoints:', () => {
   //     categoryIds: []
   //   };
   //   const res = await chai.request(app)
-  //     .post('/api/v1/gems')
+  //     .post('/gems')
   //     .set('Accept', 'application/json')
   //     .send(gem);
   //   expect(res.status).to.equal(400);
@@ -120,7 +120,7 @@ describe('Testing the gem endpoints:', () => {
     };
 
     const res = await chai.request(app)
-      .post('/api/v1/gems')
+      .post('/gems')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(gem);
     expect(res.status).to.equal(400);
@@ -131,7 +131,7 @@ describe('Testing the gem endpoints:', () => {
     const gemData = await createGemWithAssociatedModels();
 
     const res = await chai.request(app)
-      .get('/api/v1/gems')
+      .get('/gems')
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
     expect(res.body.data[0]['title']).to.equal(gemData.gem.title);
@@ -146,7 +146,7 @@ describe('Testing the gem endpoints:', () => {
     const gemData = await createGemWithAssociatedModels();
 
     const res = await chai.request(app)
-      .get(`/api/v1/gems/${gemData.gem.id}`)
+      .get(`/gems/${gemData.gem.id}`)
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
     expect(res.body.data.title).to.equal(gemData.gem.title)
@@ -160,7 +160,7 @@ describe('Testing the gem endpoints:', () => {
     const gemId = 8888;
 
     chai.request(app)
-      .get(`/api/v1/gems/${gemId}`)
+      .get(`/gems/${gemId}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -174,7 +174,7 @@ describe('Testing the gem endpoints:', () => {
     const gemId = 'aaa';
 
     chai.request(app)
-      .get(`/api/v1/gems/${gemId}`)
+      .get(`/gems/${gemId}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(400);
@@ -193,7 +193,7 @@ describe('Testing the gem endpoints:', () => {
     };
 
     const res = await chai.request(app)
-      .put(`/api/v1/gems/${gemData.gem.id}`)
+      .put(`/gems/${gemData.gem.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(updatedGem);
     expect(res.status).to.equal(200);
@@ -207,17 +207,17 @@ describe('Testing the gem endpoints:', () => {
     const gemData = await createGemWithAssociatedModels();
 
     const resToDelete = await chai.request(app)
-      .delete(`/api/v1/gems/${gemData.gem.id}`)
+      .delete(`/gems/${gemData.gem.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
     expect(resToDelete.status).to.equal(200);
 
     const resToGetGem = await chai.request(app)
-      .get(`/api/v1/gems/${gemData.gem.id}`)
+      .get(`/gems/${gemData.gem.id}`)
       .set('Accept', 'application/json');
     expect(resToGetGem.status).to.equal(404);
 
     const resToGetCategory = await chai.request(app)
-      .get(`/api/v1/categories/${gemData.category.id}`)
+      .get(`/categories/${gemData.category.id}`)
       .set('Accept', 'application/json');
     expect(resToGetCategory.body.data.gems).to.be.empty;
   });
@@ -227,7 +227,7 @@ describe('Testing the gem endpoints:', () => {
     const gemId = 777;
 
     const res = await chai.request(app)
-      .delete(`/api/v1/gems/${gemId}`)
+      .delete(`/gems/${gemId}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
     expect(res.status).to.equal(404);
     res.body.should.have.property('message')

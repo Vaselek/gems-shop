@@ -22,7 +22,7 @@ describe('Testing the metal endpoints:', () => {
       title: 'First Awesome metal'
     };
     const res = await chai.request(app)
-      .post('/api/v1/metals')
+      .post('/metals')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(metal)
       expect(res.status).to.equal(201);
@@ -37,7 +37,7 @@ describe('Testing the metal endpoints:', () => {
       title: ''
     };
     const res = await chai.request(app)
-      .post('/api/v1/metals')
+      .post('/metals')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(metal)
     expect(res.status).to.equal(400);
@@ -46,7 +46,7 @@ describe('Testing the metal endpoints:', () => {
   it('It should get all metals', async () => {
     const metal = await metalFactory();
     const res = await chai.request(app)
-      .get('/api/v1/metals')
+      .get('/metals')
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
     expect(res.body.data[0]['title']).to.equal(metal.title);
@@ -55,7 +55,7 @@ describe('Testing the metal endpoints:', () => {
   it('It should get a particular metal', async () => {
     const metal = await metalFactory();
     const res = await chai.request(app)
-      .get(`/api/v1/metals/${metal.id}`)
+      .get(`/metals/${metal.id}`)
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
     expect(res.body.data.title).to.equal(metal.title)
@@ -64,7 +64,7 @@ describe('Testing the metal endpoints:', () => {
   it('It should not get a particular metal with invalid id', (done) => {
     const metalId = 8888;
     chai.request(app)
-      .get(`/api/v1/metals/${metalId}`)
+      .get(`/metals/${metalId}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -77,7 +77,7 @@ describe('Testing the metal endpoints:', () => {
   it('It should not get a particular metal with non-numeric id', (done) => {
     const metalId = 'aaa';
     chai.request(app)
-      .get(`/api/v1/metals/${metalId}`)
+      .get(`/metals/${metalId}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(400);
@@ -95,7 +95,7 @@ describe('Testing the metal endpoints:', () => {
       title: 'Updated Awesome metal'
     };
     const res = await chai.request(app)
-      .put(`/api/v1/metals/${metal.id}`)
+      .put(`/metals/${metal.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(updatedMetal)
     expect(res.status).to.equal(200);
@@ -108,7 +108,7 @@ describe('Testing the metal endpoints:', () => {
     const admin = await userFactory({role: 'admin'});
     const metal = await metalFactory();
     const res = await chai.request(app)
-      .delete(`/api/v1/metals/${metal.id}`)
+      .delete(`/metals/${metal.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
     expect(res.status).to.equal(200);
     expect(res.body.data).to.include({});
@@ -118,7 +118,7 @@ describe('Testing the metal endpoints:', () => {
     const admin = await userFactory({role: 'admin'});
     const metalId = 777;
     const res = await  chai.request(app)
-      .delete(`/api/v1/metals/${metalId}`)
+      .delete(`/metals/${metalId}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
         expect(res.status).to.equal(404);
         res.body.should.have.property('message')

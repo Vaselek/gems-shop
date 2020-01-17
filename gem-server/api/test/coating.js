@@ -22,7 +22,7 @@ describe('Testing the coating endpoints:', () => {
       title: 'First Awesome coating'
     };
     const res = await chai.request(app)
-      .post('/api/v1/coatings')
+      .post('/coatings')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(coating);
       expect(res.status).to.equal(201);
@@ -37,7 +37,7 @@ describe('Testing the coating endpoints:', () => {
       title: ''
     };
     const res = await chai.request(app)
-      .post('/api/v1/coatings')
+      .post('/coatings')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(coating)
     expect(res.status).to.equal(400);
@@ -46,7 +46,7 @@ describe('Testing the coating endpoints:', () => {
   it('It should get all coatings', async () => {
     const coating = await coatingFactory();
     const res = await chai.request(app)
-      .get('/api/v1/coatings')
+      .get('/coatings')
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
     expect(res.body.data[0]['title']).to.equal(coating.title);
@@ -55,7 +55,7 @@ describe('Testing the coating endpoints:', () => {
   it('It should get a particular coating', async () => {
     const coating = await coatingFactory();
     const res = await chai.request(app)
-      .get(`/api/v1/coatings/${coating.id}`)
+      .get(`/coatings/${coating.id}`)
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
     expect(res.body.data.title).to.equal(coating.title)
@@ -64,7 +64,7 @@ describe('Testing the coating endpoints:', () => {
   it('It should not get a particular coating with invalid id', (done) => {
     const coatingId = 8888;
     chai.request(app)
-      .get(`/api/v1/coatings/${coatingId}`)
+      .get(`/coatings/${coatingId}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -77,7 +77,7 @@ describe('Testing the coating endpoints:', () => {
   it('It should not get a particular coating with non-numeric id', (done) => {
     const coatingId = 'aaa';
     chai.request(app)
-      .get(`/api/v1/coatings/${coatingId}`)
+      .get(`/coatings/${coatingId}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(400);
@@ -95,7 +95,7 @@ describe('Testing the coating endpoints:', () => {
       title: 'Updated Awesome coating'
     };
     const res = await chai.request(app)
-      .put(`/api/v1/coatings/${coating.id}`)
+      .put(`/coatings/${coating.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(updatedCoating)
     expect(res.status).to.equal(200);
@@ -108,7 +108,7 @@ describe('Testing the coating endpoints:', () => {
     const admin = await userFactory({role: 'admin'});
     const coating = await coatingFactory();
     const res = await chai.request(app)
-      .delete(`/api/v1/coatings/${coating.id}`)
+      .delete(`/coatings/${coating.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
     expect(res.status).to.equal(200);
     expect(res.body.data).to.include({});
@@ -118,7 +118,7 @@ describe('Testing the coating endpoints:', () => {
     const admin = await userFactory({role: 'admin'});
     const coatingId = 777;
     const res = await chai.request(app)
-      .delete(`/api/v1/coatings/${coatingId}`)
+      .delete(`/coatings/${coatingId}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       expect(res.status).to.equal(404);
       res.body.should.have.property('message')

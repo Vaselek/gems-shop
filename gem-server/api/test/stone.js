@@ -22,7 +22,7 @@ describe('Testing the stone endpoints:', () => {
       title: 'First Awesome stone'
     };
     const res = await chai.request(app)
-      .post('/api/v1/stones')
+      .post('/stones')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(stone)
       expect(res.status).to.equal(201);
@@ -37,7 +37,7 @@ describe('Testing the stone endpoints:', () => {
       title: ''
     };
     const res = await chai.request(app)
-      .post('/api/v1/stones')
+      .post('/stones')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(stone);
     expect(res.status).to.equal(400);
@@ -46,7 +46,7 @@ describe('Testing the stone endpoints:', () => {
   it('It should get all stones', async () => {
     const stone = await stoneFactory();
     const res = await chai.request(app)
-      .get('/api/v1/stones')
+      .get('/stones')
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
     expect(res.body.data[0]['title']).to.equal(stone.title);
@@ -55,7 +55,7 @@ describe('Testing the stone endpoints:', () => {
   it('It should get a particular stone', async () => {
     const stone = await stoneFactory();
     const res = await chai.request(app)
-      .get(`/api/v1/stones/${stone.id}`)
+      .get(`/stones/${stone.id}`)
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
     expect(res.body.data.title).to.equal(stone.title)
@@ -64,7 +64,7 @@ describe('Testing the stone endpoints:', () => {
   it('It should not get a particular stone with invalid id', (done) => {
     const stoneId = 8888;
     chai.request(app)
-      .get(`/api/v1/stones/${stoneId}`)
+      .get(`/stones/${stoneId}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -77,7 +77,7 @@ describe('Testing the stone endpoints:', () => {
   it('It should not get a particular stone with non-numeric id', (done) => {
     const stoneId = 'aaa';
     chai.request(app)
-      .get(`/api/v1/stones/${stoneId}`)
+      .get(`/stones/${stoneId}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(400);
@@ -95,7 +95,7 @@ describe('Testing the stone endpoints:', () => {
       title: 'Updated Awesome stone'
     };
     const res = await chai.request(app)
-      .put(`/api/v1/stones/${stone.id}`)
+      .put(`/stones/${stone.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(updatedStone);
     expect(res.status).to.equal(200);
@@ -108,7 +108,7 @@ describe('Testing the stone endpoints:', () => {
     const admin = await userFactory({role: 'admin'});
     const stone = await stoneFactory();
     const res = await chai.request(app)
-      .delete(`/api/v1/stones/${stone.id}`)
+      .delete(`/stones/${stone.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
     expect(res.status).to.equal(200);
     expect(res.body.data).to.include({});
@@ -118,7 +118,7 @@ describe('Testing the stone endpoints:', () => {
     const admin = await userFactory({role: 'admin'});
     const stoneId = 777;
     const res = await chai.request(app)
-      .delete(`/api/v1/stones/${stoneId}`)
+      .delete(`/stones/${stoneId}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
     expect(res.status).to.equal(404);
     res.body.should.have.property('message')

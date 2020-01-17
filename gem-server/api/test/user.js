@@ -26,7 +26,7 @@ describe('Testing the user endpoints:', () => {
       token: faker.lorem.word()
     };
     const res = await chai.request(app)
-      .post('/api/v1/users')
+      .post('/users')
       .set({'Accept': 'application/json'})
       .send(user);
     expect(res.status).to.equal(201);
@@ -40,7 +40,7 @@ describe('Testing the user endpoints:', () => {
       email: ''
     };
     const res = await chai.request(app)
-      .post('/api/v1/users')
+      .post('/users')
       .set({'Accept': 'application/json'})
       .send(user);
     expect(res.status).to.equal(400);
@@ -49,7 +49,7 @@ describe('Testing the user endpoints:', () => {
   it('It should get all users', async () => {
     const admin = await userFactory({role: 'admin'});
     const res = await chai.request(app)
-      .get('/api/v1/users')
+      .get('/users')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
     expect(res.status).to.equal(200);
     expect(res.body.data[0]['email']).to.equal(admin.email);
@@ -59,7 +59,7 @@ describe('Testing the user endpoints:', () => {
     const admin = await userFactory({role: 'admin'});
     const userId = 8888;
     const res = await chai.request(app)
-      .get(`/api/v1/users/${userId}`)
+      .get(`/users/${userId}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token});
     expect(res.status).to.equal(404);
     res.body.should.have.property('message')
@@ -70,7 +70,7 @@ describe('Testing the user endpoints:', () => {
     const admin = await userFactory({role: 'admin'});
     const userId = 'aaa';
     const res = await chai.request(app)
-      .get(`/api/v1/users/${userId}`)
+      .get(`/users/${userId}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
     expect(res.status).to.equal(400);
     res.body.should.have.property('message')
@@ -83,7 +83,7 @@ describe('Testing the user endpoints:', () => {
       email: 'updated@email.com'
     };
     const res = await chai.request(app)
-      .put(`/api/v1/users/${user.id}`)
+      .put(`/users/${user.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + user.token})
       .send(updatedUser);
     expect(res.status).to.equal(200);
@@ -98,7 +98,7 @@ describe('Testing the user endpoints:', () => {
       email: 'updated@email.com'
     };
     const res = await chai.request(app)
-      .put(`/api/v1/users/admin/${user.id}`)
+      .put(`/users/admin/${user.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(updatedUser);
     expect(res.status).to.equal(200);
@@ -111,7 +111,7 @@ describe('Testing the user endpoints:', () => {
     const admin = await userFactory({role: 'admin'});
     const user = await userFactory();
     const res = await chai.request(app)
-      .delete(`/api/v1/users/${user.id}`)
+      .delete(`/users/${user.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
     expect(res.status).to.equal(200);
     expect(res.body.data).to.include({});
@@ -121,7 +121,7 @@ describe('Testing the user endpoints:', () => {
     const admin = await userFactory({role: 'admin'});
     const userId = 777;
     const res = await chai.request(app)
-      .delete(`/api/v1/users/${userId}`)
+      .delete(`/users/${userId}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
     expect(res.status).to.equal(404);
     res.body.should.have.property('message')

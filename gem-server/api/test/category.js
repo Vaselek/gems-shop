@@ -23,7 +23,7 @@ describe('Testing the category endpoints:', () => {
       title: 'First Awesome category'
     };
     const res = await chai.request(app)
-      .post('/api/v1/categories')
+      .post('/categories')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(category);
     expect(res.status).to.equal(201);
@@ -39,7 +39,7 @@ describe('Testing the category endpoints:', () => {
       title: ''
     };
     const res = await chai.request(app)
-      .post('/api/v1/categories')
+      .post('/categories')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(category);
     expect(res.status).to.equal(400);
@@ -48,7 +48,7 @@ describe('Testing the category endpoints:', () => {
   it('It should get all categories', async () => {
     const category = await categoryFactory();
     const res = await chai.request(app)
-      .get('/api/v1/categories')
+      .get('/categories')
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
     expect(res.body.data[0]['title']).to.equal(category.title);
@@ -57,7 +57,7 @@ describe('Testing the category endpoints:', () => {
   it('It should get a particular category with associated gems', async () => {
     const gemData = await createGemWithAssociatedModels();
     const res = await chai.request(app)
-      .get(`/api/v1/categories/${gemData.category.id}`)
+      .get(`/categories/${gemData.category.id}`)
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
     expect(res.body.data.title).to.equal(gemData.category.title);
@@ -67,7 +67,7 @@ describe('Testing the category endpoints:', () => {
   it('It should not get a particular category with invalid id', (done) => {
     const categoryId = 8888;
     chai.request(app)
-      .get(`/api/v1/categories/${categoryId}`)
+      .get(`/categories/${categoryId}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -80,7 +80,7 @@ describe('Testing the category endpoints:', () => {
   it('It should not get a particular category with non-numeric id', (done) => {
     const categoryId = 'aaa';
     chai.request(app)
-      .get(`/api/v1/categories/${categoryId}`)
+      .get(`/categories/${categoryId}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(400);
@@ -98,7 +98,7 @@ describe('Testing the category endpoints:', () => {
       title: 'Updated Awesome category'
     };
     const res = await chai.request(app)
-      .put(`/api/v1/categories/${category.id}`)
+      .put(`/categories/${category.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       .send(updatedCategory);
     expect(res.status).to.equal(200);
@@ -111,7 +111,7 @@ describe('Testing the category endpoints:', () => {
     const admin = await userFactory({role: 'admin'});
     const category = await categoryFactory();
     const res = await chai.request(app)
-      .delete(`/api/v1/categories/${category.id}`)
+      .delete(`/categories/${category.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
     expect(res.status).to.equal(200);
     expect(res.body.data).to.include({});
@@ -121,7 +121,7 @@ describe('Testing the category endpoints:', () => {
     const admin = await userFactory({role: 'admin'});
     const categoryId = 777;
     const res = await chai.request(app)
-      .delete(`/api/v1/categories/${categoryId}`)
+      .delete(`/categories/${categoryId}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
       expect(res.status).to.equal(404);
       res.body.should.have.property('message')
