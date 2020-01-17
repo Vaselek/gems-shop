@@ -4,9 +4,9 @@ import usersReducer from "./reducers/usersReducer";
 import {loadState, saveState} from "./localStorage";
 import {createStore, applyMiddleware, compose, combineReducers} from 'redux';
 import thunkMiddleware from 'redux-thunk';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from '../axios-api';
 import categoriesReducer from "./reducers/categoriesReducer";
+import gemsReducer from "./reducers/gemsReducer";
 
 
 export const history = createBrowserHistory();
@@ -14,7 +14,8 @@ export const history = createBrowserHistory();
 const rootReducer = combineReducers({
   router: connectRouter(history),
   users: usersReducer,
-  categories: categoriesReducer
+  categories: categoriesReducer,
+  gems: gemsReducer
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -30,17 +31,29 @@ const persistedState = loadState();
 
 const store = createStore(rootReducer, persistedState, enhancers);
 
+const user = {
+  id: 1,
+  email: 'admin@email.ru',
+  username: 'Admin1',
+  password: '$2b$10$NS5E4a0OLl.R1RALbXMztOiVh6rLZs5Uj3vC8RJVnK7sZljh2MJ4u',
+  role: 'admin',
+  token: 'mazjYGJSi_NtGvhA3HtmF',
+  createdAt: '2020-01-13T08:40:04.348Z',
+  updatedAt: '2020-01-14T11:05:17.033Z'
+};
+
 store.subscribe(() => {
   saveState({
     users: {
-      user: store.getState().users.user
+      // user: store.getState().users.user
+      user: user
     }
   });
 });
 
 axios.interceptors.request.use(config => {
   try{
-    config.headers['Authorization'] = store.getState().users.user.token;
+    config.headers['Authorization'] = "Bearer " + store.getState().users.user.token;
   } catch (e) {
     //
   }
