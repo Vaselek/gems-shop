@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import bearerToken from 'express-bearer-token';
-
+import path from 'path';
 
 
 import categoryRoutes from './server/routes/CategoryRoutes';
@@ -32,12 +32,15 @@ const port = process.env.PORT || 8000;
 // const clientDir = path.join(__dirname, '../../gems-client');
 // app.use(express.static(`${clientDir}/public`));
 
-app.use('/api/v1/categories', categoryRoutes);
-app.use('/api/v1/gems', gemRoutes);
-app.use('/api/v1/coatings', coatingRoutes);
-app.use('/api/v1/metals', metalRoutes);
-app.use('/api/v1/stones', stoneRoutes);
-app.use('/api/v1/users', userRoutes);
+app.use(express.static(path.join(__dirname, '../public/uploads')));
+
+
+app.use('/categories', categoryRoutes);
+app.use('/gems', gemRoutes);
+app.use('/coatings', coatingRoutes);
+app.use('/metals', metalRoutes);
+app.use('/stones', stoneRoutes);
+app.use('/users', userRoutes);
 
 // when a random route is inputed
 app.get('*', (req, res) => res.status(200).send({
