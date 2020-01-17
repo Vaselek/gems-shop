@@ -1,0 +1,110 @@
+.jewellery-item.card {
+    width: 31.3%;
+    margin-right: 15px;
+    border: transparent;
+    border-radius: 0;
+    transition: all .4s ease-in-out;
+    font-family: 'Roboto', sans-serif;
+}
+
+.jewellery-item.card:hover {
+    border: 1px solid rgba(0,0,0,.125);
+    transform: scale(1.2);
+    z-index: 100;
+    padding: 5px 5px 0 5px;
+}
+
+.jewellery-item.card:hover .jewellery-item-details {
+    display: flex;
+}
+
+.jewellery-item.card:hover .jewellery-item-title {
+    font-weight: 900;
+}
+
+.jewellery-item-details {
+    display: none;
+    font-size: 9px;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+}
+
+.jewellery-item-details .description {
+    width: 40%;
+    /*color: #564D4A;*/
+}
+
+.jewellery-item-details .description span {
+    opacity: 0.6;
+}
+
+.jewellery-item-details .details {
+    width: 60%;
+    padding-right: 5px;
+}
+
+.jewellery-item-details td {
+    padding: 0;
+    border: none;
+    opacity: 0.6;
+    vertical-align: top;
+}
+
+.jewellery-item-details .header {
+    /*color: #7A6C5D;*/
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 8px;
+    padding: 0;
+    margin: 0;
+}
+
+.jewellery-item-details .title {
+    width: 50px;
+    padding-right: 2px;
+    opacity: 1;
+}
+
+div.jewellery-item-details:nth-child(odd) {
+    margin-right: 4px;
+}
+
+
+/*.jewellery-item.card:hover .card-body {*/
+/*padding: 1.5rem 0.1rem 0;*/
+/*}*/
+
+.jewellery-item .card-body {
+    padding: 0.5rem 0.1rem 0;
+}
+
+
+.jewellery-item img {
+    border-radius: 0;
+}
+
+.jewellery-item-main-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.jewellery-item-title {
+    font-size: 12px;
+    color: rgb(52, 58, 64);
+}
+
+.jewellery-item-price {
+    width: 70px;
+    font-size: 14px;
+    font-weight: 900;
+    text-align: right;
+    margin-left: 10px;
+}
+
+.jewellery-item-price span {
+    width: 50px;
+    font-size: 10px;
+    font-weight: 400;
+    color: #0000007d;
+    padding-left: 5px;
+}

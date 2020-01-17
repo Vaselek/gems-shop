@@ -4,13 +4,13 @@ import {fetchGems} from "../../store/actions/gemsActions";
 import {connect} from "react-redux";
 import {Link, NavLink} from "react-router-dom";
 import GemListItem from "../../components/GemListItem/GemListItem";
-import {fetchCategories} from "../../store/actions/categoriesActions";
+import './Gems.css';
 
 
 class Gems extends Component {
   componentDidMount() {
     this.props.fetchGems(this.props.match.params.id);
-    this.props.fetchCategories();
+    // this.props.fetchCategories();
   }
 
   componentDidUpdate(prevProps) {
@@ -22,16 +22,7 @@ class Gems extends Component {
   render() {
     return (
       <Row>
-        <Col sm={3}>
-          <h2>Categories</h2>
-          <ListGroup>
-            <ListGroupItem tag={NavLink} exact to='/'>All categories</ListGroupItem>
-            {this.props.categories.map(category => (
-              <ListGroupItem key={category._id} tag={NavLink} to={'/category/' + category._id}>{category.title}</ListGroupItem>
-            ))}
-          </ListGroup>
-        </Col>
-        <Col sm={9}>
+        <Col>
           <h2>
             Gems
             { this.props.user && this.props.user.role === 'admin' && (
@@ -44,15 +35,17 @@ class Gems extends Component {
               </Link>
             )}
           </h2>
-          {/*{this.props.gems.map(gem => (*/}
-            {/*<GemListItem*/}
-              {/*key={gem._id}*/}
-              {/*_id={gem._id}*/}
-              {/*title={gem.title}*/}
-              {/*price={gem.price}*/}
-              {/*image={gem.image}*/}
-            {/*/>*/}
-          {/*))}*/}
+          <div className='gems-list'>
+            {this.props.gems.map(gem => (
+              <GemListItem
+                key={gem._id}
+                _id={gem._id}
+                title={gem.title}
+                price={gem.price}
+                image={gem.image}
+              />
+            ))}
+          </div>
         </Col>
       </Row>
     );
@@ -60,14 +53,12 @@ class Gems extends Component {
 }
 
 const mapStateToProps = state => ({
-  // gems: state.gems.gems,
+  gems: state.gems.gems,
   user: state.users.user,
-  categories: state.categories.categories
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchGems: (categoryId) => dispatch(fetchGems(categoryId)),
-  fetchCategories: () => dispatch(fetchCategories())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Gems);

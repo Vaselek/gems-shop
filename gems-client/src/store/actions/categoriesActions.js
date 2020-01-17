@@ -7,7 +7,7 @@ export const fetchCategoriesSuccess = categories => ({type: FETCH_CATEGORIES_SUC
 
 export const fetchCategories = () => {
   return dispatch => {
-    return axios.get('/api/v1/categories').then(
+    return axios.get('/categories').then(
       response => {
         dispatch(fetchCategoriesSuccess(response.data.data))
       }

@@ -10,14 +10,15 @@ const FormElement = ({propertyName, title, value, error, onChange, children, ...
         <Input
           name={propertyName} id={propertyName}
           invalid={!!props.error}
+          onChange={onChange}
           {...props}
         >
           {children}
         </Input>
         {error && (
-          <FormFeedback>
-            {error}
-          </FormFeedback>
+        <FormFeedback>
+          {error}
+        </FormFeedback>
         )}
       </Col>
     </FormGroup>

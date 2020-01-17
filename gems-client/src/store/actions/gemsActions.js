@@ -8,13 +8,14 @@ export const createGemSuccess = () => ({type: CREATE_PRODUCT_SUCCESS});
 
 export const fetchGems = (categoryId) => {
   return dispatch => {
-    let path = '/gems';
-
-    if (categoryId) {
-      path += '?category=' + categoryId;
-    }
+    let path = '/categories/' + categoryId;
+    // if (categoryId) {
+    //   path += '?category=' + categoryId;
+    // }
     return axios.get(path).then(
-      response => dispatch(fetchGemsSuccess(response.data))
+      response => {
+        dispatch(fetchGemsSuccess(response.data.data.gems));
+      }
     );
   };
 };
