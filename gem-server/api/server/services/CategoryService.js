@@ -38,9 +38,11 @@ class CategoryService {
     try {
       const theCategory = await database.Category.findOne({
         where: { id: Number(id) },
-        include: ['gems']
+        include: [{
+          all: true,
+          nested: true
+        }]
       });
-
       return theCategory;
     } catch (error) {
       throw error;
