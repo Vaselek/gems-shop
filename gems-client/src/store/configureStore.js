@@ -7,6 +7,9 @@ import thunkMiddleware from 'redux-thunk';
 import axios from '../axios-api';
 import categoriesReducer from "./reducers/categoriesReducer";
 import gemsReducer from "./reducers/gemsReducer";
+import metalsReducer from "./reducers/metalsReducer";
+import stonesReducer from "./reducers/stonesReducer";
+import coatingsReducer from "./reducers/coatingsReducer";
 
 
 export const history = createBrowserHistory();
@@ -15,7 +18,10 @@ const rootReducer = combineReducers({
   router: connectRouter(history),
   users: usersReducer,
   categories: categoriesReducer,
-  gems: gemsReducer
+  gems: gemsReducer,
+  metals: metalsReducer,
+  coatings: coatingsReducer,
+  stones: stonesReducer
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -1,4 +1,4 @@
-import {FETCH_PRODUCTS_SUCCESS} from "../actions/gemsActions";
+import {FETCH_GEMS_SUCCESS} from "../actions/gemsActions";
 
 const initialState = {
   gems: []
@@ -6,7 +6,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_PRODUCTS_SUCCESS:
+    case FETCH_GEMS_SUCCESS:
       return {...state, gems: action.gems};
     default:
       return state;

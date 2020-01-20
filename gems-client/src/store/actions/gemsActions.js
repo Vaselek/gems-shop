@@ -1,10 +1,10 @@
 import axios from '../../axios-api';
 
-export const FETCH_PRODUCTS_SUCCESS = 'FETCH_PRODUCTS_SUCCESS';
-export const CREATE_PRODUCT_SUCCESS = 'CREATE_PRODUCT_SUCCESS';
+export const FETCH_GEMS_SUCCESS = 'FETCH_GEMS_SUCCESS';
+export const CREATE_GEM_SUCCESS = 'CREATE_GEM_SUCCESS';
 
-export const fetchGemsSuccess = gems => ({type: FETCH_PRODUCTS_SUCCESS, gems});
-export const createGemSuccess = () => ({type: CREATE_PRODUCT_SUCCESS});
+export const fetchGemsSuccess = gems => ({type: FETCH_GEMS_SUCCESS, gems});
+export const createGemSuccess = () => ({type: CREATE_GEM_SUCCESS});
 
 export const fetchGems = (categoryId) => {
   return dispatch => {
