@@ -4,8 +4,6 @@ import {Card, CardBody, CardImg, CardTitle} from "reactstrap";
 import {Link} from "react-router-dom";
 import './GemListItem.css'
 import { isEmpty } from 'lodash';
-
-import GemThumbnail from "../GemThumbnail/GemThumbnail";
 import {apiURL} from "../../constants";
 
 const listItems = (items) => items.map(item => item.title).join(', ');
@@ -37,12 +35,11 @@ const renderDetails = (jewellery) => {
   return (
     <div className='jewellery-item-details'>
       <div className='jewellery-item-detail details'>
-        <span className='header'>Детали</span>
         <table>
           <tbody>
           { renderTableRowWithItems('Камни', jewellery.stones)}
           { renderTableRowWithItems('Металл', jewellery.metals)}
-          { renderTableRowWithItems('Покрытие', jewellery.coats)}
+          { renderTableRowWithItems('Покрытие', jewellery.coatings)}
           { renderTableRowWithItem('Вес', jewellery.weight)}
           </tbody>
         </table>
@@ -59,13 +56,13 @@ const GemListItem = props => {
       <CardBody>
         <div className='jewellery-item-main-details'>
           <CardTitle className='jewellery-item-title'>
-            <Link to={'/gems/' + props._id}>
+            <Link to={'/gems/' + props.id}>
               {props.title}
             </Link>
           </CardTitle>
           <div className='jewellery-item-price'>{props.price ?  props.price  : '...'}<span>KGS</span></div>
         </div>
-        {/*{renderDetails(props)}*/}
+        {renderDetails(props)}
       </CardBody>
     </Card>
   );
@@ -73,9 +70,9 @@ const GemListItem = props => {
 
 GemListItem.propTypes = {
   image: PropTypes.string,
-  _id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired
+  price: PropTypes.string.isRequired
 };
 
 export default GemListItem;

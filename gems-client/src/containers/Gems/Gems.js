@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {Button, Col, ListGroup, ListGroupItem, Row} from "reactstrap";
+import {Button, Col, Row} from "reactstrap";
 import {fetchGems} from "../../store/actions/gemsActions";
 import {connect} from "react-redux";
-import {Link, NavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
 import GemListItem from "../../components/GemListItem/GemListItem";
 import './Gems.css';
 
@@ -38,11 +38,14 @@ class Gems extends Component {
           <div className='gems-list'>
             {this.props.gems.map(gem => (
               <GemListItem
-                key={gem._id}
-                _id={gem._id}
+                key={gem.id}
+                id={gem.id}
                 title={gem.title}
                 price={gem.price}
                 image={gem.image}
+                stones={gem.stones}
+                metals={gem.metals}
+                coatings={gem.coatings}
               />
             ))}
           </div>

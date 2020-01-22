@@ -2,11 +2,9 @@ import React from 'react';
 import {
   Nav,
   Navbar,
-  NavbarBrand,
   NavItem,
   NavLink,
   NavbarToggler,
-  Collapse
 } from "reactstrap";
 import {NavLink as RouterNavLink} from 'react-router-dom';
 import UserMenu from "./Menus/UserMenu";
@@ -30,7 +28,7 @@ const Toolbar = ({user, logout, categories}) => {
             {/*<NavLink tag={RouterNavLink} to="/new-items" exact>Новинки</NavLink>*/}
           {/*</NavItem>*/}
           { categories.map((category) =>
-              <NavItem>
+              <NavItem key={'navItem_' + category.id}>
                 <NavLink tag={RouterNavLink} to={"/category/" + category.id} exact>{ category.title }</NavLink>
               </NavItem>
             )
