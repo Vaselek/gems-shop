@@ -22,12 +22,13 @@ class GemController {
 
   static async addGem(req, res) {
     const newGem = req.body;
+    newGem.weight = req.body.weight ? req.body.weight : null;
     if (req.file) {
       newGem.image = req.file.filename;
     }
     const gemDataValidation = await GemService.validateGemData(newGem);
     if (!gemDataValidation.isSuccessful) {
-      util.setError(400, 'Please provide correct details: ' + gemDataValidation.error);
+      util.setError(400, gemDataValidation.error);
       return util.send(res);
     }
     try {

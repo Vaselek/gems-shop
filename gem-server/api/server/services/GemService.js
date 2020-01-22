@@ -29,20 +29,21 @@ class GemService {
   }
 
   static async validateGemData(gemData) {
-    const result = { isSuccessful: true, error: null };
+    const result = { isSuccessful: true, error: [] };
     const categoriesAreCorrect =  await this.validateRelatedObjects(gemData.categoryIds, 'Category');
     const metalsAreCorrect =  await this.validateRelatedObjects(gemData.metalIds, 'Metal');
     const stonesAreCorrect =  await this.validateRelatedObjects(gemData.stoneIds, 'Stone');
     const coatingsAreCorrect =  await this.validateRelatedObjects(gemData.coatings, 'Stone');
 
-    if (!gemData.title) result.error = 'Please provide title';
-    if (!gemData.price) result.error = 'Please provide price';
-    if (!gemData.image) result.error = 'Please provide image';
-    if (!categoriesAreCorrect) result.error = 'Please provide correct category or categories';
-    if (!metalsAreCorrect) result.error = 'Please provide correct metal or metals';
-    if (!stonesAreCorrect) result.error = 'Please provide correct stone or stones';
-    if (!coatingsAreCorrect) result.error = 'Please provide correct coating or coatings';
-    if (result.error !== null) result.isSuccessful = false;
+    if (!gemData.categoryIds) result.error.push({ field: 'categoryIds', text: 'Category is required' });
+    if (!gemData.title) result.error.push({ field: 'title', text: 'Title is required' });
+    if (!gemData.price) result.error.push({ field: 'price', text: 'Price is required' });
+    if (!gemData.image) result.error.push({ field: 'image', text: 'Image is required' });
+    if (!categoriesAreCorrect) result.error.push({ field: 'categoryIds', text: 'Please provide correct category or categories' });
+    if (!metalsAreCorrect) result.error.push({ field: 'metalIds', text: 'Please provide correct metal or metals' });
+    if (!stonesAreCorrect) result.error.push({ field: 'stoneIds', text: 'Please provide correct stone or stones' });
+    if (!coatingsAreCorrect) result.error.push({ field: 'coatingIds', text: 'Please provide correct coating or coatings' });
+    if (result.error.length !== 0) result.isSuccessful = false;
     return result
   }
 
