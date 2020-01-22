@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import GemForm from "../../components/GemForm/GemForm";
 import {createGem} from "../../store/actions/gemsActions";
 import {connect} from "react-redux";
@@ -6,6 +6,7 @@ import {fetchCategories} from "../../store/actions/categoriesActions";
 import {fetchMetals} from "../../store/actions/metalsActions";
 import {fetchCoatings} from "../../store/actions/coatingsActions";
 import {fetchStones} from "../../store/actions/stonesActions";
+import'./NewGem.css';
 
 class NewGem extends Component {
   componentDidMount() {
@@ -23,17 +24,18 @@ class NewGem extends Component {
 
   render() {
     return (
-      <Fragment>
-        <h2>New gem</h2>
-        <GemForm
-          onSubmit={this.createGem}
-          categories={this.props.categories}
-          metals={this.props.metals}
-          stones={this.props.stones}
-          coatings={this.props.coatings}
-          error={this.props.error}
-        />
-      </Fragment>
+          <div className='gem-form'>
+            <h4 className='gem-form-header'>Форма добавления украшения</h4>
+            <GemForm
+              className='gem-form'
+              onSubmit={this.createGem}
+              categories={this.props.categories}
+              metals={this.props.metals}
+              stones={this.props.stones}
+              coatings={this.props.coatings}
+              error={this.props.error}
+            />
+          </div>
     );
   }
 }

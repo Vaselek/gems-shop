@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {Button, Col, Row} from "reactstrap";
+import {Col, Row} from "reactstrap";
 import {fetchGems} from "../../store/actions/gemsActions";
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
 import GemListItem from "../../components/GemListItem/GemListItem";
 import './Gems.css';
 
@@ -10,7 +9,6 @@ import './Gems.css';
 class Gems extends Component {
   componentDidMount() {
     this.props.fetchGems(this.props.match.params.id);
-    // this.props.fetchCategories();
   }
 
   componentDidUpdate(prevProps) {
@@ -23,18 +21,6 @@ class Gems extends Component {
     return (
       <Row>
         <Col>
-          <h2>
-            Gems
-            { this.props.user && this.props.user.role === 'admin' && (
-              <Link to="/gems/new">
-                <Button
-                  color="primary"
-                  className="float-right">
-                  Add gem
-                </Button>
-              </Link>
-            )}
-          </h2>
           <div className='gems-list'>
             {this.props.gems.map(gem => (
               <GemListItem

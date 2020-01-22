@@ -72,7 +72,7 @@ class GemForm extends Component {
 
   render() {
     return (
-      <Form onSubmit={this.submitFormHandler}>
+      <Form style={{width: '100%'}} onSubmit={this.submitFormHandler}>
         <FormElement
           propertyName='categoryIds'
           title='Category'
