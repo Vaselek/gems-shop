@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Button, Col, Form, FormGroup, Label, CustomInput} from "reactstrap";
 import FormElement from "../UI/Form/FormElement";
+import { isEmpty } from 'lodash';
+
 
 class GemForm extends Component {
   state = {
@@ -21,21 +23,10 @@ class GemForm extends Component {
     const formData = new FormData();
 
     Object.keys(this.state).forEach(key => {
-      if (key === "categoryIds") {
-        for (let i = 0; i < this.state.categoryIds.length; i++) {
-          formData.append('categoryIds[]', this.state.categoryIds[i]);
-        }
-      } else if (key === "metalIds") {
-        for (let i = 0; i < this.state.metalIds.length; i++) {
-          formData.append('metalIds[]', this.state.metalIds[i]);
-        }
-      } else if (key === "coatingIds") {
-        for (let i = 0; i < this.state.coatingIds.length; i++) {
-          formData.append('coatingIds[]', this.state.coatingIds[i]);
-        }
-      } else if (key === "stoneIds") {
-        for (let i = 0; i < this.state.stoneIds.length; i++) {
-          formData.append('stoneIds[]', this.state.stoneIds[i]);
+      const arrayKeys = ['categoryIds', 'metalIds', 'coatingIds', 'stoneIds']
+      if (arrayKeys.includes(key)) {
+        for (let i = 0; i < this.state[key].length; i++) {
+          formData.append(key + '[]', this.state[key][i]);
         }
       } else {
         formData.append(key, this.state[key]);
@@ -45,7 +36,6 @@ class GemForm extends Component {
   };
 
   inputChangeHandler = event => {
-    // debugger
     this.setState({
       [event.target.name]: event.target.value
     })
@@ -72,6 +62,14 @@ class GemForm extends Component {
     });
   };
 
+  getErrorFor = (field) => {
+    if (isEmpty(this.props.error)) return false;
+    const allErrors = [...this.props.error]
+    const error = allErrors.filter(error => error.field === field).shift();
+    if (!error) return null;
+    return error.text;
+  }
+
   render() {
     return (
       <Form onSubmit={this.submitFormHandler}>
@@ -80,9 +78,8 @@ class GemForm extends Component {
           title='Category'
           type='select'
           value={this.state.categoryIds}
-          required
+          error={this.getErrorFor('categoryIds')}
           onChange={this.inputChangeHandler2}>
-          multiple={true}
           <option value=''>Please select category</option>
           {this.props.categories.map(category => (
             <option key={category.id} value={category.id}>{category.title}</option>
@@ -92,15 +89,16 @@ class GemForm extends Component {
           propertyName='title'
           title='Title'
           type='text'
-          required
           value={this.state.title}
+          error={this.getErrorFor('title')}
           onChange={this.inputChangeHandler}/>
         <FormElement
           propertyName='price'
           title='Price'
           type='number'
-          required min='0'
+          min='0'
           value={this.state.price}
+          error={this.getErrorFor('price')}
           onChange={this.inputChangeHandler}/>
         <FormElement
           propertyName='description'
@@ -112,12 +110,15 @@ class GemForm extends Component {
           propertyName='weight'
           title='Weight'
           type='number'
+          min="0"
+          step="0.1"
           value={this.state.weight}
           onChange={this.inputChangeHandler}/>
         <FormElement
           propertyName='image'
           title='Image'
           type='file'
+          error={this.getErrorFor('image')}
           onChange={this.fileChangeHandler}/>
         <FormGroup row>
           <Label sm={2} for={'metalIds'}>Металлы</Label>

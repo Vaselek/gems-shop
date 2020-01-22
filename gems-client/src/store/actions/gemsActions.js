@@ -2,9 +2,11 @@ import axios from '../../axios-api';
 
 export const FETCH_GEMS_SUCCESS = 'FETCH_GEMS_SUCCESS';
 export const CREATE_GEM_SUCCESS = 'CREATE_GEM_SUCCESS';
+export const CREATE_GEM_FAILURE = 'CREATE_GEM_FAILURE';
 
 export const fetchGemsSuccess = gems => ({type: FETCH_GEMS_SUCCESS, gems});
 export const createGemSuccess = () => ({type: CREATE_GEM_SUCCESS});
+export const createGemFailure = (error) => ({type: CREATE_GEM_FAILURE, error});
 
 export const fetchGems = (categoryId) => {
   return dispatch => {
@@ -23,7 +25,13 @@ export const fetchGems = (categoryId) => {
 export const createGem = gemData => {
   return (dispatch, getState) => {
     return axios.post('/gems', gemData).then(
-      () => dispatch(createGemSuccess())
+      response => {
+        dispatch(createGemSuccess(response))
+        return 'success'
+      },
+      error => {
+        dispatch(createGemFailure(error.response.data.message))
+      }
     );
   };
 };

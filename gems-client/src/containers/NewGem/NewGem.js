@@ -16,8 +16,8 @@ class NewGem extends Component {
   }
 
   createGem = gemData => {
-    this.props.onGemCreated(gemData).then(() => {
-      this.props.history.push('/');
+    this.props.onGemCreated(gemData).then((result) => {
+      if (result === 'success') this.props.history.push('/category/' + gemData.get('categoryIds[]'));
     });
   };
 
@@ -31,6 +31,7 @@ class NewGem extends Component {
           metals={this.props.metals}
           stones={this.props.stones}
           coatings={this.props.coatings}
+          error={this.props.error}
         />
       </Fragment>
     );
@@ -42,7 +43,8 @@ const mapStateToProps = state => ({
   user: state.users.user,
   metals: state.metals.metals,
   coatings: state.coatings.coatings,
-  stones: state.stones.stones
+  stones: state.stones.stones,
+  error: state.gems.error
 });
 
 const mapDispatchToProps = dispatch => ({

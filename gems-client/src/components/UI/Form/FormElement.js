@@ -9,7 +9,7 @@ const FormElement = ({propertyName, title, value, error, onChange, children, ...
       <Col sm={10}>
         <Input
           name={propertyName} id={propertyName}
-          invalid={!!props.error}
+          invalid={!!error}
           onChange={onChange}
           {...props}
         >
