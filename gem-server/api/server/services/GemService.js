@@ -14,7 +14,7 @@ const getGemsFilteredByCategoryStonesMetalsMetalsCoatings = async (categoryId, s
   return await database.sequelize.query(
     `select g.*, 
     array_agg(distinct s."title") as stones, 
-    array_agg(distinct c."id") as categoryId, 
+    array_agg(distinct c."id") as "categoryId", 
     array_agg(distinct m."title") as metals,
     array_agg(distinct co."title") as coatings
     from "Gems" g
