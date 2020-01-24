@@ -6,7 +6,11 @@ const util = new Util();
 class GemController {
   static async getAllGems(req, res) {
     try {
-      const allGems = await GemService.getAllGems();
+      const categoryId = req.query.categoryId;
+      const stoneIds = req.query.stoneIds;
+      const metalIds = req.query.metalIds;
+      const coatingIds = req.query.coatingIds;
+      const allGems = await GemService.getAllGems(categoryId, stoneIds, metalIds, coatingIds);
       if (allGems.length > 0) {
         util.setSuccess(200, 'Gems retrieved', allGems);
       } else {
