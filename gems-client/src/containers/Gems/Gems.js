@@ -22,7 +22,7 @@ class Gems extends Component {
       <Row>
         <Col>
           <div className='gems-list'>
-            {this.props.gems.map(gem => (
+            {this.props.gems && this.props.gems.map(gem => (
               <GemListItem
                 key={gem.id}
                 id={gem.id}

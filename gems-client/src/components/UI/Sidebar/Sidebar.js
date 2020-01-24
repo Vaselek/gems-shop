@@ -6,11 +6,7 @@ class Sidebar extends Component {
   render() {
     return (
       <div className='sidebar'>
-        <div className="card">
-          <article className="card-group-item">
-            <GemFilter />
-          </article>
-        </div>
+        <GemFilter />
       </div>
     );
   }

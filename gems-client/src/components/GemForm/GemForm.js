@@ -75,26 +75,26 @@ class GemForm extends Component {
       <Form style={{width: '100%'}} onSubmit={this.submitFormHandler}>
         <FormElement
           propertyName='categoryIds'
-          title='Category'
+          title='Категория'
           type='select'
           value={this.state.categoryIds}
           error={this.getErrorFor('categoryIds')}
           onChange={this.inputChangeHandler2}>
-          <option value=''>Please select category</option>
+          <option value=''>Пожалуйста, выберите одну категорию</option>
           {this.props.categories.map(category => (
             <option key={category.id} value={category.id}>{category.title}</option>
           ))}
         </FormElement>
         <FormElement
           propertyName='title'
-          title='Title'
+          title='Наименование'
           type='text'
           value={this.state.title}
           error={this.getErrorFor('title')}
           onChange={this.inputChangeHandler}/>
         <FormElement
           propertyName='price'
-          title='Price'
+          title='Цена'
           type='number'
           min='0'
           value={this.state.price}
@@ -102,13 +102,13 @@ class GemForm extends Component {
           onChange={this.inputChangeHandler}/>
         <FormElement
           propertyName='description'
-          title='Description'
+          title='Описание'
           type='textarea'
           value={this.state.description}
           onChange={this.inputChangeHandler}/>
         <FormElement
           propertyName='weight'
-          title='Weight'
+          title='Вес'
           type='number'
           min="0"
           step="0.1"
@@ -116,9 +116,10 @@ class GemForm extends Component {
           onChange={this.inputChangeHandler}/>
         <FormElement
           propertyName='image'
-          title='Image'
+          title='Изображение'
           type='file'
           error={this.getErrorFor('image')}
+          data-buttonText="Your label here."
           onChange={this.fileChangeHandler}/>
         <FormGroup row>
           <Label sm={2} for={'metalIds'}>Металлы</Label>
