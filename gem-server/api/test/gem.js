@@ -131,14 +131,14 @@ describe('Testing the gem endpoints:', () => {
     const gemData = await createGemWithAssociatedModels();
 
     const res = await chai.request(app)
-      .get('/gems')
+      .get('/gems?categoryId=' + gemData.category.id)
       .set('Accept', 'application/json');
     expect(res.status).to.equal(200);
     expect(res.body.data[0]['title']).to.equal(gemData.gem.title);
-    expect(res.body.data[0].categories[0].id).to.equal(gemData.category.id);
-    expect(res.body.data[0].metals[0].id).to.equal(gemData.metal.id);
-    expect(res.body.data[0].stones[0].id).to.equal(gemData.stone.id);
-    expect(res.body.data[0].coatings[0].id).to.equal(gemData.coating.id);
+    expect(res.body.data[0].categoryId[0]).to.equal(gemData.category.id);
+    expect(res.body.data[0].metals[0]).to.equal(gemData.metal.title);
+    expect(res.body.data[0].stones[0]).to.equal(gemData.stone.title);
+    expect(res.body.data[0].coatings[0]).to.equal(gemData.coating.title);
   });
 
 
