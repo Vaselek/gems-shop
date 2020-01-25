@@ -8,13 +8,14 @@ import {apiURL} from "../../constants";
 
 const listItems = (items) => items.map(item => item).join(', ');
 
-const renderTableRowWithItems = (title, items) => (
-  !isEmpty(items) &&
+const renderTableRowWithItems = (title, items) => {
+  items = items.filter(item => !!item);
+  return !isEmpty(items) &&
   (<tr>
     <td className='title'>{title}</td>
-    <td>{ listItems(items) }</td>
+    <td>{listItems(items)}</td>
   </tr>)
-)
+};
 
 const renderTableRowWithItem = (title, item) => (
   !isEmpty(item) &&
@@ -22,7 +23,7 @@ const renderTableRowWithItem = (title, item) => (
     <td className='title'>{title}</td>
     <td>{ item }</td>
   </tr>)
-)
+);
 
 const renderJewelleryDescription = (description) => (
   description && (<div className='jewellery-item-detail description'>
