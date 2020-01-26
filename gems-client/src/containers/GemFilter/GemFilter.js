@@ -25,7 +25,7 @@ function GemFilter () {
     dispatch(fetchStones());
     dispatch(fetchMetals());
     dispatch(fetchCoatings());
-  }, []);
+  }, [dispatch]);
 
   const createGemsFilter = (stoneIds, metalIds, coatingIds) => {
     const filter = {};
@@ -57,7 +57,7 @@ function GemFilter () {
       filter[event.target.name] = ids;
       dispatch(fetchGems(categoryId, filter));
     },
-    [categoryId, stoneIds, metalIds, coatingIds], // Tells React to memoize regardless of arguments.
+    [categoryId, stoneIds, metalIds, coatingIds, dispatch, mapEventNameToItemIdsAndStateSetter], // Tells React to memoize regardless of arguments.
   );
 
   return (

@@ -1,60 +1,59 @@
-import React, {Component} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import GemForm from "../../components/GemForm/GemForm";
 import {createGem} from "../../store/actions/gemsActions";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {fetchCategories} from "../../store/actions/categoriesActions";
 import {fetchMetals} from "../../store/actions/metalsActions";
 import {fetchCoatings} from "../../store/actions/coatingsActions";
 import {fetchStones} from "../../store/actions/stonesActions";
+import {useHistory} from 'react-router';
+
 import'./NewGem.css';
 
-class NewGem extends Component {
-  componentDidMount() {
-    this.props.fetchCategories();
-    this.props.fetchMetals();
-    this.props.fetchCoatings();
-    this.props.fetchStones();
-  }
+function NewGem () {
 
-  createGem = gemData => {
-    this.props.onGemCreated(gemData).then((result) => {
-      if (result === 'success') this.props.history.push('/category/' + gemData.get('categoryIds[]'));
+  const dispatch = useDispatch();
+  const history = useHistory()
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchMetals());
+    dispatch(fetchCoatings());
+    dispatch(fetchStones());
+  }, [dispatch]);
+
+  const categories = useSelector(state => state.categories.categories);
+  // const user = useSelector(state => state.users.user);
+  const  metals = useSelector(state => state.metals.metals);
+  const  coatings = useSelector(state => state.coatings.coatings);
+  const  stones = useSelector(state => state.stones.stones);
+  const  error = useSelector(state => state.gems.error);
+
+
+  const memoizedCreateGem = useCallback(
+    gemData => {
+    dispatch(createGem(gemData)).then((result) => {
+      if (result === 'success') {
+        history.push('/category/' + gemData.get('categoryIds[]'));
+      }
     });
-  };
+  }, [dispatch, history]);
 
-  render() {
-    return (
-          <div className='gem-form'>
-            <h4 className='gem-form-header'>Форма добавления украшения</h4>
-            <GemForm
-              className='gem-form'
-              onSubmit={this.createGem}
-              categories={this.props.categories}
-              metals={this.props.metals}
-              stones={this.props.stones}
-              coatings={this.props.coatings}
-              error={this.props.error}
-            />
-          </div>
-    );
-  }
+  return (
+        <div className='gem-form'>
+          <h4 className='gem-form-header'>Форма добавления украшения</h4>
+          <GemForm
+            className='gem-form'
+            onSubmit={memoizedCreateGem}
+            categories={categories}
+            metals={metals}
+            stones={stones}
+            coatings={coatings}
+            error={error}
+          />
+        </div>
+  );
 }
 
-const mapStateToProps = state => ({
-  categories: state.categories.categories,
-  user: state.users.user,
-  metals: state.metals.metals,
-  coatings: state.coatings.coatings,
-  stones: state.stones.stones,
-  error: state.gems.error
-});
 
-const mapDispatchToProps = dispatch => ({
-  onGemCreated: (gemData) => dispatch(createGem(gemData)),
-  fetchCategories: () => dispatch(fetchCategories()),
-  fetchMetals: () => dispatch(fetchMetals()),
-  fetchCoatings: () => dispatch(fetchCoatings()),
-  fetchStones: () => dispatch(fetchStones())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewGem);
+export default NewGem;

@@ -32,7 +32,7 @@ function GemForm (props) {
       });
       props.onSubmit(formData);
     },
-    [form],
+    [form, props],
   );
 
   const inputChangeHandler = useCallback(
@@ -78,8 +78,8 @@ function GemForm (props) {
 
   const getErrorFor = useCallback (
     field => {
-      if (isEmpty(props.error)) return false;
-      const allErrors = [...props.error]
+      if (isEmpty(props.error)) return null;
+      const allErrors = [...props.error];
       const error = allErrors.filter(error => error.field === field).shift();
       if (!error) return null;
       return error.text;
@@ -135,7 +135,6 @@ function GemForm (props) {
         title='Изображение'
         type='file'
         error={getErrorFor('image')}
-        data-buttonText="Your label here."
         onChange={fileChangeHandler}/>
       <FormGroup row>
         <Label sm={2} for={'metalIds'}>Металлы</Label>
