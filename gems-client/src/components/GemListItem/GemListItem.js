@@ -6,7 +6,7 @@ import './GemListItem.css'
 import { isEmpty } from 'lodash';
 import {apiURL} from "../../constants";
 
-const listItems = (items) => items.map(item => item).join(', ');
+const listItems = (items) => items.map(item => item.title).join(', ');
 
 const renderTableRowWithItems = (title, items) => {
   items = items.filter(item => !!item);

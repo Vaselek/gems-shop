@@ -11,12 +11,8 @@ const getGemsFilteredByCategoryStonesMetalsMetalsCoatings = async (categoryId, s
   const stoneFilter = stoneIds ? `and gs."stoneId" in (:stoneIds)` : ``;
   const metalFilter = metalIds ? `and gm."metalId" in (:metalIds)` : ``;
   const coatingFilter = coatingIds ? `and gco."coatingId" in (:coatingIds)` : ``;
-  return await database.sequelize.query(
-    `select g.*, 
-    array_agg(distinct s."title") as stones, 
-    array_agg(distinct c."id") as "categoryId", 
-    array_agg(distinct m."title") as metals,
-    array_agg(distinct co."title") as coatings
+  const ids = await database.sequelize.query(
+    `select g.id 
     from "Gems" g
     left join "GemCategories" gc on g."id" = gc."gemId"
     left join "Categories" c on c."id" = gc."categoryId"
@@ -33,13 +29,48 @@ const getGemsFilteredByCategoryStonesMetalsMetalsCoatings = async (categoryId, s
       replacements: { categoryId: categoryId, stoneIds: stoneIds, metalIds: metalIds, coatingIds: coatingIds },
     }
   );
+  return ids.map(elem => elem.id);
 };
+
+// const getGemsFilteredByCategoryStonesMetalsMetalsCoatings = async (categoryId, stoneIds, metalIds, coatingIds) => {
+//   const stoneFilter = stoneIds ? `and gs."stoneId" in (:stoneIds)` : ``;
+//   const metalFilter = metalIds ? `and gm."metalId" in (:metalIds)` : ``;
+//   const coatingFilter = coatingIds ? `and gco."coatingId" in (:coatingIds)` : ``;
+//   return await database.sequelize.query(
+//     `select g.*,
+//     array_agg(distinct s."title") as stones,
+//     array_agg(distinct c."id") as "categoryId",
+//     array_agg(distinct m."title") as metals,
+//     array_agg(distinct co."title") as coatings
+//     from "Gems" g
+//     left join "GemCategories" gc on g."id" = gc."gemId"
+//     left join "Categories" c on c."id" = gc."categoryId"
+//     left join "GemStones" gs on g."id" = gs."gemId"
+//     left join "Stones" s on s."id" = gs."stoneId"
+//     left join "GemMetals" gm on g."id" = gm."gemId"
+//     left join "Metals" m on m."id" = gm."metalId"
+//     left join "GemCoatings" gco on g."id" = gco."gemId"
+//     left join "Coatings" co on co."id" = gco."coatingId"
+//     where gc."categoryId" = :categoryId ${stoneFilter} ${metalFilter} ${coatingFilter}
+//     group by g."id";`,
+//     {
+//       type: database.sequelize.QueryTypes.SELECT,
+//       replacements: { categoryId: categoryId, stoneIds: stoneIds, metalIds: metalIds, coatingIds: coatingIds },
+//     }
+//   );
+// };
 
 
 class GemService {
   static async getAllGems(categoryId, stoneIds, metalIds, coatingIds) {
     try {
-      const gems = await getGemsFilteredByCategoryStonesMetalsMetalsCoatings(categoryId, stoneIds, metalIds, coatingIds);
+      const gemIds = await getGemsFilteredByCategoryStonesMetalsMetalsCoatings(categoryId, stoneIds, metalIds, coatingIds);
+      const gems = await database.Gem.findAll({
+        where: {
+          id: gemIds
+        },
+        include: ['categories', 'stones', 'coatings', 'metals']
+      });
       return gems
     } catch (error) {
       throw error;
