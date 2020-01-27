@@ -39,13 +39,6 @@ const Toolbar = ({user, logout, categories}) => {
           {/*<NavItem className="nav-discount">*/}
             {/*<NavLink tag={RouterNavLink} to="/discounts">Акции</NavLink>*/}
           {/*</NavItem>*/}
-          { user && user.role === 'admin' && (
-            <NavItem>
-              <NavLink tag={RouterNavLink} to="/gems/new">
-                  Добавить украшение
-              </NavLink>
-            </NavItem>
-          )}
           {user ? <UserMenu user={user} logout={logout} /> : <AnonymousMenu/> }
         </Nav>
     </Navbar>
