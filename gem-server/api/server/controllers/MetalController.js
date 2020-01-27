@@ -21,7 +21,7 @@ class MetalController {
 
   static async addMetal(req, res) {
     if (!req.body.title) {
-      util.setError(400, 'Please provide complete details');
+      util.setError(400, 'Title is required');
       return util.send(res);
     }
     const newMetal = req.body;

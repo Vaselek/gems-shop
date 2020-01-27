@@ -64,6 +64,10 @@ const getGemsFilteredByCategoryStonesMetalsMetalsCoatings = async (categoryId, s
 class GemService {
   static async getAllGems(categoryId, stoneIds, metalIds, coatingIds) {
     try {
+      if (!categoryId) {
+        const firstCategory = await database.Category.findAll({limit: 1});
+        categoryId = firstCategory[0].id
+      }
       const gemIds = await getGemsFilteredByCategoryStonesMetalsMetalsCoatings(categoryId, stoneIds, metalIds, coatingIds);
       const gems = await database.Gem.findAll({
         where: {
