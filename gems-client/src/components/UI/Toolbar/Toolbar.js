@@ -18,7 +18,9 @@ const Toolbar = ({user, logout, categories}) => {
     <div className="nav-upper-line">
       <span className="nav-upper-line-tel">Тел.: +996 (555) 555-555</span>
       <span className="nav-upper-line-text">Эксклюзивные украшения с натуральными камнями естесственного происхождения ручной работы</span>
-      <span className="nav-upper-line-address">Адрес: БеренГолд 2/19</span>
+      <span className="nav-upper-line-address">
+        {user ? <UserMenu user={user} logout={logout} /> : <AnonymousMenu/> }
+      </span>
     </div>
     <div className="nav-shop-title">AlsaRuiz</div>
     <Navbar color="dark" dark expand="md">
@@ -39,7 +41,7 @@ const Toolbar = ({user, logout, categories}) => {
           {/*<NavItem className="nav-discount">*/}
             {/*<NavLink tag={RouterNavLink} to="/discounts">Акции</NavLink>*/}
           {/*</NavItem>*/}
-          {user ? <UserMenu user={user} logout={logout} /> : <AnonymousMenu/> }
+          {/*{user ? <UserMenu user={user} logout={logout} /> : <AnonymousMenu/> }*/}
         </Nav>
     </Navbar>
     </div>

@@ -3,8 +3,8 @@ import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from "
 import AddNewItemsMenu from "./AddNewItemsMenu";
 
 const UserMenu = ({user, logout}) => (
-  <UncontrolledDropdown nav inNavbar>
-    <DropdownToggle nav caret>
+  <UncontrolledDropdown>
+    <DropdownToggle nav caret style={{padding: '0', color: 'black'}}>
       Hello, {user.username}
     </DropdownToggle>
     <DropdownMenu right>
