@@ -24,14 +24,12 @@ export const createMetal = metalData => {
   return (dispatch, getState) => {
     return axios.post('/metals', metalData).then(
       () => {
-        dispatch(createMetalSuccess())
+        dispatch(createMetalSuccess());
         return 'success';
       },
       error => {
         dispatch(createMetalFailure(error.response.data.message))
       }
-    ).then(
-      dispatch(fetchMetals())
     )
   }
 }

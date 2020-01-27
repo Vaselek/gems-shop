@@ -1,5 +1,6 @@
 import React from 'react';
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from "reactstrap";
+import AddNewItemsMenu from "./AddNewItemsMenu";
 
 const UserMenu = ({user, logout}) => (
   <UncontrolledDropdown nav inNavbar>
@@ -7,9 +8,9 @@ const UserMenu = ({user, logout}) => (
       Hello, {user.username}
     </DropdownToggle>
     <DropdownMenu right>
-      <DropdownItem>
-        Show profile
-      </DropdownItem>
+      { user.role === 'admin' && (
+        <AddNewItemsMenu />
+      )}
       <DropdownItem divider />
       <DropdownItem onClick={logout}>
         Logout

@@ -1,5 +1,5 @@
 import React, {useCallback, Fragment} from 'react';
-import {createMetal} from "../../store/actions/metalsActions";
+import {createMetal, fetchMetals} from "../../store/actions/metalsActions";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from 'react-router';
 
@@ -18,6 +18,7 @@ function NewMetal () {
       dispatch(createMetal(metalData)).then((result) => {
         if (result === 'success') {
           history.push('/')
+          dispatch(fetchMetals())
         }
       });
     }, [dispatch, history]);
@@ -25,6 +26,7 @@ function NewMetal () {
   return (
     <Fragment>
       <CategoryForm
+        title='Форма добавления металла'
         className='metal-form'
         onSubmit={memoizedCreateMetal}
         error={error}

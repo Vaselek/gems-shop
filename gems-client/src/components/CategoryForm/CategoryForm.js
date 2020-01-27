@@ -34,7 +34,7 @@ function CategoryForm (props) {
 
   return (
     <div className='category-form'>
-      <h4 className='category-form-header'>Форма добавления металла</h4>
+      <h4 className='category-form-header'>{props.title}</h4>
       <Form style={{width: '100%'}} onSubmit={submitFormHandler}>
         <FormElement
           propertyName='title'
