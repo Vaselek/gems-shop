@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Col, Row} from "reactstrap";
 import {fetchGems} from "../../store/actions/gemsActions";
 import {connect} from "react-redux";
 import GemListItem from "../../components/GemListItem/GemListItem";
+import Sorting from "../Sorting/Sorting";
 import './Gems.css';
 
 
@@ -19,25 +20,30 @@ class Gems extends Component {
 
   render() {
     return (
-      <Row>
-        <Col>
-          <div className='gems-list'>
-            {this.props.gems && this.props.gems.map(gem => (
-              <GemListItem
-                key={gem.id}
-                id={gem.id}
-                title={gem.title}
-                price={gem.price}
-                image={gem.image}
-                stones={gem.stones}
-                metals={gem.metals}
-                coatings={gem.coatings}
-                description={gem.description}
-              />
-            ))}
-          </div>
-        </Col>
-      </Row>
+      <Fragment>
+        <Row>
+          <Sorting />
+        </Row>
+        <Row>
+          <Col>
+            <div className='gems-list'>
+              {this.props.gems && this.props.gems.map(gem => (
+                <GemListItem
+                  key={gem.id}
+                  id={gem.id}
+                  title={gem.title}
+                  price={gem.price}
+                  image={gem.image}
+                  stones={gem.stones}
+                  metals={gem.metals}
+                  coatings={gem.coatings}
+                  description={gem.description}
+                />
+              ))}
+            </div>
+          </Col>
+        </Row>
+      </Fragment>
     );
   }
 }

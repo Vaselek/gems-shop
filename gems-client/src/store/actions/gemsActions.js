@@ -4,26 +4,46 @@ export const FETCH_GEMS_SUCCESS = 'FETCH_GEMS_SUCCESS';
 export const CREATE_GEM_SUCCESS = 'CREATE_GEM_SUCCESS';
 export const CREATE_GEM_FAILURE = 'CREATE_GEM_FAILURE';
 
-export const fetchGemsSuccess = (gems, categoryId) => ({type: FETCH_GEMS_SUCCESS, gems, categoryId});
+export const fetchGemsSuccess = (gems, categoryId, filter) => ({type: FETCH_GEMS_SUCCESS, gems, categoryId, filter});
 export const createGemSuccess = () => ({type: CREATE_GEM_SUCCESS});
 export const createGemFailure = (error) => ({type: CREATE_GEM_FAILURE, error});
 
-export const fetchGems = (categoryId, filter) => {
+export const fetchGems = (categoryId, filter, sortBy) => {
   return dispatch => {
     let path = '/gems';
-    if (categoryId)  path += '?categoryId=' + categoryId;
+    let delimeter ='?';
+    if (categoryId)  {
+      path += delimeter + 'categoryId=' + categoryId;
+      delimeter = '&';
+    }
     if (filter && filter.stoneIds.length !== 0) {
-      filter.stoneIds.map(stoneId => path += '&stoneIds=' + stoneId)
+      filter.stoneIds.map(stoneId => {
+        path += delimeter + 'stoneIds=' + stoneId;
+        delimeter = '&';
+        return path;
+      })
     }
     if (filter && filter.metalIds.length !== 0) {
-      filter.metalIds.map(metalId => path += '&metalIds=' + metalId)
+      filter.metalIds.map(metalId => {
+        path += delimeter + 'metalIds=' + metalId;
+        delimeter = '&';
+        return path;
+      })
     }
     if (filter && filter.coatingIds.length !== 0) {
-      filter.coatingIds.map(coatingId => path += '&coatingIds=' + coatingId)
+      filter.coatingIds.map(coatingId => {
+        path += delimeter + '&coatingIds=' + coatingId;
+        delimeter = '&';
+        return path;
+      })
+    }
+    if (sortBy) {
+      path += delimeter + 'sort=' + sortBy;
+      delimeter = '&'
     }
     return axios.get(path).then(
       response => {
-        dispatch(fetchGemsSuccess(response.data.data, categoryId));
+        dispatch(fetchGemsSuccess(response.data.data, categoryId, filter));
       }
     );
   };

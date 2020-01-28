@@ -1,0 +1,19 @@
+.sorting-dropdown {
+    margin-left: auto;
+    margin-bottom: 1rem;
+    padding-right: 30px;
+    padding-left: 15px;
+}
+
+.sorting-dropdown button.btn-light {
+    /*border-radius: 0;*/
+    color: #212529;
+    border: 1px solid rgba(0,0,0,.125);
+    padding: 0.125rem 0.75rem;
+    font-size: 0.75rem;
+    background-color: white;
+}
+
+.sorting-dropdown .dropdown-item{
+    font-size: 0.75rem;
+}

@@ -1,7 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {Button, Col, Form, FormGroup} from "reactstrap";
 import FormElement from "../UI/Form/FormElement";
-import { isEmpty } from 'lodash';
 import './CategoryForm.css';
 
 function CategoryForm (props) {

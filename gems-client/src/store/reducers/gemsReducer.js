@@ -4,13 +4,14 @@ const initialState = {
   gems: [],
   error: null,
   errorField: null,
-  categoryId: null
+  categoryId: null,
+  filter: {}
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_GEMS_SUCCESS:
-      return {...state, gems: action.gems, categoryId: action.categoryId};
+      return {...state, gems: action.gems, categoryId: action.categoryId, filter: action.filter};
     case CREATE_GEM_FAILURE:
       return {...state, error: action.error};
     default:
