@@ -11,7 +11,7 @@ export const createGemFailure = (error) => ({type: CREATE_GEM_FAILURE, error});
 export const fetchGems = (categoryId, filter) => {
   return dispatch => {
     let path = '/gems';
-    if (categoryId)  path += 'categoryId=' + categoryId;
+    if (categoryId)  path += '?categoryId=' + categoryId;
     if (filter && filter.stoneIds.length !== 0) {
       filter.stoneIds.map(stoneId => path += '&stoneIds=' + stoneId)
     }

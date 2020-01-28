@@ -26,8 +26,7 @@ const renderTableRowWithItem = (title, item) => (
 );
 
 const renderJewelleryDescription = (description) => (
-  description && (<div className='jewellery-item-detail description'>
-    <p className='header'>Описание</p>
+  description && (<div className='description'>
     <span>{description}</span>
   </div>)
 )
@@ -44,8 +43,8 @@ const renderDetails = (jewellery) => {
           { renderTableRowWithItem('Вес', jewellery.weight)}
           </tbody>
         </table>
+        { renderJewelleryDescription(jewellery.description) }
       </div>
-      { renderJewelleryDescription(jewellery.description) }
     </div>
   )
 }

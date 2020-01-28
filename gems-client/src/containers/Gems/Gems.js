@@ -32,6 +32,7 @@ class Gems extends Component {
                 stones={gem.stones}
                 metals={gem.metals}
                 coatings={gem.coatings}
+                description={gem.description}
               />
             ))}
           </div>
