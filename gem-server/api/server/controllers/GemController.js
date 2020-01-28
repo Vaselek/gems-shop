@@ -10,7 +10,8 @@ class GemController {
       const stoneIds = req.query.stoneIds;
       const metalIds = req.query.metalIds;
       const coatingIds = req.query.coatingIds;
-      const allGems = await GemService.getAllGems(categoryId, stoneIds, metalIds, coatingIds);
+      const sortBy = req.query.sort;
+      const allGems = await GemService.getAllGems(categoryId, stoneIds, metalIds, coatingIds, sortBy);
       if (allGems.length > 0) {
         util.setSuccess(200, 'Gems retrieved', allGems);
       } else {

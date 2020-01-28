@@ -62,17 +62,23 @@ const getGemsFilteredByCategoryStonesMetalsMetalsCoatings = async (categoryId, s
 
 
 class GemService {
-  static async getAllGems(categoryId, stoneIds, metalIds, coatingIds) {
+  static async getAllGems(categoryId, stoneIds, metalIds, coatingIds, sortBy) {
     try {
       if (!categoryId) {
         const firstCategory = await database.Category.findAll({limit: 1});
         categoryId = firstCategory[0].id
       }
+      let orderCriteria = ['createdAt', 'DESC'];
+      if (sortBy && sortBy === 'cost-increase') orderCriteria = ['price', 'ASC'];
+      if (sortBy && sortBy === 'cost-decrease') orderCriteria = ['price', 'DESC'];
       const gemIds = await getGemsFilteredByCategoryStonesMetalsMetalsCoatings(categoryId, stoneIds, metalIds, coatingIds);
       const gems = await database.Gem.findAll({
         where: {
           id: gemIds
         },
+        order: [
+          orderCriteria
+        ],
         include: ['categories', 'stones', 'coatings', 'metals']
       });
       return gems
