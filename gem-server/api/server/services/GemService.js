@@ -11,6 +11,7 @@ const getGemsFilteredByCategoryStonesMetalsMetalsCoatings = async (categoryId, s
   const stoneFilter = stoneIds ? `and gs."stoneId" in (:stoneIds)` : ``;
   const metalFilter = metalIds ? `and gm."metalId" in (:metalIds)` : ``;
   const coatingFilter = coatingIds ? `and gco."coatingId" in (:coatingIds)` : ``;
+  const categoryFilter = categoryId ? `gc."categoryId" = :categoryId` : `gc."categoryId" = gc."categoryId"`;
   const ids = await database.sequelize.query(
     `select g.id 
     from "Gems" g
@@ -22,7 +23,7 @@ const getGemsFilteredByCategoryStonesMetalsMetalsCoatings = async (categoryId, s
     left join "Metals" m on m."id" = gm."metalId"
     left join "GemCoatings" gco on g."id" = gco."gemId"
     left join "Coatings" co on co."id" = gco."coatingId"
-    where gc."categoryId" = :categoryId ${stoneFilter} ${metalFilter} ${coatingFilter}
+    where ${categoryFilter} ${stoneFilter} ${metalFilter} ${coatingFilter}
     group by g."id";`,
     {
       type: database.sequelize.QueryTypes.SELECT,
@@ -64,10 +65,6 @@ const getGemsFilteredByCategoryStonesMetalsMetalsCoatings = async (categoryId, s
 class GemService {
   static async getAllGems(categoryId, stoneIds, metalIds, coatingIds, sortBy) {
     try {
-      if (!categoryId) {
-        const firstCategory = await database.Category.findAll({limit: 1});
-        categoryId = firstCategory[0].id
-      }
       let orderCriteria = ['createdAt', 'DESC'];
       if (sortBy && sortBy === 'cost-increase') orderCriteria = ['price', 'ASC'];
       if (sortBy && sortBy === 'cost-decrease') orderCriteria = ['price', 'DESC'];
