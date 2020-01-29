@@ -8,7 +8,6 @@ import {logoutUser} from "./store/actions/usersActions";
 import Routes from "./Routes";
 
 import "./App.css"
-import Sidebar from "./components/UI/Sidebar/Sidebar";
 import {fetchCategories} from "./store/actions/categoriesActions";
 
 
@@ -29,10 +28,7 @@ class App extends Component {
           />
         </header>
         <Container className='app-container'>
-          <Sidebar/>
-          <div className='app-main-column'>
-            <Routes user={this.props.user} />
-          </div>
+          <Routes user={this.props.user} />
         </Container>
       </Fragment>
     );

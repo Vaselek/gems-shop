@@ -1,0 +1,16 @@
+.table-img {
+    width: 50px;
+    height: 50px;
+}
+
+.table-icon {
+    margin: auto;
+}
+
+.table-icon-container {
+    display: flex;
+}
+
+.table-icon:hover {
+    opacity: 0.5;
+}
