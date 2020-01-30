@@ -1,10 +1,11 @@
-import React, {useCallback, useState} from 'react';
-import {Button, Col, Form, FormGroup, Label, CustomInput} from "reactstrap";
+import React, {useCallback, useState, useEffect} from 'react';
+import {Button, Col, Form, FormGroup, Label, CustomInput, Input, FormFeedback} from "reactstrap";
 import FormElement from "../UI/Form/FormElement";
 import { isEmpty } from 'lodash';
+import {apiURL} from "../../constants";
 
 function GemForm (props) {
-  const [form, setState] = useState({
+  const emptyForm = {
     title: '',
     price: '',
     description: '',
@@ -14,7 +15,15 @@ function GemForm (props) {
     metalIds: [],
     coatingIds: [],
     stoneIds: []
-  });
+  };
+  const [form, setState] = useState(emptyForm);
+
+  useEffect(() => {
+    if (props.gem) {
+      const newForm = {...props.gem};
+      setState(newForm)
+    }
+  }, [props.gem]);
 
   const submitFormHandler = useCallback(
     (event) => {
@@ -47,7 +56,7 @@ function GemForm (props) {
 
   const categoryInputChangeHandler = useCallback(
     event => {
-      setState({...form, [event.target.name]: Array.from(event.target.selectedOptions, (item) => item.value)});
+      setState({...form, [event.target.name]: Array.from(event.target.selectedOptions, (item) => parseInt(item.value))});
     },
     [form]
   );
@@ -55,7 +64,7 @@ function GemForm (props) {
   const itemsInputChangeHandler = useCallback(
     event => {
       let ids = form[event.target.name];
-      const id = event.target.id.split('_').slice(1).join();
+      const id = parseInt(event.target.id.split('_').slice(1).join());
       if (event.target.checked === true ){
         ids.push(id)
       } else {
@@ -86,6 +95,8 @@ function GemForm (props) {
     },
     [props.error]
   );
+
+  const url = form.image.name ? URL.createObjectURL(form.image) : apiURL + '/' + form.image;
 
   return (
     <Form style={{width: '100%'}} onSubmit={submitFormHandler}>
@@ -130,17 +141,31 @@ function GemForm (props) {
         step="0.1"
         value={form.weight}
         onChange={inputChangeHandler}/>
-      <FormElement
-        propertyName='image'
-        title='Изображение'
-        type='file'
-        error={getErrorFor('image')}
-        onChange={fileChangeHandler}/>
+      <FormGroup row>
+        <Label sm={2} for='image'>Изображение</Label>
+        {form.image && (<Col sm={2}>
+          <img src={url} className="img-thumbnail" alt=""/>
+        </Col>)}
+        <Col sm={8}>
+        <Input
+          name='image' id='image'
+          invalid={!!getErrorFor('image')}
+          onChange={fileChangeHandler}
+          type='file'
+        >
+        </Input>
+        {getErrorFor('image') && (
+          <FormFeedback>
+            {getErrorFor('image')}
+          </FormFeedback>
+        )}
+        </Col>
+      </FormGroup>
       <FormGroup row>
         <Label sm={2} for={'metalIds'}>Металлы</Label>
         <Col sm={10}>
           {props.metals.map(metal => (
-            <CustomInput key={'form-metal_' + metal.id} type="checkbox" name='metalIds' onChange={itemsInputChangeHandler} id={'form-metal_' + metal.id} label={metal.title} />
+            <CustomInput key={'form-metal_' + metal.id} checked={form.metalIds.includes(metal.id)} type="checkbox" name='metalIds' onChange={itemsInputChangeHandler} id={'form-metal_' + metal.id} label={metal.title} />
           ))}
         </Col>
       </FormGroup>
@@ -148,7 +173,7 @@ function GemForm (props) {
         <Label sm={2} for={'coatingIds'}>Покрытие</Label>
         <Col sm={10}>
           {props.coatings.map(coating => (
-            <CustomInput key={'form-coating_' + coating.id} type="checkbox" name='coatingIds' onChange={itemsInputChangeHandler} id={'form-coating_' + coating.id} label={coating.title} />
+            <CustomInput key={'form-coating_' + coating.id} checked={form.coatingIds.includes(coating.id)} type="checkbox" name='coatingIds' onChange={itemsInputChangeHandler} id={'form-coating_' + coating.id} label={coating.title} />
           ))}
         </Col>
       </FormGroup>
@@ -156,7 +181,7 @@ function GemForm (props) {
         <Label sm={2} for={'stoneIds'}>Камни</Label>
         <Col sm={10}>
           {props.stones.map(stone => (
-            <CustomInput key={'form-stone_' + stone.id} type="checkbox" name='stoneIds' onChange={itemsInputChangeHandler} id={'form-stone_' + stone.id} label={stone.title} />
+            <CustomInput key={'form-stone_' + stone.id} checked={form.stoneIds.includes(stone.id)} type="checkbox" name='stoneIds' onChange={itemsInputChangeHandler} id={'form-stone_' + stone.id} label={stone.title} />
           ))}
         </Col>
       </FormGroup>

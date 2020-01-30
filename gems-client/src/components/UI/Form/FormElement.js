@@ -11,6 +11,7 @@ const FormElement = ({propertyName, title, value, error, onChange, children, ...
           name={propertyName} id={propertyName}
           invalid={!!error}
           onChange={onChange}
+          value={value}
           {...props}
         >
           {children}

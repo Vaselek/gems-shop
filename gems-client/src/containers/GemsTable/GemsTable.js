@@ -5,12 +5,14 @@ import {fetchGems} from "../../store/actions/gemsActions";
 import {apiURL} from "../../constants";
 import './GemsTable.css';
 import Octicon, {Pencil, Trashcan} from '@primer/octicons-react'
+import {useHistory} from "react-router";
 
 
 
 const GemsTable = () => {
   const gems = useSelector(state => state.gems.gems);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(fetchGems())
@@ -81,25 +83,22 @@ const GemsTable = () => {
     text: 'Покрытие',
     formatter: categoryFormatter
   }, {
-    dataField: 'id',
+    dataField: 'id1',
     text: 'Изменить',
+    isDummyField: true,
     formatter: editFormatter,
     events: {
       onClick: (e, column, columnIndex, row, rowIndex) => {
-        console.log('e', e.target);
-        console.log(column);
-        console.log(columnIndex);
-        console.log(row);
-        console.log(rowIndex);
+        history.push('/edit-gem/' + row.id);
       }
     }
   }, {
-    dataField: 'id',
+    dataField: 'id2',
     text: 'Удалить',
+    isDummyField: true,
     formatter: deleteFormatter,
     events: {
       onClick: (e, column, columnIndex, row, rowIndex) => {
-        console.log('e', e.target);
         console.log(column);
         console.log(columnIndex);
         console.log(row);

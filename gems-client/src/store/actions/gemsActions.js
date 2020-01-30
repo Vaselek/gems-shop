@@ -1,12 +1,36 @@
 import axios from '../../axios-api';
 
 export const FETCH_GEMS_SUCCESS = 'FETCH_GEMS_SUCCESS';
+export const FETCH_GEM_SUCCESS = 'FETCH_GEM_SUCCESS';
 export const CREATE_GEM_SUCCESS = 'CREATE_GEM_SUCCESS';
 export const CREATE_GEM_FAILURE = 'CREATE_GEM_FAILURE';
+export const UPDATE_GEM_SUCCESS = 'UPDATE_GEM_SUCCESS';
+export const UPDATE_GEM_FAILURE = 'UPDATE_GEM_FAILURE';
+
+
 
 export const fetchGemsSuccess = (gems, categoryId, filter) => ({type: FETCH_GEMS_SUCCESS, gems, categoryId, filter});
+export const fetchGemSuccess = (gem) => ({type: FETCH_GEM_SUCCESS, gem});
 export const createGemSuccess = () => ({type: CREATE_GEM_SUCCESS});
 export const createGemFailure = (error) => ({type: CREATE_GEM_FAILURE, error});
+export const updateGemSuccess = () => ({type: UPDATE_GEM_SUCCESS});
+export const updateGemFailure = (error) => ({type: UPDATE_GEM_FAILURE, error});
+
+
+
+
+
+export const fetchGem = (id) => {
+  return dispatch => {
+    const path = '/gems/' + id;
+    return axios.get(path).then(
+      response => {
+        console.log(response)
+        dispatch(fetchGemSuccess(response.data.data));
+      }
+    );
+  }
+}
 
 export const fetchGems = (categoryId, filter, sortBy) => {
   return dispatch => {
@@ -62,3 +86,17 @@ export const createGem = gemData => {
     );
   };
 };
+
+export const updateGem = gemData => {
+  return (dispatch, getState) => {
+    return axios.put('/gems/' + gemData.get('id'), gemData).then(
+      response => {
+        dispatch(updateGemSuccess(response));
+        return 'success';
+      },
+      error => {
+        dispatch(updateGemFailure(error.response.data.message))
+      }
+    )
+  }
+}
