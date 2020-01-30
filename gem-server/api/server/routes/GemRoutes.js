@@ -9,7 +9,7 @@ const router = Router();
 router.get('/', GemController.getAllGems);
 router.post('/', [auth, permit('admin'), upload.single('image')], GemController.addGem);
 router.get('/:id', GemController.getAGem);
-router.put('/:id', [auth, permit('admin')], GemController.updatedGem);
+router.put('/:id', [auth, permit('admin'), upload.single('image')], GemController.updatedGem);
 router.delete('/:id', [auth, permit('admin')], GemController.deleteGem);
 
 export default router;

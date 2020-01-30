@@ -48,13 +48,23 @@ class GemController {
 
   static async updatedGem(req, res) {
     const alteredGem = req.body;
+    alteredGem.weight = req.body.weight ? req.body.weight : null;
+    if (req.file) {
+      alteredGem.image = req.file.filename;
+    }
+    const gemDataValidation = await GemService.validateGemData(alteredGem);
+    if (!gemDataValidation.isSuccessful) {
+      util.setError(400, gemDataValidation.error);
+      return util.send(res);
+    }
     const { id } = req.params;
     if (!Number(id)) {
       util.setError(400, 'Please input a valid numeric value');
       return util.send(res);
     }
     try {
-      const updateGem = await GemService.updateGem(id, alteredGem);      if (!updateGem) {
+      const updateGem = await GemService.updateGem(id, alteredGem);
+      if (!updateGem) {
         util.setError(404, `Cannot find gem with the id: ${id}`);
       } else {
         util.setSuccess(200, 'Gem updated', updateGem);

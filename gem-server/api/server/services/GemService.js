@@ -113,13 +113,17 @@ class GemService {
     return result
   }
 
+  static async createNewAssociatedModels(gem, gemData) {
+    gemData.categoryIds && gemData.categoryIds.map((categoryId) => this.createIntermediateObject(gem.id, categoryId, 'GemCategory').catch((e)=>{throw e}));
+    gemData.metalIds && gemData.metalIds.map((metalId) => this.createIntermediateObject(gem.id, metalId, 'GemMetal').catch((e)=>{throw e}));
+    gemData.stoneIds && gemData.stoneIds.map((stoneId) => this.createIntermediateObject(gem.id, stoneId, 'GemStone').catch((e)=>{throw e}));
+    gemData.coatingIds && gemData.coatingIds.map((coatingId) => this.createIntermediateObject(gem.id, coatingId, 'GemCoating').catch((e)=>{throw e}));
+  }
+
   static async addGem(newGem) {
     try {
       const gem = await database.Gem.create(newGem);
-      newGem.categoryIds && newGem.categoryIds.map((categoryId) => this.createIntermediateObject(gem.id, categoryId, 'GemCategory').catch((e)=>{throw e}));
-      newGem.metalIds && newGem.metalIds.map((metalId) => this.createIntermediateObject(gem.id, metalId, 'GemMetal').catch((e)=>{throw e}));
-      newGem.stoneIds && newGem.stoneIds.map((stoneId) => this.createIntermediateObject(gem.id, stoneId, 'GemStone').catch((e)=>{throw e}));
-      newGem.coatingIds && newGem.coatingIds.map((coatingId) => this.createIntermediateObject(gem.id, coatingId, 'GemCoating').catch((e)=>{throw e}));
+      await this.createNewAssociatedModels(gem, newGem);
       return gem;
     } catch (error) {
       throw error;
@@ -136,16 +140,30 @@ class GemService {
       throw e
     }
   }
+  
+  static async destroyOldAssociatedModels(gem) {
+    const associatedModels = ['GemStone', 'GemMetal', 'GemCoating', 'GemCategory'];
+    associatedModels.map(async (model) => await database[model].destroy({ where: { gemId: Number(gem.id) }}))
+  }
+
+  static async updateIntermediateObjects(updateGem) {
+    try{
+      await this.destroyOldAssociatedModels(updateGem)
+      await this.createNewAssociatedModels(updateGem, updateGem);
+      return updateGem;
+    } catch(e) {
+      throw e
+    }
+  }
 
   static async updateGem(id, updateGem) {
     try {
       const gemToUpdate = await database.Gem.findOne({
         where: { id: Number(id) }
       });
-
       if (gemToUpdate) {
         await database.Gem.update(updateGem, { where: { id: Number(id) } });
-
+        await this.updateIntermediateObjects(updateGem);
         return updateGem;
       }
       return null;
