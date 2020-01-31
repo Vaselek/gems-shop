@@ -1,6 +1,7 @@
 .table-img {
     width: 50px;
     height: 50px;
+    margin: auto;
 }
 
 .table-icon {
@@ -14,3 +15,54 @@
 .table-icon:hover {
     opacity: 0.5;
 }
+
+.gems-table {
+    font-size: 0.75rem;
+}
+
+.gems-table-header {
+    text-align: center;
+}
+
+.gems-table-row {
+    padding: 0.1rem;
+    margin: 0;
+}
+
+.gems-table-row .gems-table-image-column {
+    margin: 0;
+}
+
+.gems-table-img-wrapper {
+    display: flex;
+}
+
+.gems-table-id-column {
+    text-align: center;
+}
+
+.react-bootstrap-table table { table-layout: auto !important; }
+
+.react-bootstrap-table-pagination-list {
+    display: flex;
+}
+
+ul.react-bootstrap-table-page-btns-ul {
+    margin-left: auto;
+}
+
+.react-bootstrap-table-pagination a {
+    color: #333;
+}
+
+.page-item.active .page-link,
+.react-bootstrap-table-pagination .btn-secondary {
+
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.page-item.active .page-link a {
+    color: rgba(255,255,255,.5);
+}
+

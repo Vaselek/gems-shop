@@ -6,6 +6,7 @@ import {apiURL} from "../../constants";
 import './GemsTable.css';
 import Octicon, {Pencil, Trashcan} from '@primer/octicons-react'
 import {useHistory} from "react-router";
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 
 const GemsTable = () => {
@@ -20,13 +21,13 @@ const GemsTable = () => {
   function categoryFormatter(cell, row, rowIndex, formatExtraData) {
     const content = cell.length === 0 ? '' : cell.map(item => item.title).join(', ')
     return (
-      <i>{content}</i>
+      <span>{content}</span>
     );
   }
 
   function imageFormatter(cell, row, rowIndex, formatExtraData) {
     return (
-      <img className="img-fluid table-img" src={apiURL + '/' + cell} alt=""/>
+      <div className='gems-table-img-wrapper'><img className="img-fluid img-thumbnail table-img" src={apiURL + '/' + cell} alt=""/></div>
     )
   }
 
@@ -48,7 +49,11 @@ const GemsTable = () => {
 
   const columns = [{
     dataField: 'id',
-    text: 'ID'
+    text: 'ID',
+    classes: 'gems-table-id-column',
+    headerStyle: (column, colIndex) => {
+      return { width: '5%' };
+    }
   }, {
     dataField: 'title',
     text: 'Название'
@@ -57,13 +62,20 @@ const GemsTable = () => {
     text: 'Описание'
   }, {
     dataField: 'price',
-    text: 'Цена'
+    text: 'Цена',
+    headerStyle: (column, colIndex) => {
+      return { width: '5%' };
+    }
   }, {
     dataField: 'weight',
-    text: 'Вес'
+    text: 'Вес',
+    headerStyle: (column, colIndex) => {
+      return { width: '5%' };
+    }
   }, {
     dataField: 'image',
     text: 'Рис.',
+    classes: 'gems-table-image-column',
     formatter: imageFormatter
   }, {
     dataField: 'categories',
@@ -86,6 +98,9 @@ const GemsTable = () => {
     text: 'Изменить',
     isDummyField: true,
     formatter: editFormatter,
+    headerStyle: (column, colIndex) => {
+      return { width: '5%' };
+    },
     events: {
       onClick: (e, column, columnIndex, row, rowIndex) => {
         history.push('/edit-gem/' + row.id);
@@ -96,6 +111,9 @@ const GemsTable = () => {
     text: 'Удалить',
     isDummyField: true,
     formatter: deleteFormatter,
+    headerStyle: (column, colIndex) => {
+      return { width: '5%' };
+    },
     events: {
       onClick: (e, column, columnIndex, row, rowIndex) => {
         console.log(column);
@@ -106,9 +124,31 @@ const GemsTable = () => {
     }
   }];
 
+  const options = {
+    onSizePerPageChange: (sizePerPage, page) => {
+      console.log('Size per page change!!!');
+      console.log('Newest size per page:' + sizePerPage);
+      console.log('Newest page:' + page);
+    },
+    onPageChange: (page, sizePerPage) => {
+      console.log('Page change!!!');
+      console.log('Newest size per page:' + sizePerPage);
+      console.log('Newest page:' + page);
+    }
+  };
+
   return (
     <div>
-      <BootstrapTable keyField='id' data={ gems } columns={ columns } />
+      <BootstrapTable classes='gems-table'
+                      headerClasses='gems-table-header'
+                      rowClasses='gems-table-row'
+                      striped
+                      hover
+                      condensed
+                      keyField='id'
+                      data={ gems }
+                      pagination={ paginationFactory(options) }
+                      columns={ columns } />
     </div>
   );
 };
