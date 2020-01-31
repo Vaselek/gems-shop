@@ -8,6 +8,7 @@ import {fetchCoatings} from "../../store/actions/coatingsActions";
 import {fetchStones} from "../../store/actions/stonesActions";
 import {updateGem, fetchGem} from "../../store/actions/gemsActions";
 import GemForm from "../../components/GemForm/GemForm";
+import {Alert} from "reactstrap";
 
 const EditGem = () => {
   const dispatch = useDispatch();
@@ -27,11 +28,12 @@ const EditGem = () => {
   const coatings = useSelector(state => state.coatings.coatings);
   const stones = useSelector(state => state.stones.stones);
   const error = useSelector(state => state.gems.error);
+  const generalError = useSelector(state => state.gems.generalError);
   const gem = useSelector(state => state.gems.currentGem);
 
 
-  const getFormData = (gem) => {
-    const {categories, stones, metals, coatings, createdAt, updatedAt, ...gemFormData} = gem;
+  const getFormData = () => {
+    const {categories, stones, metals, coatings, createdAt, updatedAt, ...gemFormData} = {...gem};
     gemFormData['stoneIds'] = stones ? stones.map(item => item.id) : [];
     gemFormData['metalIds'] = metals ? metals.map(item => item.id) : [];
     gemFormData['coatingIds'] = coatings ? coatings.map(item => item.id) : [];
@@ -50,21 +52,24 @@ const EditGem = () => {
     }, [dispatch, history]
   );
 
-  const gemFormData = gem ? getFormData(gem) : null;
-
   return (
-    <div className='gem-form'>
-      <h4 className='gem-form-header'>Форма добавления украшения</h4>
-      <GemForm
-        className='gem-form'
-        onSubmit={memoizedUpdateGem}
-        categories={categories}
-        metals={metals}
-        stones={stones}
-        coatings={coatings}
-        error={error}
-        gem={gemFormData}
-      />
+    <div>
+      { generalError && (<Alert color="danger">
+        {generalError}
+      </Alert>) }
+      { gem && <div className='gem-form'>
+        <h4 className='gem-form-header'>Форма добавления украшения</h4>
+        <GemForm
+          className='gem-form'
+          onSubmit={memoizedUpdateGem}
+          categories={categories}
+          metals={metals}
+          stones={stones}
+          coatings={coatings}
+          error={error}
+          gem={getFormData()}
+        />
+      </div> }
     </div>
   );
 };

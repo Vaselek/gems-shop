@@ -2,7 +2,8 @@ import {
   FETCH_GEMS_SUCCESS,
   CREATE_GEM_FAILURE,
   FETCH_GEM_SUCCESS,
-  UPDATE_GEM_FAILURE
+  UPDATE_GEM_FAILURE,
+  FETCH_GEM_FAILURE
 } from "../actions/gemsActions";
 
 const initialState = {
@@ -11,7 +12,8 @@ const initialState = {
   errorField: null,
   categoryId: null,
   filter: {},
-  currentGem: null
+  currentGem: null,
+  generalError: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -24,6 +26,8 @@ const reducer = (state = initialState, action) => {
       return {...state, error: action.error};
     case FETCH_GEM_SUCCESS:
       return {...state, currentGem: action.gem};
+    case FETCH_GEM_FAILURE:
+      return {...state, generalError: action.error};
     default:
       return state;
   }

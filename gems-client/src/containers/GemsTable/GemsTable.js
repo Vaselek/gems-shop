@@ -8,7 +8,6 @@ import Octicon, {Pencil, Trashcan} from '@primer/octicons-react'
 import {useHistory} from "react-router";
 
 
-
 const GemsTable = () => {
   const gems = useSelector(state => state.gems.gems);
   const dispatch = useDispatch();
@@ -16,7 +15,7 @@ const GemsTable = () => {
 
   useEffect(() => {
     dispatch(fetchGems())
-  }, []);
+  });
 
   function categoryFormatter(cell, row, rowIndex, formatExtraData) {
     const content = cell.length === 0 ? '' : cell.map(item => item.title).join(', ')

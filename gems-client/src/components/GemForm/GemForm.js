@@ -104,7 +104,7 @@ function GemForm (props) {
         propertyName='categoryIds'
         title='Категория'
         type='select'
-        value={form.categoryIds}
+        value={form.categoryIds[0]}
         error={getErrorFor('categoryIds')}
         onChange={categoryInputChangeHandler}>
         <option value=''>Пожалуйста, выберите одну категорию</option>
