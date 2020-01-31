@@ -4,10 +4,7 @@ import 'chai/register-should';
 import app from '../index';
 import db from "../server/src/models";
 import categoryFactory from "./factories/category";
-import metalFactory from "./factories/metal";
-import stoneFactory from "./factories/stone";
-import coatingFactory from "./factories/coating";
-import {createGemWithAssociatedModels} from "./utils";
+import {createGemWithAssociatedModels, prepareGemDataForPostRequest} from "./utils";
 import userFactory from "./factories/user";
 
 chai.use(chatHttp);
@@ -22,29 +19,14 @@ beforeEach('Clean database', function(){
 describe('Testing the gem endpoints:', () => {
   it('It should create a gem', async () => {
     const admin = await userFactory({role: 'admin'});
-    const category = await categoryFactory();
-    const metal =  await metalFactory();
-    const stone = await stoneFactory();
-    const coating = await coatingFactory();
-
-    const gem = {
-      title: 'First Awesome gem',
-      price: 100,
-      weight: 10,
-      description: 'Nice gem',
-      image: 'gem.png',
-      categoryIds: [category.id],
-      stoneIds: [stone.id],
-      coatingIds: [coating.id],
-      metalIds: [metal.id]
-    };
+    const gemDataForRequest = await prepareGemDataForPostRequest();
     const res = await chai.request(app)
       .post('/gems')
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
-      .send(gem);
+      .send(gemDataForRequest);
     expect(res.status).to.equal(201);
     expect(res.body.data).to.include({
-      title: gem.title
+      title: gemDataForRequest.title
     });
   });
 
@@ -181,19 +163,25 @@ describe('Testing the gem endpoints:', () => {
 
   it('It should update a gem', async () => {
     const admin = await userFactory({role: 'admin'});
-    const gemData = await createGemWithAssociatedModels();
-    const updatedGem = {
-      id: gemData.gem.id,
-      title: 'Updated Awesome gem'
-    };
+    const gemDataForRequest = await prepareGemDataForPostRequest();
+
+    const resToCreate = await chai.request(app)
+      .post('/gems')
+      .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
+      .send(gemDataForRequest);
+    const gem = resToCreate.body.data;
+
+    const updatedTitle = 'Updated Awesome gem'
+    gemDataForRequest.title = updatedTitle;
+    gemDataForRequest.id = gem.id;
 
     const res = await chai.request(app)
-      .put(`/gems/${gemData.gem.id}`)
+      .put(`/gems/${gemDataForRequest.id}`)
       .set({'Accept': 'application/json', 'Authorization': 'Bearer ' + admin.token})
-      .send(updatedGem);
+      .send(gemDataForRequest);
     expect(res.status).to.equal(200);
-    expect(res.body.data.id).equal(updatedGem.id);
-    expect(res.body.data.title).equal(updatedGem.title);
+    expect(res.body.data.id).equal(gemDataForRequest.id);
+    expect(res.body.data.title).equal(updatedTitle);
   });
 
 

@@ -27,3 +27,23 @@ export async function createGemWithAssociatedModels() {
 
   return gemData;
 }
+
+export async function prepareGemDataForPostRequest() {
+  const category = await categoryFactory();
+  const metal =  await metalFactory();
+  const stone = await stoneFactory();
+  const coating = await coatingFactory();
+
+  const gemDataForRequest = {
+    title: 'First Awesome gem',
+    price: 100,
+    weight: 10,
+    description: 'Nice gem',
+    image: 'gem.png',
+    categoryIds: [category.id],
+    stoneIds: [stone.id],
+    coatingIds: [coating.id],
+    metalIds: [metal.id]
+  };
+  return gemDataForRequest;
+}
