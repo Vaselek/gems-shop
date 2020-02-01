@@ -1,5 +1,9 @@
 import database from '../src/models';
 
+const defaultOffset = 0;
+
+const defaultLimit = 30;
+
 const RelatedObjectMapper = {
   "GemCategory" : "categoryId",
   "GemCoating": "coatingId",
@@ -63,11 +67,13 @@ const getGemsFilteredByCategoryStonesMetalsMetalsCoatings = async (categoryId, s
 
 
 class GemService {
-  static async getAllGems(categoryId, stoneIds, metalIds, coatingIds, sortBy) {
+  static async getAllGems(categoryId, stoneIds, metalIds, coatingIds, sortBy, offset, limit) {
     try {
       let orderCriteria = ['createdAt', 'DESC'];
       if (sortBy && sortBy === 'cost-increase') orderCriteria = ['price', 'ASC'];
       if (sortBy && sortBy === 'cost-decrease') orderCriteria = ['price', 'DESC'];
+      const offsetCriteria = offset ? offset : defaultOffset;
+      const limitCriteria = limit ? limit : defaultLimit;
       const gemIds = await getGemsFilteredByCategoryStonesMetalsMetalsCoatings(categoryId, stoneIds, metalIds, coatingIds);
       const gems = await database.Gem.findAll({
         where: {
@@ -76,9 +82,14 @@ class GemService {
         order: [
           orderCriteria
         ],
-        include: ['categories', 'stones', 'coatings', 'metals']
+        include: ['categories', 'stones', 'coatings', 'metals'],
+        offset: offsetCriteria,
+        limit: limitCriteria
       });
-      return gems
+      let responseData = {};
+      responseData.gems = gems;
+      responseData.totalCount = gemIds.length;
+      return responseData
     } catch (error) {
       throw error;
     }

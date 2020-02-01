@@ -11,9 +11,11 @@ class GemController {
       const metalIds = req.query.metalIds;
       const coatingIds = req.query.coatingIds;
       const sortBy = req.query.sort;
-      const allGems = await GemService.getAllGems(categoryId, stoneIds, metalIds, coatingIds, sortBy);
-      if (allGems.length > 0) {
-        util.setSuccess(200, 'Gems retrieved', allGems);
+      const offset = req.query.offset;
+      const limit = req.query.limit;
+      const responseData = await GemService.getAllGems(categoryId, stoneIds, metalIds, coatingIds, sortBy, offset, limit);
+      if (responseData.gems.length > 0) {
+        util.setSuccess(200, 'Gems retrieved', responseData);
       } else {
         util.setSuccess(200, 'No gem found');
       }
