@@ -6,13 +6,13 @@ import './Sorting.css';
 import {fetchGems} from "../../store/actions/gemsActions";
 
 const Sorting = () => {
-  const filter = useSelector(state => state.gems.filter);
-  const categoryId = useSelector(state => state.gems.categoryId);
+  const gemParams = useSelector(state => state.gems.gemParams);
   const dispatch = useDispatch();
 
   const memoizedHandleClick = useCallback((event) => {
-    dispatch(fetchGems(categoryId, filter, event.target.id))
-  }, [filter, dispatch, categoryId]);
+    gemParams.sortBy = event.target.id;
+    dispatch(fetchGems(gemParams))
+  }, [dispatch, gemParams]);
 
   return (
     <UncontrolledDropdown className='sorting-dropdown'>

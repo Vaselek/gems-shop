@@ -41,12 +41,10 @@ const WithSideBar = ({user}) => {
 
 const Routes = ({user}) => {
   return (
-    <Container className='app-container'>
     <Switch>
         <ProtectedRoute isAllowed={user && user.role === 'admin'} path="/gems-table" exact component={GemsTable} />
         <Route render={(props) => <WithSideBar {...props} user={user} />} />
     </Switch>
-    </Container>
   );
 };
 

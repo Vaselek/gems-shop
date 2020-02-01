@@ -10,16 +10,16 @@ const initialState = {
   gems: [],
   error: null,
   errorField: null,
-  categoryId: null,
-  filter: {},
+  gemParams: {categoryId: null, filter: {}, sortBy: null, pagination: {}},
   currentGem: null,
-  generalError: null
+  generalError: null,
+  totalCount: null
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_GEMS_SUCCESS:
-      return {...state, gems: action.gems, categoryId: action.categoryId, filter: action.filter};
+      return {...state, gems: action.gems, totalCount: action.totalCount, gemParams: action.gemParams};
     case CREATE_GEM_FAILURE:
       return {...state, error: action.error};
     case UPDATE_GEM_FAILURE:

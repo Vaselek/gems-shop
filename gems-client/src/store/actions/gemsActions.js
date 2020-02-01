@@ -13,7 +13,7 @@ export const UPDATE_GEM_FAILURE = 'UPDATE_GEM_FAILURE';
 
 
 
-export const fetchGemsSuccess = (gems, categoryId, filter) => ({type: FETCH_GEMS_SUCCESS, gems, categoryId, filter});
+export const fetchGemsSuccess = (gems, totalCount, gemParams) => ({type: FETCH_GEMS_SUCCESS, gems, totalCount, gemParams});
 export const fetchGemSuccess = (gem) => ({type: FETCH_GEM_SUCCESS, gem});
 
 export const fetchGemFailure = (error) => ({type: FETCH_GEM_FAILURE, error});
@@ -42,7 +42,8 @@ export const fetchGem = (id) => {
   }
 }
 
-export const fetchGems = (categoryId, filter, sortBy) => {
+export const fetchGems = (gemParams) => {
+  const { categoryId, filter, sortBy, pagination } = gemParams;
   return dispatch => {
     let path = '/gems';
     let delimeter ='?';
@@ -75,9 +76,17 @@ export const fetchGems = (categoryId, filter, sortBy) => {
       path += delimeter + 'sort=' + sortBy;
       delimeter = '&'
     }
+    if (pagination && pagination.limit) {
+      path += delimeter + 'limit=' + pagination.limit;
+      delimeter = '&'
+    }
+    if (pagination && pagination.offset) {
+      path += delimeter + 'offset=' + pagination.offset;
+      delimeter = '&'
+    }
     return axios.get(path).then(
       response => {
-        dispatch(fetchGemsSuccess(response.data.data, categoryId, filter));
+        dispatch(fetchGemsSuccess(response.data.data.gems, response.data.data.totalCount, gemParams));
       }
     );
   };

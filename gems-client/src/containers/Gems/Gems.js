@@ -9,12 +9,16 @@ import './Gems.css';
 
 class Gems extends Component {
   componentDidMount() {
-    this.props.fetchGems(this.props.match.params.id);
+    let gemParams = {};
+    gemParams.categoryId = this.props.match.params.id;
+    this.props.fetchGems(gemParams);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.match.params.id !== this.props.match.params.id) {
-      this.props.fetchGems(this.props.match.params.id);
+      let gemParams = {};
+      gemParams.categoryId = this.props.match.params.id;
+      this.props.fetchGems(gemParams);
     }
   }
 
@@ -54,7 +58,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchGems: (categoryId) => dispatch(fetchGems(categoryId)),
+  fetchGems: (gemParams) => dispatch(fetchGems(gemParams)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Gems);

@@ -11,12 +11,17 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 
 const GemsTable = () => {
   const gems = useSelector(state => state.gems.gems);
+  const totalCount = useSelector(state => state.gems.totalCount);
+  const page = useSelector(state => state.gems.gemParams.pagination.offset) || 1;
+  const sizePerPage = useSelector(state => state.gems.gemParams.pagination.limit) || 10;
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(fetchGems())
-  });
+    let pagination = {}
+    pagination.limit = 10
+    dispatch(fetchGems({pagination}))
+  }, [dispatch]);
 
   function categoryFormatter(cell, row, rowIndex, formatExtraData) {
     const content = cell.length === 0 ? '' : cell.map(item => item.title).join(', ')
@@ -124,18 +129,20 @@ const GemsTable = () => {
     }
   }];
 
-  const options = {
-    onSizePerPageChange: (sizePerPage, page) => {
-      console.log('Size per page change!!!');
-      console.log('Newest size per page:' + sizePerPage);
-      console.log('Newest page:' + page);
-    },
-    onPageChange: (page, sizePerPage) => {
-      console.log('Page change!!!');
-      console.log('Newest size per page:' + sizePerPage);
-      console.log('Newest page:' + page);
+  const handleTableChange = (type, { page, sizePerPage }) => {
+    if (type === 'pagination') {
+      const pagination = {};
+      pagination.limit = sizePerPage;
+      pagination.offset = (page - 1) * sizePerPage;
+      dispatch(fetchGems({pagination}))
     }
   };
+
+  const options = {
+    page: page,
+    sizePerPage: sizePerPage,
+    totalSize: totalCount
+  }
 
   return (
     <div>
@@ -148,6 +155,8 @@ const GemsTable = () => {
                       keyField='id'
                       data={ gems }
                       pagination={ paginationFactory(options) }
+                      remote
+                      onTableChange={ handleTableChange }
                       columns={ columns } />
     </div>
   );

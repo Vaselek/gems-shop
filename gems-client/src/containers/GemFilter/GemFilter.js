@@ -15,7 +15,7 @@ function GemFilter () {
   const [coatingIds, setCoatingIds] = useState([]);
 
   const stones = useSelector(state => state.stones.stones);
-  const categoryId = useSelector(state => state.gems.categoryId);
+  const categoryId = useSelector(state => state.gems.gemParams.categoryId);
   const metals = useSelector(state => state.metals.metals);
   const coatings = useSelector(state => state.coatings.coatings);
 
@@ -55,7 +55,7 @@ function GemFilter () {
       }
       setter(ids);
       filter[event.target.name] = ids;
-      dispatch(fetchGems(categoryId, filter));
+      dispatch(fetchGems({categoryId, filter}));
     },
     [categoryId, stoneIds, metalIds, coatingIds, dispatch, mapEventNameToItemIdsAndStateSetter], // Tells React to memoize regardless of arguments.
   );
