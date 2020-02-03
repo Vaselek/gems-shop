@@ -10,15 +10,12 @@ class GemController {
       const stoneIds = req.query.stoneIds;
       const metalIds = req.query.metalIds;
       const coatingIds = req.query.coatingIds;
-      const sortBy = req.query.sort;
+      const sortField = req.query.sortField;
+      const sortOrder = req.query.sortOrder;
       const offset = req.query.offset;
       const limit = req.query.limit;
-      const responseData = await GemService.getAllGems(categoryId, stoneIds, metalIds, coatingIds, sortBy, offset, limit);
-      if (responseData.gems.length > 0) {
-        util.setSuccess(200, 'Gems retrieved', responseData);
-      } else {
-        util.setSuccess(200, 'No gem found');
-      }
+      const responseData = await GemService.getAllGems({categoryId, stoneIds, metalIds, coatingIds, sortField, sortOrder, offset, limit});
+      util.setSuccess(200, 'Gems retrieved', responseData);
       return util.send(res);
     } catch (error) {
       util.setError(400, error);
