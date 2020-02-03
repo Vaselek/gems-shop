@@ -10,14 +10,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 function GemFilter () {
 
-  const [stoneIds, setStoneIds] = useState([]);
-  const [metalIds, setMetalIds] = useState([]);
-  const [coatingIds, setCoatingIds] = useState([]);
-
   const stones = useSelector(state => state.stones.stones);
-  const categoryId = useSelector(state => state.gems.gemParams.categoryId);
   const metals = useSelector(state => state.metals.metals);
   const coatings = useSelector(state => state.coatings.coatings);
+  const gemParams = useSelector(state => state.gems.gemParams);
 
   const dispatch = useDispatch();
 
@@ -27,37 +23,20 @@ function GemFilter () {
     dispatch(fetchCoatings());
   }, [dispatch]);
 
-  const createGemsFilter = (stoneIds, metalIds, coatingIds) => {
-    const filter = {};
-    filter.stoneIds = [...stoneIds];
-    filter.metalIds = [...metalIds];
-    filter.coatingIds = [...coatingIds];
-    return filter
-  };
-
-  const mapEventNameToItemIdsAndStateSetter = {
-      'stoneIds': [[...stoneIds], setStoneIds],
-      'metalIds': [[...metalIds], setMetalIds],
-      'coatingIds': [[...coatingIds], setCoatingIds]
-  };
-
   const getItemId = event => event.target.id.split('_').slice(1).join();
 
   const memoizedHandleClick = useCallback(
     (event) => {
+      const newGemParams = { ...gemParams }
       const id = getItemId(event);
-      const filter = createGemsFilter(stoneIds, metalIds, coatingIds);
-      let [ids, setter] = mapEventNameToItemIdsAndStateSetter[event.target.name];
       if (event.target.checked === true) {
-        ids.push(id);
+        newGemParams.filter[event.target.name].push(id)
       } else {
-        ids = ids.filter(e => e !== id);
+        newGemParams.filter[event.target.name] = newGemParams.filter[event.target.name].filter(e => e !== id);
       }
-      setter(ids);
-      filter[event.target.name] = ids;
-      dispatch(fetchGems({categoryId, filter}));
+      dispatch(fetchGems(newGemParams));
     },
-    [categoryId, stoneIds, metalIds, coatingIds, dispatch, mapEventNameToItemIdsAndStateSetter], // Tells React to memoize regardless of arguments.
+    []
   );
 
   return (

@@ -10,8 +10,10 @@ const Sorting = () => {
   const dispatch = useDispatch();
 
   const memoizedHandleClick = useCallback((event) => {
-    gemParams.sortBy = event.target.id;
-    dispatch(fetchGems(gemParams))
+    const [ field, order ] = event.target.id.split('-');
+    const newGemParams = { ...gemParams }
+    newGemParams.sort = { field, order };
+    dispatch(fetchGems(newGemParams))
   }, [dispatch, gemParams]);
 
   return (
@@ -20,9 +22,9 @@ const Sorting = () => {
         Сортировка...
       </DropdownToggle>
       <DropdownMenu right>
-        <DropdownItem id='cost-increase' onClick={memoizedHandleClick}>По увеличению цены</DropdownItem>
-        <DropdownItem id='cost-decrease' onClick={memoizedHandleClick}> По убыванию цены</DropdownItem>
-        <DropdownItem id='new-first' onClick={memoizedHandleClick}>Вначале новинки</DropdownItem>
+        <DropdownItem id='price-asc' onClick={memoizedHandleClick}>По увеличению цены</DropdownItem>
+        <DropdownItem id='price-desc' onClick={memoizedHandleClick}> По убыванию цены</DropdownItem>
+        <DropdownItem id='createdAt-desc' onClick={memoizedHandleClick}>Вначале новинки</DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>
   );

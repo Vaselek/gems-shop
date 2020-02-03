@@ -5,18 +5,19 @@ import {connect} from "react-redux";
 import GemListItem from "../../components/GemListItem/GemListItem";
 import Sorting from "../Sorting/Sorting";
 import './Gems.css';
+import {defaultGemParams} from "../../constants";
 
 
 class Gems extends Component {
   componentDidMount() {
-    let gemParams = {};
+    let gemParams = { ...defaultGemParams }
     gemParams.categoryId = this.props.match.params.id;
     this.props.fetchGems(gemParams);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.match.params.id !== this.props.match.params.id) {
-      let gemParams = {};
+      let gemParams = { ...defaultGemParams };
       gemParams.categoryId = this.props.match.params.id;
       this.props.fetchGems(gemParams);
     }

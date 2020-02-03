@@ -43,7 +43,7 @@ export const fetchGem = (id) => {
 }
 
 export const fetchGems = (gemParams) => {
-  const { categoryId, filter, sortBy, pagination } = gemParams;
+  const { categoryId, filter, sort, pagination } = gemParams;
   return dispatch => {
     let path = '/gems';
     let delimeter ='?';
@@ -51,36 +51,36 @@ export const fetchGems = (gemParams) => {
       path += delimeter + 'categoryId=' + categoryId;
       delimeter = '&';
     }
-    if (filter && filter.stoneIds.length !== 0) {
+    if (filter.stoneIds.length !== 0) {
       filter.stoneIds.map(stoneId => {
         path += delimeter + 'stoneIds=' + stoneId;
         delimeter = '&';
         return path;
       })
     }
-    if (filter && filter.metalIds.length !== 0) {
+    if (filter.metalIds.length !== 0) {
       filter.metalIds.map(metalId => {
         path += delimeter + 'metalIds=' + metalId;
         delimeter = '&';
         return path;
       })
     }
-    if (filter && filter.coatingIds.length !== 0) {
+    if (filter.coatingIds.length !== 0) {
       filter.coatingIds.map(coatingId => {
         path += delimeter + '&coatingIds=' + coatingId;
         delimeter = '&';
         return path;
       })
     }
-    if (sortBy) {
-      path += delimeter + 'sort=' + sortBy;
+    if (sort.field) {
+      path += delimeter + 'sortField=' + sort.field + '&sortOrder=' + sort.order;
       delimeter = '&'
     }
-    if (pagination && pagination.limit) {
+    if (pagination.limit) {
       path += delimeter + 'limit=' + pagination.limit;
       delimeter = '&'
     }
-    if (pagination && pagination.offset) {
+    if (pagination.offset) {
       path += delimeter + 'offset=' + pagination.offset;
       delimeter = '&'
     }

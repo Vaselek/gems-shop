@@ -5,12 +5,14 @@ import {
   UPDATE_GEM_FAILURE,
   FETCH_GEM_FAILURE
 } from "../actions/gemsActions";
+import {defaultGemParams} from "../../constants";
+
 
 const initialState = {
   gems: [],
   error: null,
   errorField: null,
-  gemParams: {categoryId: null, filter: {}, sortBy: null, pagination: {}},
+  gemParams: defaultGemParams,
   currentGem: null,
   generalError: null,
   totalCount: null
