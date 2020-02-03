@@ -20,8 +20,13 @@
     font-size: 0.75rem;
 }
 
+.gems-table thead th {
+    vertical-align: middle;
+}
+
 .gems-table-header {
     text-align: center;
+    font-size: 10px;
 }
 
 .gems-table-row {
@@ -64,5 +69,29 @@ ul.react-bootstrap-table-page-btns-ul {
 
 .page-item.active .page-link a {
     color: rgba(255,255,255,.5);
+}
+
+.gems-table .select-filter {
+    font-size: 10px;
+    padding: 0;
+}
+
+.react-bootstrap-table th .caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-top: 4px solid \9;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+
+.react-bootstrap-table th .dropup .caret, .navbar-fixed-bottom .dropdown .caret {
+    border-top: 0;
+    border-bottom: 4px dashed;
+    border-bottom: 4px solid \9;
+    content: "";
 }
 
