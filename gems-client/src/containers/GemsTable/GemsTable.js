@@ -13,13 +13,13 @@ import {fetchStones} from "../../store/actions/stonesActions";
 import {fetchMetals} from "../../store/actions/metalsActions";
 import {fetchCoatings} from "../../store/actions/coatingsActions";
 import {fetchCategories} from "../../store/actions/categoriesActions";
-import { isEmpty } from 'lodash';
+import { isEmpty, cloneDeep } from 'lodash';
 
 
 const GemsTable = () => {
   const gems = useSelector(state => state.gems.gems);
   const totalCount = useSelector(state => state.gems.totalCount);
-  const gemParams = useSelector(state => state.gems.gemParams);
+  const gemParams = cloneDeep(defaultGemParams);
   const dispatch = useDispatch();
   const history = useHistory();
   const [ page,setPage ] = useState(1);
@@ -30,9 +30,7 @@ const GemsTable = () => {
 
 
   useEffect(() => {
-    const newGemParams = { ...defaultGemParams };
-    newGemParams.pagination.limit = 10;
-    dispatch(fetchGems(newGemParams));
+    dispatch(fetchGems(gemParams));
     if (isEmpty(stones)) dispatch(fetchStones());
     if (isEmpty(metals)) dispatch(fetchMetals());
     if (isEmpty(coatings)) dispatch(fetchCoatings());
@@ -128,7 +126,8 @@ const GemsTable = () => {
     text: 'Вид',
     filter: selectFilter({
       options: itemSelectOptions(categories),
-      placeholder: 'Выбрать категорию'
+      placeholder: 'Выбрать категорию',
+      defaultValue: 2,
     }),
     headerStyle: (column, colIndex) => {
       return { width: '7%' };
@@ -139,7 +138,7 @@ const GemsTable = () => {
     formatter: categoryFormatter,
     filter: multiSelectFilter({
       options: itemSelectOptions(stones),
-      placeholder: 'Фильтр'
+      placeholder: 'Фильтр',
     }),
     headerStyle: (column, colIndex) => {
       return { width: '6%' };
@@ -221,7 +220,7 @@ const GemsTable = () => {
           filters.coatings.filterVal.map(val => newGemParams.filter.coatingIds.push(val))
         }
         if (filters.categories) {
-          newGemParams['categoryId'] = [filters.categories.filterVal];
+          newGemParams['categoryId'] = filters.categories.filterVal;
         }
       }
       dispatch(fetchGems(newGemParams))

@@ -5,19 +5,19 @@ import {connect} from "react-redux";
 import GemListItem from "../../components/GemListItem/GemListItem";
 import Sorting from "../Sorting/Sorting";
 import './Gems.css';
-import {defaultGemParams} from "../../constants";
+import {cloneDeep} from 'lodash';
 
 
 class Gems extends Component {
   componentDidMount() {
-    let gemParams = { ...defaultGemParams }
+    let gemParams = cloneDeep(this.props.gemParams);
     gemParams.categoryId = this.props.match.params.id;
     this.props.fetchGems(gemParams);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.match.params.id !== this.props.match.params.id) {
-      let gemParams = { ...defaultGemParams };
+      let gemParams = cloneDeep(this.props.gemParams);
       gemParams.categoryId = this.props.match.params.id;
       this.props.fetchGems(gemParams);
     }
@@ -56,6 +56,7 @@ class Gems extends Component {
 const mapStateToProps = state => ({
   gems: state.gems.gems,
   user: state.users.user,
+  gemParams: state.gems.gemParams
 });
 
 const mapDispatchToProps = dispatch => ({

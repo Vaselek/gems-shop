@@ -6,13 +6,14 @@ import {
   FETCH_GEM_FAILURE
 } from "../actions/gemsActions";
 import {defaultGemParams} from "../../constants";
+import {cloneDeep} from 'lodash';
 
 
 const initialState = {
   gems: [],
   error: null,
   errorField: null,
-  gemParams: defaultGemParams,
+  gemParams: cloneDeep(defaultGemParams),
   currentGem: null,
   generalError: null,
   totalCount: null
