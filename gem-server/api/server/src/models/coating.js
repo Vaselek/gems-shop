@@ -30,5 +30,8 @@ module.exports = (sequelize, DataTypes) => {
       otherKey: 'gemId'
     });
   };
+  Coating.beforeCreate(async (coating, options) => {
+    coating.title = coating.title.toLowerCase();
+  });
   return Coating;
 };

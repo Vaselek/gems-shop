@@ -30,5 +30,8 @@ module.exports = (sequelize, DataTypes) => {
       otherKey: 'gemId'
     });
   };
+  Stone.beforeCreate(async (stone, options) => {
+    stone.title = stone.title.toLowerCase();
+  });
   return Stone;
 };
