@@ -26,12 +26,15 @@ const renderTableRowWithItem = (title, item) => (
 );
 
 const renderJewelleryDescription = (description) => (
-  description && (<div className='description'>
-    <span>{description}</span>
-  </div>)
-)
+  description && (<span className='description'>{description}</span>)
+);
+
+const renderJewelleryCode = (code) => (
+  code && (<span className='code'>{code}</span>)
+);
 
 const renderDetails = (jewellery) => {
+  console.log(jewellery)
   return (
     <div className='jewellery-item-details'>
       <div className='jewellery-item-detail details'>
@@ -43,7 +46,12 @@ const renderDetails = (jewellery) => {
           { renderTableRowWithItem('Вес', jewellery.weight)}
           </tbody>
         </table>
-        { renderJewelleryDescription(jewellery.description) }
+        {(jewellery.code || jewellery.description) &&
+        (<div>
+          {renderJewelleryCode(jewellery.code)}
+          {renderJewelleryDescription(jewellery.description)}
+        </div>)
+        }
       </div>
     </div>
   )

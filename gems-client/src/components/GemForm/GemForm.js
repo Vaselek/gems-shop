@@ -3,6 +3,7 @@ import {Button, Col, Form, FormGroup, Label, CustomInput, Input, FormFeedback} f
 import FormElement from "../UI/Form/FormElement";
 import { isEmpty } from 'lodash';
 import {apiURL} from "../../constants";
+import {startCase, toLower} from 'lodash';
 
 function GemForm (props) {
   const emptyForm = {
@@ -14,7 +15,8 @@ function GemForm (props) {
     weight: '',
     metalIds: [],
     coatingIds: [],
-    stoneIds: []
+    stoneIds: [],
+    code: ''
   };
   const [form, setState] = useState(emptyForm);
 
@@ -108,8 +110,8 @@ function GemForm (props) {
         error={getErrorFor('categoryIds')}
         onChange={categoryInputChangeHandler}>
         <option value=''>Пожалуйста, выберите одну категорию</option>
-        {props.categories.map(category => (
-          <option key={category.id} value={category.id}>{category.title}</option>
+        {props.categories && props.categories.map(category => (
+          <option key={category.id} value={category.id}>{ startCase(toLower(category.title)) }</option>
         ))}
       </FormElement>
       <FormElement
@@ -118,6 +120,13 @@ function GemForm (props) {
         type='text'
         value={form.title}
         error={getErrorFor('title')}
+        onChange={inputChangeHandler}/>
+      <FormElement
+        propertyName='code'
+        title='Код'
+        type='text'
+        value={form.code}
+        error={getErrorFor('code')}
         onChange={inputChangeHandler}/>
       <FormElement
         propertyName='price'
@@ -164,24 +173,24 @@ function GemForm (props) {
       <FormGroup row>
         <Label sm={2} for={'metalIds'}>Металлы</Label>
         <Col sm={10}>
-          {props.metals.map(metal => (
-            <CustomInput key={'form-metal_' + metal.id} checked={form.metalIds.includes(metal.id)} type="checkbox" name='metalIds' onChange={itemsInputChangeHandler} id={'form-metal_' + metal.id} label={metal.title} />
+          {props.metals && props.metals.map(metal => (
+            <CustomInput key={'form-metal_' + metal.id} checked={form.metalIds.includes(metal.id)} type="checkbox" name='metalIds' onChange={itemsInputChangeHandler} id={'form-metal_' + metal.id} label={ startCase(toLower(metal.title)) } />
           ))}
         </Col>
       </FormGroup>
       <FormGroup row>
         <Label sm={2} for={'coatingIds'}>Покрытие</Label>
         <Col sm={10}>
-          {props.coatings.map(coating => (
-            <CustomInput key={'form-coating_' + coating.id} checked={form.coatingIds.includes(coating.id)} type="checkbox" name='coatingIds' onChange={itemsInputChangeHandler} id={'form-coating_' + coating.id} label={coating.title} />
+          {props.coatings && props.coatings.map(coating => (
+            <CustomInput key={'form-coating_' + coating.id} checked={form.coatingIds.includes(coating.id)} type="checkbox" name='coatingIds' onChange={itemsInputChangeHandler} id={'form-coating_' + coating.id} label={ startCase(toLower(coating.title)) } />
           ))}
         </Col>
       </FormGroup>
       <FormGroup row>
         <Label sm={2} for={'stoneIds'}>Камни</Label>
         <Col sm={10}>
-          {props.stones.map(stone => (
-            <CustomInput key={'form-stone_' + stone.id} checked={form.stoneIds.includes(stone.id)} type="checkbox" name='stoneIds' onChange={itemsInputChangeHandler} id={'form-stone_' + stone.id} label={stone.title} />
+          {props.stones && props.stones.map(stone => (
+            <CustomInput key={'form-stone_' + stone.id} checked={form.stoneIds.includes(stone.id)} type="checkbox" name='stoneIds' onChange={itemsInputChangeHandler} id={'form-stone_' + stone.id} label={ startCase(toLower(stone.title)) } />
           ))}
         </Col>
       </FormGroup>
