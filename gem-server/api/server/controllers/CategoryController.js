@@ -1,5 +1,6 @@
 import CategoryService from '../services/CategoryService';
 import Util from '../utils/Utils';
+import {improveMessage} from "./controllerUtils";
 
 const util = new Util();
 
@@ -20,17 +21,14 @@ class CategoryController {
   }
 
   static async addCategory(req, res) {
-    if (!req.body.title) {
-      util.setError(400, 'Title is required');
-      return util.send(res);
-    }
     const newCategory = req.body;
     try {
       const createdCategory = await CategoryService.addCategory(newCategory);
       util.setSuccess(201, 'Category Added!', createdCategory);
       return util.send(res);
     } catch (error) {
-      util.setError(400, error.message);
+      const message = improveMessage(error.message)
+      util.setError(400, message);
       return util.send(res);
     }
   }
