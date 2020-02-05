@@ -1,5 +1,6 @@
 import CoatingService from '../services/CoatingService';
 import Util from '../utils/Utils';
+import {improveMessage} from "./controllerUtils";
 
 const util = new Util();
 
@@ -20,17 +21,14 @@ class CoatingController {
   }
 
   static async addCoating(req, res) {
-    if (!req.body.title) {
-      util.setError(400, 'Title is required');
-      return util.send(res);
-    }
     const newCoating = req.body;
     try {
       const createdCoating = await CoatingService.addCoating(newCoating);
       util.setSuccess(201, 'Coating Added!', createdCoating);
       return util.send(res);
     } catch (error) {
-      util.setError(400, error.message);
+      const message = improveMessage(error.message)
+      util.setError(400, message);
       return util.send(res);
     }
   }

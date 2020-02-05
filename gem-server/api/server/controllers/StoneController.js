@@ -1,5 +1,6 @@
 import StoneService from '../services/StoneService';
 import Util from '../utils/Utils';
+import {improveMessage} from './controllerUtils';
 
 const util = new Util();
 
@@ -26,8 +27,7 @@ class StoneController {
       util.setSuccess(201, 'Stone Added!', createdStone);
       return util.send(res);
     } catch (error) {
-      const unnecessaryMessagePart = 'Validation error: ';
-      const message = error.message.includes(unnecessaryMessagePart) ? error.message.replace('Validation error: ', '') : error.message;
+      const message = improveMessage(error.message)
       util.setError(400, message);
       return util.send(res);
     }
