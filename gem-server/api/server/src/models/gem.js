@@ -2,6 +2,21 @@
 module.exports = (sequelize, DataTypes) => {
   const Gem = sequelize.define('Gem', {
     title: DataTypes.STRING,
+    code: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: {
+        args: true,
+        msg: [{ field: 'code', text: 'Данный код уже занят!' }]
+      },
+      validate:
+        {
+          notEmpty: {
+            args: true,
+            msg: 'Код не может быть пустым!'
+          }
+        }
+    },
     description: DataTypes.STRING,
     price: DataTypes.DECIMAL,
     weight: DataTypes.DECIMAL,
