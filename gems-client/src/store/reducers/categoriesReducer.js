@@ -1,4 +1,8 @@
-import {FETCH_CATEGORIES_SUCCESS, CREATE_CATEGORY_FAILURE} from "../actions/categoriesActions";
+import {
+  FETCH_CATEGORIES_SUCCESS,
+  CREATE_CATEGORY_FAILURE,
+  CREATE_CATEGORY_SUCCESS
+} from "../actions/categoriesActions";
 
 const initialState = {
   categories: [],
@@ -12,6 +16,8 @@ const categoriesReducer = (state = initialState, action) => {
       return {...state, categories: action.categories};
     case CREATE_CATEGORY_FAILURE:
       return {...state, error: action.error};
+    case CREATE_CATEGORY_SUCCESS:
+      return {...state, error: null};
     default:
       return state;
   }
