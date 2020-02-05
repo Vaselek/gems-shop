@@ -13,7 +13,7 @@ import {fetchStones} from "../../store/actions/stonesActions";
 import {fetchMetals} from "../../store/actions/metalsActions";
 import {fetchCoatings} from "../../store/actions/coatingsActions";
 import {fetchCategories} from "../../store/actions/categoriesActions";
-import { isEmpty, cloneDeep } from 'lodash';
+import { isEmpty, cloneDeep, startCase, toLower } from 'lodash';
 
 
 const GemsTable = () => {
@@ -72,7 +72,7 @@ const GemsTable = () => {
     items && items.map(item => {
       const key = item['id'];
       const value = item['title']
-      selectOptions[key] = value;
+      selectOptions[key] = startCase(toLower(value));
     });
     return selectOptions;
   }
