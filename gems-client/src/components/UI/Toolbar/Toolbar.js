@@ -10,6 +10,7 @@ import {NavLink as RouterNavLink} from 'react-router-dom';
 import UserMenu from "./Menus/UserMenu";
 import AnonymousMenu from "./Menus/AnonymousMenu";
 import './Toolbar.css'
+import {startCase, toLower} from "lodash";
 
 
 const Toolbar = ({user, logout, categories}) => {
@@ -31,7 +32,7 @@ const Toolbar = ({user, logout, categories}) => {
           {/*</NavItem>*/}
           { categories && categories.map((category) =>
               <NavItem key={'navItem_' + category.id}>
-                <NavLink tag={RouterNavLink} to={"/category/" + category.id} exact>{ category.title }</NavLink>
+                <NavLink tag={RouterNavLink} to={"/category/" + category.id} exact>{ startCase(toLower(category.title)) }</NavLink>
               </NavItem>
             )
           }

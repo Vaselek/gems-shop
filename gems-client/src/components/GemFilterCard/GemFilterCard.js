@@ -1,5 +1,6 @@
 import React from 'react';
 import {Col, CustomInput, Form, FormGroup} from "reactstrap";
+import {startCase, toLower} from 'lodash';
 
 const GemFilterCard = ({title, filter, items, handleFilter}) => {
   return (
@@ -14,7 +15,7 @@ const GemFilterCard = ({title, filter, items, handleFilter}) => {
               <FormGroup row>
                 <Col sm={10}>
                   {items && items.map(item => (
-                    <CustomInput key={[filter] + '_' + item.id} onChange={handleFilter} type="checkbox" name={[filter] + 'Ids'} id={[filter] + '_' + item.id} label={item.title} />
+                    <CustomInput key={[filter] + '_' + item.id} onChange={handleFilter} type="checkbox" name={[filter] + 'Ids'} id={[filter] + '_' + item.id} label={startCase(toLower(item.title))} />
                   ))}
                 </Col>
               </FormGroup>
