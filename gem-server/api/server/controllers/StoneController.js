@@ -20,17 +20,15 @@ class StoneController {
   }
 
   static async addStone(req, res) {
-    if (!req.body.title) {
-      util.setError(400, 'Title is required');
-      return util.send(res);
-    }
     const newStone = req.body;
     try {
       const createdStone = await StoneService.addStone(newStone);
       util.setSuccess(201, 'Stone Added!', createdStone);
       return util.send(res);
     } catch (error) {
-      util.setError(400, error.message);
+      const unnecessaryMessagePart = 'Validation error: ';
+      const message = error.message.includes(unnecessaryMessagePart) ? error.message.replace('Validation error: ', '') : error.message;
+      util.setError(400, message);
       return util.send(res);
     }
   }
