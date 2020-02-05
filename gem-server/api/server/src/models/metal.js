@@ -1,7 +1,25 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Metal = sequelize.define('Metal', {
-    title: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: {
+        args: true,
+        msg: 'Данное название уже занято!'
+      },
+      validate:
+        {
+          notEmpty: {
+            args: true,
+            msg: 'Название не может быть пустым!'
+          },
+          notContains: {
+            args: '_',
+            msg: 'Название не может содержать "_"'
+          }
+        }
+    },
     description: DataTypes.STRING
   }, {});
   Metal.associate = function(models) {
@@ -12,5 +30,8 @@ module.exports = (sequelize, DataTypes) => {
       otherKey: 'gemId'
     });
   };
+  Metal.beforeCreate(async (metal, options) => {
+    metal.title = metal.title.toLowerCase();
+  });
   return Metal;
 };

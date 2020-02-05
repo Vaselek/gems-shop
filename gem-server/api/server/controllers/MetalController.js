@@ -1,5 +1,6 @@
 import MetalService from '../services/MetalService';
 import Util from '../utils/Utils';
+import {improveMessage} from "./controllerUtils";
 
 const util = new Util();
 
@@ -20,17 +21,14 @@ class MetalController {
   }
 
   static async addMetal(req, res) {
-    if (!req.body.title) {
-      util.setError(400, 'Title is required');
-      return util.send(res);
-    }
     const newMetal = req.body;
     try {
       const createdMetal = await MetalService.addMetal(newMetal);
       util.setSuccess(201, 'Metal Added!', createdMetal);
       return util.send(res);
     } catch (error) {
-      util.setError(400, error.message);
+      const message = improveMessage(error.message);
+      util.setError(400, message);
       return util.send(res);
     }
   }
