@@ -1,4 +1,8 @@
-import {CREATE_STONE_FAILURE, FETCH_STONES_SUCCESS} from "../actions/stonesActions";
+import {
+  CREATE_STONE_FAILURE,
+  FETCH_STONES_SUCCESS,
+  CREATE_STONE_SUCCESS
+} from "../actions/stonesActions";
 
 const initialState = {
   stones: [],
@@ -12,6 +16,8 @@ const stonesReducer = (state = initialState, action) => {
       return {...state, stones: action.stones};
     case CREATE_STONE_FAILURE:
       return {...state, error: action.error};
+    case CREATE_STONE_SUCCESS:
+      return {...state, error: null};
     default:
       return state;
   }
