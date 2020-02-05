@@ -6,20 +6,21 @@ import GemListItem from "../../components/GemListItem/GemListItem";
 import Sorting from "../Sorting/Sorting";
 import './Gems.css';
 import {cloneDeep} from 'lodash';
+import {defaultGemParams} from "../../constants";
 
 
 class Gems extends Component {
   componentDidMount() {
-    let gemParams = cloneDeep(this.props.gemParams);
-    gemParams.categoryId = this.props.match.params.id;
-    this.props.fetchGems(gemParams);
+    let newGemParams = cloneDeep(defaultGemParams);
+    newGemParams.categoryId = this.props.match.params.id;
+    this.props.fetchGems(newGemParams);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.match.params.id !== this.props.match.params.id) {
-      let gemParams = cloneDeep(this.props.gemParams);
-      gemParams.categoryId = this.props.match.params.id;
-      this.props.fetchGems(gemParams);
+      let newGemParams = cloneDeep(this.props.gemParams);
+      newGemParams.categoryId = this.props.match.params.id;
+      this.props.fetchGems(newGemParams);
     }
   }
 
