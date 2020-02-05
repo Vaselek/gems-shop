@@ -69,7 +69,7 @@ const GemsTable = () => {
 
   const itemSelectOptions = (items) => {
     const selectOptions = {};
-    items.map(item => {
+    items && items.map(item => {
       const key = item['id'];
       const value = item['title']
       selectOptions[key] = value;
