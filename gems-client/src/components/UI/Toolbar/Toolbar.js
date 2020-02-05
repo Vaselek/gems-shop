@@ -29,7 +29,7 @@ const Toolbar = ({user, logout, categories}) => {
           {/*<NavItem>*/}
             {/*<NavLink tag={RouterNavLink} to="/new-items" exact>Новинки</NavLink>*/}
           {/*</NavItem>*/}
-          { categories.map((category) =>
+          { categories && categories.map((category) =>
               <NavItem key={'navItem_' + category.id}>
                 <NavLink tag={RouterNavLink} to={"/category/" + category.id} exact>{ category.title }</NavLink>
               </NavItem>
