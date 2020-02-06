@@ -11,6 +11,9 @@ export const CREATE_GEM_FAILURE = 'CREATE_GEM_FAILURE';
 export const UPDATE_GEM_SUCCESS = 'UPDATE_GEM_SUCCESS';
 export const UPDATE_GEM_FAILURE = 'UPDATE_GEM_FAILURE';
 
+export const DELETE_GEM_SUCCESS = 'DELETE_GEM_SUCCESS';
+export const DELETE_GEM_FAILURE = 'DELETE_GEM_FAILURE';
+
 
 
 export const fetchGemsSuccess = (gems, totalCount, gemParams) => ({type: FETCH_GEMS_SUCCESS, gems, totalCount, gemParams});
@@ -23,6 +26,9 @@ export const createGemFailure = (error) => ({type: CREATE_GEM_FAILURE, error});
 
 export const updateGemSuccess = () => ({type: UPDATE_GEM_SUCCESS});
 export const updateGemFailure = (error) => ({type: UPDATE_GEM_FAILURE, error});
+
+export const deleteGemSuccess = () => ({type: DELETE_GEM_SUCCESS});
+export const deleteGemFailure = (error) => ({type: DELETE_GEM_FAILURE, error});
 
 
 
@@ -118,4 +124,17 @@ export const updateGem = gemData => {
       }
     )
   }
-}
+};
+
+export const deleteGem = (gemId) => {
+  return (dispatch) => {
+    return axios.delete('/gems/' + gemId).then(
+      () => {
+        dispatch(deleteGemSuccess(gemId));
+      },
+      error => {
+        dispatch(deleteGemFailure(error))
+      }
+    )
+  }
+};

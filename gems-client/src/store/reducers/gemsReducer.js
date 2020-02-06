@@ -3,7 +3,9 @@ import {
   CREATE_GEM_FAILURE,
   FETCH_GEM_SUCCESS,
   UPDATE_GEM_FAILURE,
-  FETCH_GEM_FAILURE
+  FETCH_GEM_FAILURE,
+  DELETE_GEM_SUCCESS,
+  DELETE_GEM_FAILURE
 } from "../actions/gemsActions";
 import {defaultGemParams} from "../../constants";
 import {cloneDeep} from 'lodash';
@@ -16,7 +18,8 @@ const initialState = {
   gemParams: cloneDeep(defaultGemParams),
   currentGem: null,
   generalError: null,
-  totalCount: null
+  totalCount: null,
+  deletedGemId: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -31,6 +34,10 @@ const reducer = (state = initialState, action) => {
     case FETCH_GEM_SUCCESS:
       return {...state, currentGem: action.gem};
     case FETCH_GEM_FAILURE:
+      return {...state, generalError: action.error};
+    case DELETE_GEM_SUCCESS:
+      return {...state, generalError: null, deletedGemId: action.gemId};
+    case DELETE_GEM_FAILURE:
       return {...state, generalError: action.error};
     default:
       return state;

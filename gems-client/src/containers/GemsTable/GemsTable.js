@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import {useSelector, useDispatch} from 'react-redux';
-import {fetchGems} from "../../store/actions/gemsActions";
+import {fetchGems, deleteGem} from "../../store/actions/gemsActions";
 import {apiURL, defaultGemParams} from "../../constants";
 import './GemsTable.css';
 import Octicon, {Pencil, Trashcan} from '@primer/octicons-react'
@@ -14,10 +14,11 @@ import {fetchMetals} from "../../store/actions/metalsActions";
 import {fetchCoatings} from "../../store/actions/coatingsActions";
 import {fetchCategories} from "../../store/actions/categoriesActions";
 import { isEmpty, cloneDeep, startCase, toLower } from 'lodash';
+import GemDeleteModal from "../../components/GemDeleteModal/GemDeleteModal";
 
 
 const GemsTable = () => {
-  const gems = useSelector(state => state.gems.gems);
+  let gems = useSelector(state => state.gems.gems);
   const totalCount = useSelector(state => state.gems.totalCount);
   const gemParams = cloneDeep(defaultGemParams);
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const GemsTable = () => {
   const metals = useSelector(state => state.metals.metals);
   const coatings = useSelector(state => state.coatings.coatings);
   const categories = useSelector(state => state.categories.categories);
+  const deletedGemId = useSelector(state => state.gems.deletedGemId);
 
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const GemsTable = () => {
     if (isEmpty(metals)) dispatch(fetchMetals());
     if (isEmpty(coatings)) dispatch(fetchCoatings());
     if (isEmpty(categories)) dispatch(fetchCategories());
-  }, [dispatch, stones, metals, coatings, categories]);
+  }, [dispatch, stones, metals, coatings, categories, deletedGemId]);
 
   function categoryFormatter(cell, row, rowIndex, formatExtraData) {
     const content = cell.length === 0 ? '' : cell.map(item => item.title).join(', ');
@@ -59,10 +61,10 @@ const GemsTable = () => {
     )
   }
 
-  function deleteFormatter(cell,row, rowIndex, formatExtraData) {
+  function deleteFormatter(cell, row, rowIndex, formatExtraData) {
     return(
       <div className='table-icon-container'>
-        <Octicon id={'delete_' + cell} icon={Trashcan} className='table-icon' size='small' ariaLabel='Edit'/>
+        <GemDeleteModal gemId={ row.id } deleteItem={ () => dispatch(deleteGem(row.id)) }/>
       </div>
     )
   }
@@ -185,14 +187,6 @@ const GemsTable = () => {
     formatter: deleteFormatter,
     headerStyle: (column, colIndex) => {
       return { width: '5%' };
-    },
-    events: {
-      onClick: (e, column, columnIndex, row, rowIndex) => {
-        console.log(column);
-        console.log(columnIndex);
-        console.log(row);
-        console.log(rowIndex);
-      }
     }
   }];
   const handleTableChange = (type, { page, sizePerPage, sortField, sortOrder, filters}) => {
