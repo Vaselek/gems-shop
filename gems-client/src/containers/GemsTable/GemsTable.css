@@ -26,7 +26,7 @@
 
 .gems-table-header {
     text-align: center;
-    font-size: 10px;
+    font-size: 0.5rem;
 }
 
 .gems-table-row {
@@ -95,3 +95,32 @@ ul.react-bootstrap-table-page-btns-ul {
     content: "";
 }
 
+.react-bootstrap-table th:focus {
+    outline: none;
+}
+
+.react-bootstrap-table th.sortable:focus {
+    outline: 2px solid rgb(52, 58, 64);
+}
+
+.react-bootstrap-table th.sortable .order {
+    display: block;
+}
+
+.gems-table-date {
+    font-size: 0.5rem;
+}
+
+.table-total-count {
+    font-size: 0.75rem;
+    padding-bottom: 0.5rem;
+    text-align: right;
+}
+
+.table-total-count span{
+    font-weight: 600;
+}
+
+.gems-table-wrapper table thead th {
+    vertical-align: top;
+}

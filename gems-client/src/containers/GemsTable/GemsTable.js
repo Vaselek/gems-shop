@@ -15,6 +15,7 @@ import {fetchCoatings} from "../../store/actions/coatingsActions";
 import {fetchCategories} from "../../store/actions/categoriesActions";
 import { isEmpty, cloneDeep, startCase, toLower } from 'lodash';
 import GemDeleteModal from "../../components/GemDeleteModal/GemDeleteModal";
+import moment from 'moment';
 
 
 const GemsTable = () => {
@@ -45,6 +46,12 @@ const GemsTable = () => {
     return (
       <span>{content}</span>
     );
+  }
+
+  function dateFormatter(cell, row, rowIndex, formatExtraData) {
+    return (
+      <span className='gems-table-date'>{ moment(cell).format('D/M/Y') }</span>
+    )
   }
 
   function imageFormatter(cell, row, rowIndex, formatExtraData) {
@@ -80,16 +87,15 @@ const GemsTable = () => {
   }
 
   const columns = [{
-    dataField: 'id',
-    text: 'ID',
-    classes: 'gems-table-id-column',
+    dataField: 'code',
+    text: 'Код',
     sort: true,
     headerStyle: (column, colIndex) => {
-      return { width: '6%' };
-    }
+      return { width: '7%' };
+    },
   }, {
     dataField: 'title',
-    text: 'Имя',
+    text: 'Название',
     sort: true,
     headerStyle: (column, colIndex) => {
       return { width: '7%' };
@@ -98,14 +104,14 @@ const GemsTable = () => {
     dataField: 'description',
     text: 'Детали',
     headerStyle: (column, colIndex) => {
-      return { width: '8%' };
+      return { width: '10%' };
     },
   }, {
     dataField: 'price',
     text: 'Цена',
     sort: true,
     headerStyle: (column, colIndex) => {
-      return { width: '8%' };
+      return { width: '7%' };
     }
   }, {
     dataField: 'weight',
@@ -120,7 +126,7 @@ const GemsTable = () => {
     classes: 'gems-table-image-column',
     formatter: imageFormatter,
     headerStyle: (column, colIndex) => {
-      return { width: '6%' };
+      return { width: '7%' };
     },
   }, {
     dataField: 'categories',
@@ -130,9 +136,10 @@ const GemsTable = () => {
       options: itemSelectOptions(categories),
       placeholder: 'Выбрать категорию',
       defaultValue: 2,
+      withoutEmptyOption: true
     }),
     headerStyle: (column, colIndex) => {
-      return { width: '7%' };
+      return { width: '10%' };
     },
   }, {
     dataField: 'stones',
@@ -141,9 +148,10 @@ const GemsTable = () => {
     filter: multiSelectFilter({
       options: itemSelectOptions(stones),
       placeholder: 'Фильтр',
+      withoutEmptyOption: true
     }),
     headerStyle: (column, colIndex) => {
-      return { width: '6%' };
+      return { width: '10%' };
     },
   }, {
     dataField: 'metals',
@@ -151,10 +159,11 @@ const GemsTable = () => {
     formatter: categoryFormatter,
     filter: multiSelectFilter({
       options: itemSelectOptions(metals),
-      placeholder: 'Фильтр'
+      placeholder: 'Фильтр',
+      withoutEmptyOption: true
     }),
     headerStyle: (column, colIndex) => {
-      return { width: '8%' };
+      return { width: '10%' };
     },
   }, {
     dataField: 'coatings',
@@ -162,18 +171,35 @@ const GemsTable = () => {
     formatter: categoryFormatter,
     filter: multiSelectFilter({
       options: itemSelectOptions(coatings),
-      placeholder: 'Фильтр'
+      placeholder: 'Фильтр',
+      withoutEmptyOption: true
     }),
     headerStyle: (column, colIndex) => {
       return { width: '10%' };
     },
+  }, {
+    dataField: 'createdAt',
+    text: 'Создан',
+    sort: true,
+    formatter: dateFormatter,
+    headerStyle: (column, colIndex) => {
+      return { width: '6%' };
+    }
+  }, {
+    dataField: 'updatedAt',
+    text: 'Изменен',
+    sort: true,
+    formatter: dateFormatter,
+    headerStyle: (column, colIndex) => {
+      return { width: '6%' };
+    }
   }, {
     dataField: 'id1',
     text: 'Изменить',
     isDummyField: true,
     formatter: editFormatter,
     headerStyle: (column, colIndex) => {
-      return { width: '5%' };
+      return { width: '6%' };
     },
     events: {
       onClick: (e, column, columnIndex, row, rowIndex) => {
@@ -186,9 +212,10 @@ const GemsTable = () => {
     isDummyField: true,
     formatter: deleteFormatter,
     headerStyle: (column, colIndex) => {
-      return { width: '5%' };
+      return { width: '6%' };
     }
   }];
+
   const handleTableChange = (type, { page, sizePerPage, sortField, sortOrder, filters}) => {
     if (gemParams) {
       const newGemParams = { ...gemParams };
@@ -229,7 +256,8 @@ const GemsTable = () => {
 
 
   return (
-    <div>
+    <div className='gems-table-wrapper'>
+      <div className='table-total-count'>Всего наименований: <span>{totalCount}</span></div>
       <BootstrapTable classes='gems-table'
                       headerClasses='gems-table-header'
                       rowClasses='gems-table-row'
