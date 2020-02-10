@@ -10,14 +10,13 @@ const EditStone = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   let { id } = useParams();
+  const error = useSelector(state => state.stones.error);
+  const generalError = useSelector(state => state.stones.generalError);
+  const stone = useSelector(state => state.stones.currentStone);
 
   useEffect(() => {
     dispatch(fetchStone(id));
   }, [dispatch, id]);
-
-  const error = useSelector(state => state.stones.error);
-  const generalError = useSelector(state => state.stones.generalError);
-  const stone = useSelector(state => state.stones.currentStone);
 
   const memoizedUpdateStone = useCallback(
     stoneData => {

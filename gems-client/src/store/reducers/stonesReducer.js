@@ -14,7 +14,8 @@ const initialState = {
   stones: [],
   error: null,
   currentStone: null,
-  shouldStonesBeUpdated: false
+  shouldStonesBeUpdated: false,
+  generalError: null
 };
 
 
@@ -27,17 +28,17 @@ const stonesReducer = (state = initialState, action) => {
     case CREATE_STONE_SUCCESS:
       return {...state, error: null, shouldStonesBeUpdated: true};
     case FETCH_STONE_SUCCESS:
-    return {...state, currentStone: action.stone};
+      return {...state, currentStone: action.stone, generalError: null};
     case FETCH_STONE_FAILURE:
-      return {...state, error: action.error};
+      return {...state, generalError: action.error};
     case UPDATE_STONE_FAILURE:
       return {...state, error: action.error};
     case UPDATE_STONE_SUCCESS:
       return {...state, error: null, shouldStonesBeUpdated: true};
     case DELETE_STONE_FAILURE:
-      return {...state, error: action.error};
+      return {...state, generalError: action.error};
     case DELETE_STONE_SUCCESS:
-      return {...state, error: null, shouldStonesBeUpdated: true};
+      return {...state, generalError: null, shouldStonesBeUpdated: true};
     default:
       return state;
   }

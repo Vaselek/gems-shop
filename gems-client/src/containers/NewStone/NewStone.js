@@ -16,7 +16,7 @@ function NewStone () {
     stoneData => {
       dispatch(createStone(stoneData)).then((result) => {
         if (result === 'success') {
-          history.push('/')
+          history.push('/stones-table')
           dispatch(fetchStones())
         }
       });
