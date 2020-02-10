@@ -39,7 +39,7 @@ function GemFilter () {
       }
       dispatch(fetchGems(newGemParams));
     },
-    []
+    [dispatch]
   );
 
   return (

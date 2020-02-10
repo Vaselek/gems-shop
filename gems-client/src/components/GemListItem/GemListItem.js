@@ -34,7 +34,6 @@ const renderJewelleryCode = (code) => (
 );
 
 const renderDetails = (jewellery) => {
-  console.log(jewellery)
   return (
     <div className='jewellery-item-details'>
       <div className='jewellery-item-detail details'>

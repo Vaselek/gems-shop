@@ -34,7 +34,7 @@ function NewGem () {
     gemData => {
     dispatch(createGem(gemData)).then((result) => {
       if (result === 'success') {
-        history.push('/category/' + gemData.get('categoryIds[]'));
+        history.push('/gems-table');
       }
     });
   }, [dispatch, history]);

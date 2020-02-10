@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {fetchGems, deleteGem} from "../../store/actions/gemsActions";
 import {apiURL, defaultGemParams} from "../../constants";
 import './GemsTable.css';
-import Octicon, {Pencil, Trashcan} from '@primer/octicons-react'
+import Octicon, {Pencil} from '@primer/octicons-react'
 import {useHistory} from "react-router";
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
@@ -81,7 +81,7 @@ const GemsTable = () => {
     items && items.map(item => {
       const key = item['id'];
       const value = item['title']
-      selectOptions[key] = startCase(toLower(value));
+      return selectOptions[key] = startCase(toLower(value));
     });
     return selectOptions;
   };
