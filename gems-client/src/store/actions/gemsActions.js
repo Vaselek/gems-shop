@@ -15,7 +15,6 @@ export const DELETE_GEM_SUCCESS = 'DELETE_GEM_SUCCESS';
 export const DELETE_GEM_FAILURE = 'DELETE_GEM_FAILURE';
 
 
-
 export const fetchGemsSuccess = (gems, totalCount, gemParams) => ({type: FETCH_GEMS_SUCCESS, gems, totalCount, gemParams});
 export const fetchGemSuccess = (gem) => ({type: FETCH_GEM_SUCCESS, gem});
 
@@ -31,9 +30,6 @@ export const deleteGemSuccess = () => ({type: DELETE_GEM_SUCCESS});
 export const deleteGemFailure = (error) => ({type: DELETE_GEM_FAILURE, error});
 
 
-
-
-
 export const fetchGem = (id) => {
   return dispatch => {
     const path = '/gems/' + id;
@@ -46,7 +42,7 @@ export const fetchGem = (id) => {
       }
     );
   }
-}
+};
 
 export const fetchGems = (gemParams) => {
   const { categoryId, filter, sort, pagination } = gemParams;

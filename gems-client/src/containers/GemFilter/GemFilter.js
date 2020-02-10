@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {fetchStones} from "../../store/actions/stonesActions";
 import {fetchMetals} from "../../store/actions/metalsActions";
 import {fetchCoatings} from "../../store/actions/coatingsActions";
@@ -15,6 +15,7 @@ function GemFilter () {
   const metals = useSelector(state => state.metals.metals);
   const coatings = useSelector(state => state.coatings.coatings);
   const gemParams = useSelector(state => state.gems.gemParams);
+  const shouldStonesBeUpdated = useSelector(state => state.stones.shouldStonesBeUpdated);
 
   const dispatch = useDispatch();
 
@@ -22,7 +23,8 @@ function GemFilter () {
     dispatch(fetchStones());
     dispatch(fetchMetals());
     dispatch(fetchCoatings());
-  }, [dispatch]);
+    if (shouldStonesBeUpdated) dispatch(fetchStones());
+  }, [dispatch, shouldStonesBeUpdated]);
 
   const getItemId = event => event.target.id.split('_').slice(1).join();
 

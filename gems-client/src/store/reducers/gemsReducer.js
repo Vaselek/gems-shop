@@ -25,7 +25,6 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_GEMS_SUCCESS:
-      console.log('reducer', action.gemParams)
       return {...state, gems: action.gems, totalCount: action.totalCount, gemParams: action.gemParams};
     case CREATE_GEM_FAILURE:
       return {...state, error: action.error};

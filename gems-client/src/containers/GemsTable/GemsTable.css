@@ -4,15 +4,15 @@
     margin: auto;
 }
 
-.table-icon {
+.basic-table-icon {
     margin: auto;
 }
 
-.table-icon-container {
+.basic-table-icon-wrapper {
     display: flex;
 }
 
-.table-icon:hover {
+.basic-table-icon:hover {
     opacity: 0.5;
 }
 

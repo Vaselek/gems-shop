@@ -14,7 +14,7 @@ import {fetchMetals} from "../../store/actions/metalsActions";
 import {fetchCoatings} from "../../store/actions/coatingsActions";
 import {fetchCategories} from "../../store/actions/categoriesActions";
 import { isEmpty, cloneDeep, startCase, toLower } from 'lodash';
-import GemDeleteModal from "../../components/GemDeleteModal/GemDeleteModal";
+import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import moment from 'moment';
 
 
@@ -62,16 +62,16 @@ const GemsTable = () => {
 
   function editFormatter(cell,row, rowIndex, formatExtraData) {
     return(
-      <div className='table-icon-container'>
-        <Octicon id={'edit_' + cell} icon={Pencil} className='table-icon' size='small' ariaLabel='Edit'/>
+      <div className='basic-table-icon-wrapper'>
+        <Octicon id={'edit_' + cell} icon={Pencil} className='basic-table-icon' size='small' ariaLabel='Edit'/>
       </div>
     )
   }
 
   function deleteFormatter(cell, row, rowIndex, formatExtraData) {
     return(
-      <div className='table-icon-container'>
-        <GemDeleteModal gemId={ row.id } deleteItem={ () => dispatch(deleteGem(row.id)) }/>
+      <div className='basic-table-icon-wrapper'>
+        <DeleteModal itemId={ row.id } deleteItem={ () => dispatch(deleteGem(row.id)) }/>
       </div>
     )
   }
@@ -84,7 +84,7 @@ const GemsTable = () => {
       selectOptions[key] = startCase(toLower(value));
     });
     return selectOptions;
-  }
+  };
 
   const columns = [{
     dataField: 'code',
