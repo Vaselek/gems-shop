@@ -16,11 +16,12 @@ function NewCategory () {
     categoryData => {
       dispatch(createCategory(categoryData)).then((result) => {
         if (result === 'success') {
-          history.push('/');
+          history.push('/categories-table');
           dispatch(fetchCategories())
         }
       });
-    }, [dispatch, history]);
+    }, [dispatch, history]
+  );
 
   return (
     <Fragment>

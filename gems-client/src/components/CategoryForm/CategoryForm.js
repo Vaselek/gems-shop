@@ -1,13 +1,32 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Button, Col, Form, FormGroup} from "reactstrap";
 import FormElement from "../UI/Form/FormElement";
 import './CategoryForm.css';
 
 function CategoryForm (props) {
-  const [form, setState] = useState({
+
+  const getFormData = (item) => {
+    if (item) {
+      const id = item.id;
+      const title = item.title;
+      const description = item.description ? item.description : '';
+      return {id, title, description};
+    }
+  };
+
+  const emptyForm = {
     title: '',
-    description: '',
-  });
+    description: ''
+  };
+  
+  const [form, setState] = useState(emptyForm);
+
+  useEffect(() => {
+    if (props.item) {
+      const newForm = getFormData(props.item);
+      setState(newForm)
+    }
+  }, [props.item]);
 
   const submitFormHandler = useCallback(
     (event) => {

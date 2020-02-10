@@ -1,24 +1,23 @@
 import React, {useEffect} from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import './BasicTable.css';
 import Octicon, {Pencil} from '@primer/octicons-react'
 import {useHistory} from "react-router";
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
-import { fetchStones, deleteStone } from "../../store/actions/stonesActions";
-import { isEmpty, cloneDeep, startCase, toLower } from 'lodash';
+import { isEmpty, startCase, toLower } from 'lodash';
 import moment from "moment";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
 
 
-const BasicTable = ({items, shouldItemsBeUpdated, fetchItems, deleteItem, pathToEdit}) => {
+const BasicTable = ({items, shouldItemsBeUpdated, fetchItems, deleteItem, pathToEdit, deleteMessage}) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
 
   useEffect(() => {
     if (isEmpty(items) || shouldItemsBeUpdated) dispatch(fetchItems());
-  }, [dispatch, items, shouldItemsBeUpdated]);
+  }, [dispatch, items, shouldItemsBeUpdated, fetchItems]);
 
   function editFormatter(cell) {
     return(
@@ -31,7 +30,7 @@ const BasicTable = ({items, shouldItemsBeUpdated, fetchItems, deleteItem, pathTo
   function deleteFormatter(cell, row) {
     return(
       <div className='basic-table-icon-wrapper'>
-        <DeleteModal itemId={ row.id } deleteItem={ () => dispatch(deleteItem(row.id)) }/>
+        <DeleteModal itemId={ row.id } deleteMessage={deleteMessage} deleteItem={ () => dispatch(deleteItem(row.id)) }/>
       </div>
     )
   }

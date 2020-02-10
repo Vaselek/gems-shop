@@ -5,9 +5,11 @@ import Octicon, {Trashcan} from "@primer/octicons-react";
 const DeleteModal = (props) => {
   const {
     itemId,
-    deleteItem
+    deleteItem,
+    deleteMessage
   } = props;
 
+  let message = deleteMessage ? deleteMessage : 'Вы действительно хотите удалить?';
   const [modal, setModal] = useState(false);
 
   const toggle = () => {
@@ -24,7 +26,7 @@ const DeleteModal = (props) => {
       <Octicon icon={Trashcan} size='small' ariaLabel='Edit'/>
       <Modal isOpen={modal} toggle={toggle}>
         <ModalBody>
-          Вы действительно хотите удалить?
+          {message}
         </ModalBody>
         <ModalFooter>
           <Button color="danger" onClick={deleteItemAndCloseModal}>Удалить</Button>{' '}
