@@ -7,7 +7,9 @@ const util = new Util();
 class StoneController {
   static async getAllStones(req, res) {
     try {
-      const allStones = await StoneService.getAllStones();
+      const sortField = req.query.sortField;
+      const sortOrder = req.query.sortOrder;
+      const allStones = await StoneService.getAllStones({sortField, sortOrder});
       if (allStones.length > 0) {
         util.setSuccess(200, 'Stones retrieved', allStones);
       } else {

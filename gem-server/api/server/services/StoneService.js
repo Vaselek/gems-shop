@@ -1,9 +1,15 @@
 import database from '../src/models';
 
 class StoneService {
-  static async getAllStones() {
+  static async getAllStones({sortField, sortOrder}) {
     try {
-      return await database.Stone.findAll();
+      let orderCriteria = ['createdAt', 'desc'];
+      if (sortField && sortOrder) orderCriteria = [sortField, sortOrder];
+      return await database.Stone.findAll({
+        order: [
+          orderCriteria
+        ]
+      });
     } catch (error) {
       throw error;
     }
