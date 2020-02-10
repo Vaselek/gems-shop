@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import Octicon, {Trashcan} from "@primer/octicons-react";
 
-const GemDeleteModal = (props) => {
+const DeleteModal = (props) => {
   const {
-    className,
-    gemId,
+    itemId,
     deleteItem
   } = props;
 
@@ -21,11 +20,11 @@ const GemDeleteModal = (props) => {
   };
 
   return (
-    <div id={'delete_' + gemId} className='table-icon' onClick={toggle} >
+    <div id={'delete_' + itemId} className='basic-table-icon' onClick={toggle} >
       <Octicon icon={Trashcan} size='small' ariaLabel='Edit'/>
       <Modal isOpen={modal} toggle={toggle}>
         <ModalBody>
-          Вы действительно хотите удалить данный продукт?
+          Вы действительно хотите удалить?
         </ModalBody>
         <ModalFooter>
           <Button color="danger" onClick={deleteItemAndCloseModal}>Удалить</Button>{' '}
@@ -36,4 +35,4 @@ const GemDeleteModal = (props) => {
   );
 }
 
-export default GemDeleteModal;
+export default DeleteModal;

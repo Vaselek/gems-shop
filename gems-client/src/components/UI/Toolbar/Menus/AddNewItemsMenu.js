@@ -5,6 +5,10 @@ import {Link} from "react-router-dom";
 const AddNewItemsMenu = () => (
   <Fragment>
     <DropdownItem tag={Link} to='/gems-table'>Таблица продуктов</DropdownItem>
+    <DropdownItem tag={Link} to='/stones-table'>Таблица камней</DropdownItem>
+    <DropdownItem tag={Link} to='/metals-table'>Таблица металлов</DropdownItem>
+    <DropdownItem tag={Link} to='/coatings-table'>Таблица покрытий</DropdownItem>
+    <DropdownItem tag={Link} to='/categories-table'>Таблица категорий</DropdownItem>
     <DropdownItem divider />
     <DropdownItem tag={Link} to='/gems/new'>Добавить украшение</DropdownItem>
     <DropdownItem tag={Link} to='/stones/new'>Добавить камень</DropdownItem>

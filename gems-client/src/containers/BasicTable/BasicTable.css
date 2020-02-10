@@ -1,0 +1,15 @@
+.basic-table-wrapper {
+    width: 100%;
+}
+
+.basic-table-header {
+    text-align: center;
+}
+
+.basic-table-wrapper table thead th {
+    vertical-align: top;
+}
+
+.basic-table-icon-wrapper {
+    display: flex;
+}
