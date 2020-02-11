@@ -7,7 +7,9 @@ const util = new Util();
 class CategoryController {
   static async getAllCategories(req, res) {
     try {
-      const allCategories = await CategoryService.getAllCategories();
+      const sortField = req.query.sortField;
+      const sortOrder = req.query.sortOrder;
+      const allCategories = await CategoryService.getAllCategories({sortField, sortOrder});
       if (allCategories.length > 0) {
         util.setSuccess(200, 'Categories retrieved', allCategories);
       } else {
@@ -49,7 +51,8 @@ class CategoryController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      const message = improveMessage(error.message);
+      util.setError(404, message);
       return util.send(res);
     }
   }

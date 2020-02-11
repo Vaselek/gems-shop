@@ -1,9 +1,15 @@
 import database from '../src/models';
 
 class CategoryService {
-  static async getAllCategories() {
+  static async getAllCategories({sortField, sortOrder}) {
     try {
-      return await database.Category.findAll();
+      let orderCriteria = ['createdAt', 'desc'];
+      if (sortField && sortOrder) orderCriteria = [sortField, sortOrder];
+      return await database.Category.findAll({
+        order: [
+          orderCriteria
+        ]
+      });
     } catch (error) {
       throw error;
     }
