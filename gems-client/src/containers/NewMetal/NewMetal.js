@@ -17,7 +17,7 @@ function NewMetal () {
     metalData => {
       dispatch(createMetal(metalData)).then((result) => {
         if (result === 'success') {
-          history.push('/')
+          history.push('/metals-table')
           dispatch(fetchMetals())
         }
       });

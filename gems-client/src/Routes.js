@@ -17,6 +17,7 @@ import CategoriesTable from "./containers/CategoriesTable/CategoriesTable";
 import MetalsTable from "./containers/MetalsTable/MetalsTable";
 import EditStone from "./containers/EditStone/EditStone";
 import EditCategory from "./containers/EditCategory/EditCategory";
+import EditMetal from "./containers/EditMetal/EditMetal";
 
 const ProtectedRoute = ({isAllowed, ...props}) => (
   isAllowed ? <Route {...props} /> : <Redirect to='/login' />
@@ -33,6 +34,7 @@ const WithSideBar = ({user}) => {
       <ProtectedRoute isAllowed={user && user.role === 'admin'} path="/edit-gem/:id" exact component={EditGem} />
       <ProtectedRoute isAllowed={user && user.role === 'admin'} path="/edit-stone/:id" exact component={EditStone} />
       <ProtectedRoute isAllowed={user && user.role === 'admin'} path="/edit-category/:id" exact component={EditCategory} />
+      <ProtectedRoute isAllowed={user && user.role === 'admin'} path="/edit-metal/:id" exact component={EditMetal} />
       <ProtectedRoute isAllowed={user && user.role === 'admin'} path="/gems/new" exact component={NewGem} />
       <ProtectedRoute isAllowed={user && user.role === 'admin'} path="/metals/new" exact component={NewMetal} />
       <ProtectedRoute isAllowed={user && user.role === 'admin'} path="/coatings/new" exact component={NewCoating} />
