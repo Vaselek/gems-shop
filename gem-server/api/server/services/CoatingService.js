@@ -1,9 +1,15 @@
 import database from '../src/models';
 
 class CoatingService {
-  static async getAllCoatings() {
+  static async getAllCoatings({sortField, sortOrder}) {
     try {
-      return await database.Coating.findAll();
+      let orderCriteria = ['createdAt', 'desc'];
+      if (sortField && sortOrder) orderCriteria = [sortField, sortOrder];
+      return await database.Coating.findAll({
+        order: [
+          orderCriteria
+        ]
+      });
     } catch (error) {
       throw error;
     }

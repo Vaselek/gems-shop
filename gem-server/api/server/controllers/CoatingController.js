@@ -7,7 +7,9 @@ const util = new Util();
 class CoatingController {
   static async getAllCoatings(req, res) {
     try {
-      const allCoatings = await CoatingService.getAllCoatings();
+      const sortField = req.query.sortField;
+      const sortOrder = req.query.sortOrder;
+      const allCoatings = await CoatingService.getAllCoatings({sortField, sortOrder});
       if (allCoatings.length > 0) {
         util.setSuccess(200, 'Coatings retrieved', allCoatings);
       } else {
@@ -49,7 +51,8 @@ class CoatingController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      const message = improveMessage(error.message);
+      util.setError(404, message);
       return util.send(res);
     }
   }
