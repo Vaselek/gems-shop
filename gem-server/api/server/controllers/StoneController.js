@@ -51,7 +51,8 @@ class StoneController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      const message = improveMessage(error.message);
+      util.setError(404, message);
       return util.send(res);
     }
   }
