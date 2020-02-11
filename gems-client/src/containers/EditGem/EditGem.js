@@ -46,7 +46,7 @@ const EditGem = () => {
     gemData => {
       dispatch(updateGem(gemData)).then((result) => {
         if (result === 'success') {
-          history.push('/');
+          history.push('/gems-table');
         }
       });
     }, [dispatch, history]
