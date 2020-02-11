@@ -16,7 +16,7 @@ function NewCoating () {
     coatingData => {
       dispatch(createCoating(coatingData)).then((result) => {
         if (result === 'success') {
-          history.push('/');
+          history.push('/coatings-table');
           dispatch(fetchCoatings())
         }
       });
