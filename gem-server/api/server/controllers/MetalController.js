@@ -7,7 +7,9 @@ const util = new Util();
 class MetalController {
   static async getAllMetals(req, res) {
     try {
-      const allMetals = await MetalService.getAllMetals();
+      const sortField = req.query.sortField;
+      const sortOrder = req.query.sortOrder;
+      const allMetals = await MetalService.getAllMetals({sortField, sortOrder});
       if (allMetals.length > 0) {
         util.setSuccess(200, 'Metals retrieved', allMetals);
       } else {
@@ -49,7 +51,8 @@ class MetalController {
       }
       return util.send(res);
     } catch (error) {
-      util.setError(404, error);
+      const message = improveMessage(error.message);
+      util.setError(404, message);
       return util.send(res);
     }
   }

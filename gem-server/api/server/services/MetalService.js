@@ -1,9 +1,15 @@
 import database from '../src/models';
 
 class MetalService {
-  static async getAllMetals() {
+  static async getAllMetals({sortField, sortOrder}) {
     try {
-      return await database.Metal.findAll();
+      let orderCriteria = ['createdAt', 'desc'];
+      if (sortField && sortOrder) orderCriteria = [sortField, sortOrder];
+      return await database.Metal.findAll({
+        order: [
+          orderCriteria
+        ]
+      });
     } catch (error) {
       throw error;
     }
