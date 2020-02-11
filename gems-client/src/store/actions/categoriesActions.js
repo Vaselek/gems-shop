@@ -30,9 +30,11 @@ export const fetchCategorySuccess = category => ({type: FETCH_CATEGORY_SUCCESS, 
 export const fetchCategoryFailure = error => ({type: FETCH_CATEGORY_FAILURE, error});
 
 
-export const fetchCategories = () => {
+export const fetchCategories = (sort) => {
   return dispatch => {
-    return axios.get('/categories').then(
+    let path = '/categories';
+    if (sort) path += '?sortField=' + sort.sortField + '&sortOrder=' + sort.sortOrder;
+    return axios.get(path).then(
       response => {
         dispatch(fetchCategoriesSuccess(response.data.data))
       }
