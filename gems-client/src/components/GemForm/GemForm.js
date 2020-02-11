@@ -16,7 +16,8 @@ function GemForm (props) {
     metalIds: [],
     coatingIds: [],
     stoneIds: [],
-    code: ''
+    code: '',
+    error: []
   };
   const [form, setState] = useState(emptyForm);
 
