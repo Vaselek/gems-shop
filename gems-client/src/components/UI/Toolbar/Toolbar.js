@@ -36,6 +36,9 @@ const Toolbar = ({user, logout, categories}) => {
               </NavItem>
             )
           }
+          <NavItem key={'navItem_new_items'}>
+            <NavLink tag={RouterNavLink} to={"/"} exact>Новинки</NavLink>
+          </NavItem>
           {/*<NavItem>*/}
             {/*<NavLink tag={RouterNavLink} to="/sets" exact>Наборы</NavLink>*/}
           {/*</NavItem>*/}
