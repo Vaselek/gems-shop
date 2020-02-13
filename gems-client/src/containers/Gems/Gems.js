@@ -7,6 +7,7 @@ import Sorting from "../Sorting/Sorting";
 import './Gems.css';
 import {cloneDeep} from 'lodash';
 import {defaultGemParams} from "../../constants";
+import GemsPagination from "../../components/GemsPagination/GemsPagination";
 
 
 class Gems extends Component {
@@ -20,6 +21,7 @@ class Gems extends Component {
     if (prevProps.match.params.id !== this.props.match.params.id) {
       let newGemParams = cloneDeep(this.props.gemParams);
       newGemParams.categoryId = this.props.match.params.id;
+      newGemParams.pagination.offset = 0;
       this.props.fetchGems(newGemParams);
     }
   }
@@ -27,8 +29,9 @@ class Gems extends Component {
   render() {
     return (
       <Fragment>
-        <Row>
+        <Row className='gems-sorting-pagination-wrapper'>
           <Sorting />
+          <GemsPagination />
         </Row>
         <Row>
           <Col>

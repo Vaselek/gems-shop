@@ -1,4 +1,5 @@
 export const apiURL = 'http://localhost:8000';
+export const defaultGemsLimit = 30;
 export const defaultGemParams  = {
   categoryId: null,
   filter: {
@@ -11,7 +12,7 @@ export const defaultGemParams  = {
     order: null
   },
   pagination: {
-    limit: null,
+    limit: defaultGemsLimit,
     offset: null
   }
 };

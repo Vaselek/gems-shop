@@ -1,0 +1,30 @@
+a.page-link {
+    color: rgb(33, 37, 41);;
+    font-size: 0.75rem;
+    padding: 0.125rem 0.75rem;
+    line-height: 1.125rem;
+}
+
+li.page-item.disabled {
+    display: none;
+}
+
+.first-page-is-active {
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
+
+.last-page-is-active {
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}
+
+.hide-pagination {
+    display: none;
+}
+
+
+
+
+
+

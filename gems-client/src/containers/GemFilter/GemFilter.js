@@ -31,6 +31,7 @@ function GemFilter () {
   const memoizedHandleClick = useCallback(
     (event, gemParams) => {
       const newGemParams = cloneDeep(gemParams);
+      newGemParams.pagination.offset = 0;
       const id = getItemId(event);
       if (event.target.checked === true) {
         newGemParams.filter[event.target.name].push(id)

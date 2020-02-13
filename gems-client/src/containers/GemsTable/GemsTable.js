@@ -135,7 +135,6 @@ const GemsTable = () => {
     filter: selectFilter({
       options: itemSelectOptions(categories),
       placeholder: 'Выбрать категорию',
-      defaultValue: 2,
       withoutEmptyOption: true
     }),
     headerStyle: (column, colIndex) => {
