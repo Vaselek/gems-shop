@@ -2,7 +2,7 @@ import React, {Fragment, useEffect, useState} from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchGems, deleteGem} from "../../store/actions/gemsActions";
-import {apiURL, defaultGemParams} from "../../constants";
+import {apiURL, defaultGemParams, defaultGemsLimit} from "../../constants";
 import './GemsTable.css';
 import Octicon, {Pencil} from '@primer/octicons-react'
 import {useHistory} from "react-router";
@@ -20,12 +20,17 @@ import {endPrice} from "../../Utils";
 
 
 const GemsTable = () => {
-  let gems = useSelector(state => state.gems.gems);
-  const totalCount = useSelector(state => state.gems.totalCount);
+
   const gemParams = cloneDeep(defaultGemParams);
+
   const dispatch = useDispatch();
   const history = useHistory();
+
   const [ page,setPage ] = useState(1);
+  const [ sizePerPage, setSizePerPage ] = useState(defaultGemsLimit);
+
+  const gems = useSelector(state => state.gems.gems);
+  const totalCount = useSelector(state => state.gems.totalCount);
   const stones = useSelector(state => state.stones.stones);
   const metals = useSelector(state => state.metals.metals);
   const coatings = useSelector(state => state.coatings.coatings);
@@ -240,10 +245,12 @@ const GemsTable = () => {
   }];
 
   const handleTableChange = (type, { page, sizePerPage, sortField, sortOrder, filters}) => {
+    debugger
     if (gemParams) {
       const newGemParams = { ...gemParams };
       if (type === 'pagination') {
         setPage(page);
+        setSizePerPage(sizePerPage);
         newGemParams.pagination.limit = sizePerPage;
         newGemParams.pagination.offset = (page - 1) * sizePerPage;
       }
@@ -273,7 +280,7 @@ const GemsTable = () => {
 
   const paginationOptions = {
     page: page,
-    sizePerPage: gemParams.pagination ? gemParams.pagination.limit || 10 : 10,
+    sizePerPage: sizePerPage,
     totalSize: totalCount
   };
 

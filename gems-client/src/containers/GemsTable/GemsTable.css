@@ -124,3 +124,9 @@ ul.react-bootstrap-table-page-btns-ul {
 .gems-table-wrapper table thead th {
     vertical-align: top;
 }
+
+.react-bs-table-sizePerPage-dropdown li a {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+}
