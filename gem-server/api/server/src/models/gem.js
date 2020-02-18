@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     price: DataTypes.DECIMAL,
     weight: DataTypes.DECIMAL,
+    discount: DataTypes.DECIMAL,
     image: DataTypes.STRING
   }, {});
   Gem.associate = function(models) {

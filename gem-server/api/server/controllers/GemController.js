@@ -12,9 +12,10 @@ class GemController {
       const coatingIds = req.query.coatingIds;
       const sortField = req.query.sortField;
       const sortOrder = req.query.sortOrder;
+      const sortWithoutNull = req.query.withoutNull;
       const offset = req.query.offset;
       const limit = req.query.limit;
-      const responseData = await GemService.getAllGems({categoryId, stoneIds, metalIds, coatingIds, sortField, sortOrder, offset, limit});
+      const responseData = await GemService.getAllGems({categoryId, stoneIds, metalIds, coatingIds, sortField, sortOrder, sortWithoutNull, offset, limit});
       util.setSuccess(200, 'Gems retrieved', responseData);
       return util.send(res);
     } catch (error) {
@@ -27,6 +28,7 @@ class GemController {
   static async addGem(req, res) {
     const newGem = req.body;
     newGem.weight = req.body.weight ? req.body.weight : null;
+    newGem.discount = req.body.discount ? req.body.discount : null;
     if (req.file) {
       newGem.image = req.file.filename;
     }
