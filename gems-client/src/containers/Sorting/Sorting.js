@@ -11,7 +11,7 @@ const Sorting = () => {
 
   const memoizedHandleClick = useCallback((event) => {
     const [ field, order ] = event.target.id.split('-');
-    const newGemParams = { ...gemParams }
+    const newGemParams = { ...gemParams };
     newGemParams.sort = { field, order };
     dispatch(fetchGems(newGemParams))
   }, [dispatch, gemParams]);
@@ -24,6 +24,8 @@ const Sorting = () => {
       <DropdownMenu right>
         <DropdownItem id='price-asc' onClick={memoizedHandleClick}>По увеличению цены</DropdownItem>
         <DropdownItem id='price-desc' onClick={memoizedHandleClick}> По убыванию цены</DropdownItem>
+        <DropdownItem id='discount-asc' onClick={memoizedHandleClick}> По увеличению скидки</DropdownItem>
+        <DropdownItem id='discount-desc' onClick={memoizedHandleClick}> По убыванию скидки</DropdownItem>
         <DropdownItem id='createdAt-desc' onClick={memoizedHandleClick}>Вначале новинки</DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>

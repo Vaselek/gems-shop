@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import './GemListItem.css'
 import { isEmpty } from 'lodash';
 import {apiURL} from "../../constants";
+import {endPrice} from "../../Utils";
 
 const listItems = (items) => items.map(item => item.title).join(', ');
 
@@ -54,11 +55,33 @@ const renderDetails = (jewellery) => {
       </div>
     </div>
   )
-}
+};
+
+const renderPrice = (price, discount) => {
+  if (!price) return (
+    <div className='jewellery-item-price'>...<span>KGS</span></div>
+  );
+  if (!discount) return (
+    <div className='jewellery-item-price'>{ price }<span>KGS</span></div>
+  );
+  return (
+    <div className='jewellery-item-price'>
+      <div className='jewellery-item-new-price'>{ endPrice(price, discount) }<span>KGS</span></div>
+      <div className='jewellery-item-old-price'>{ price }<span>KGS</span></div>
+    </div>
+  );
+
+};
 
 const GemListItem = props => {
   return (
     <Card className='jewellery-item'>
+      {
+        props.price && props.discount &&
+        <div className='jewellery-item-discount'>
+          { '-' + props.discount + '%'}
+        </div>
+      }
       <CardImg top width="100%" src={apiURL + '/' + props.image} alt="Card image cap" />
       <CardBody>
         <div className='jewellery-item-main-details'>
@@ -67,7 +90,7 @@ const GemListItem = props => {
               {props.title}
             </Link>
           </CardTitle>
-          <div className='jewellery-item-price'>{props.price ?  props.price  : '...'}<span>KGS</span></div>
+          {renderPrice(props.price, props.discount)}
         </div>
         {renderDetails(props)}
       </CardBody>

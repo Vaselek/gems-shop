@@ -27,9 +27,9 @@ const Toolbar = ({user, logout, categories}) => {
     <Navbar color="dark" dark expand="md">
       <NavbarToggler />
         <Nav navbar className="ml-auto mr-auto">
-          {/*<NavItem>*/}
-            {/*<NavLink tag={RouterNavLink} to="/new-items" exact>Новинки</NavLink>*/}
-          {/*</NavItem>*/}
+          <NavItem className='nav-item-discount' key={'navItem_discount'}>
+            <NavLink tag={RouterNavLink} to={"/category/discount"} exact>Акции</NavLink>
+          </NavItem>
           { categories && categories.map((category) =>
               <NavItem key={'navItem_' + category.id}>
                 <NavLink tag={RouterNavLink} to={"/category/" + category.id} exact>{ startCase(toLower(category.title)) }</NavLink>

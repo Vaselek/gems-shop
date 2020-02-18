@@ -17,7 +17,8 @@ function GemForm (props) {
     coatingIds: [],
     stoneIds: [],
     code: '',
-    error: []
+    error: [],
+    discount: ''
   };
   const [form, setState] = useState(emptyForm);
 
@@ -150,6 +151,15 @@ function GemForm (props) {
         min="0"
         step="0.1"
         value={form.weight}
+        onChange={inputChangeHandler}/>
+      <FormElement
+        propertyName='discount'
+        title='Скидка'
+        placeholder='Размер скидки в процентах. Оставьте пустым для неакционного товара.'
+        type='number'
+        min="0"
+        step="0.1"
+        value={form.discount}
         onChange={inputChangeHandler}/>
       <FormGroup row>
         <Label sm={2} for='image'>Изображение</Label>

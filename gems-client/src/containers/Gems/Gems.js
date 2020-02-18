@@ -14,13 +14,25 @@ class Gems extends Component {
   componentDidMount() {
     let newGemParams = cloneDeep(defaultGemParams);
     newGemParams.categoryId = this.props.match.params.id;
+    if (this.props.match.params.id === 'discount') {
+      newGemParams.sort = { field: 'discount', order: 'desc', withoutNull: true };
+      newGemParams.categoryId = undefined;
+    } else {
+      newGemParams.categoryId = this.props.match.params.id;
+    }
     this.props.fetchGems(newGemParams);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.match.params.id !== this.props.match.params.id) {
       let newGemParams = cloneDeep(this.props.gemParams);
-      newGemParams.categoryId = this.props.match.params.id;
+      if (this.props.match.params.id === 'discount') {
+        newGemParams.sort = { field: 'discount', order: 'desc', withoutNull: true };
+        newGemParams.categoryId = undefined;
+      } else {
+        newGemParams.categoryId = this.props.match.params.id;
+        newGemParams.sort = {};
+      }
       newGemParams.pagination.offset = 0;
       this.props.fetchGems(newGemParams);
     }
@@ -48,6 +60,7 @@ class Gems extends Component {
                   coatings={gem.coatings}
                   description={gem.description}
                   code={gem.code}
+                  discount={gem.discount}
                 />
               ))}
             </div>

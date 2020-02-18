@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchGems, deleteGem} from "../../store/actions/gemsActions";
@@ -16,6 +16,7 @@ import {fetchCategories} from "../../store/actions/categoriesActions";
 import { isEmpty, cloneDeep, startCase, toLower } from 'lodash';
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import moment from 'moment';
+import {endPrice} from "../../Utils";
 
 
 const GemsTable = () => {
@@ -38,11 +39,27 @@ const GemsTable = () => {
     if (isEmpty(metals)) dispatch(fetchMetals());
     if (isEmpty(coatings)) dispatch(fetchCoatings());
     if (isEmpty(categories)) dispatch(fetchCategories());
-  }, [dispatch, stones, metals, coatings, categories, deletedGemId]);
+  }, [dispatch, stones, metals, coatings, categories, deletedGemId, gemParams.categoryId]);
 
   function categoryFormatter(cell, row, rowIndex, formatExtraData) {
     const content = cell.length === 0 ? '' : cell.map(item => item.title).join(', ');
 
+    return (
+      <span>{content}</span>
+    );
+  }
+
+  function priceFormatter(cell, row, rowIndex, formatExtraData) {
+    let content = cell;
+    if (row.discount) content = <Fragment>{ endPrice(row.price, row.discount) } <span style={{textDecoration: 'line-through'}}>{cell}</span></Fragment>;
+    return (
+      <span>{content}</span>
+    );
+  }
+
+  function discountFormatter(cell, row, rowIndex, formatExtraData) {
+    let content = cell;
+    if (row.discount) content = <Fragment>{ endPrice(row.price, row.discount) } <span style={{textDecoration: 'line-through'}}>{cell}</span></Fragment>;
     return (
       <span>{content}</span>
     );
@@ -110,6 +127,14 @@ const GemsTable = () => {
     dataField: 'price',
     text: 'Цена',
     sort: true,
+    formatter: priceFormatter,
+    headerStyle: (column, colIndex) => {
+      return { width: '7%' };
+    }
+  },{
+    dataField: 'discount',
+    text: 'Скидка',
+    sort: true,
     headerStyle: (column, colIndex) => {
       return { width: '7%' };
     }
@@ -134,8 +159,7 @@ const GemsTable = () => {
     text: 'Вид',
     filter: selectFilter({
       options: itemSelectOptions(categories),
-      placeholder: 'Выбрать категорию',
-      withoutEmptyOption: true
+      placeholder: 'Выбрать категорию'
     }),
     headerStyle: (column, colIndex) => {
       return { width: '10%' };
