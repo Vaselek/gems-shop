@@ -1,6 +1,14 @@
 .sorting-dropdown {
     margin-bottom: 1rem;
-    padding-right: 30px;
+}
+
+.sorting-dropdown .col {
+    margin: 0;
+    padding: 0;
+}
+
+.sorting-dropdown .row {
+    margin: 0;
 }
 
 .sorting-dropdown button.btn-light {

@@ -1,7 +1,68 @@
 .card-header-modified {
     padding-bottom: 0.25rem;
+    background: transparent;
+    border: none;
 }
 
-.card-filter{
-    margin-bottom: 20px;
+.card-header-modified h6 {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.card-filter:first-child {
+    border-top: none;
+    padding-top: 0;
+}
+
+.card-filter {
+    padding-top: 10px;
+    border-radius: 0;
+    border: none;
+    border-top: 1px dotted black;
+}
+
+.custom-checkbox .custom-control-label {
+    font-family: Alegreya Sans, sans-serif;
+}
+
+.custom-checkbox .custom-control-label::before {
+    border-radius: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: rgb(128, 128, 128);
+    left: -2.5rem;
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: black;
+    background-color: black;
+}
+
+.custom-control-label {
+    color: black;
+}
+
+.custom-control {
+    min-height: 1.75rem;
+    padding-left: 2.5rem;
+}
+
+
+/*page-item.active .page-link, .react-bootstrap-table-pagination .btn-secondary {*/
+    /*background-color: white;*/
+    /*border-color: white;*/
+/*}*/
+
+.page-item.active .page-link {
+     z-index: 1;
+     color: black;
+}
+
+.filter-content .custom-control-input {
+    width: 1.25rem;
+    left: -0.1rem;
+    top: 0.25rem;
+    height: 1.25rem;
+    z-index: 1;
 }

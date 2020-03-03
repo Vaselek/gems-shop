@@ -1,10 +1,32 @@
-@import url('https://fonts.googleapis.com/css?family=Cormorant+Infant:300i|Cormorant+SC:700|Roboto:400,900&subset=cyrillic-ext');
+@import url('https://fonts.googleapis.com/css?family=Cormorant+Infant:300i|Alegreya+Sans:300,400|Cormorant+SC:700|Spartan:500|Roboto:400,900&subset=cyrillic-ext');
 
+
+body {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-weight: 300;
+}
 .app-container {
   margin-top: 45px;
   display: flex;
+  justify-content: space-between;
 }
 
 .app-main-column {
   width: 75%;
+  margin: 0 -15px 0 0;
+}
+
+@media (max-width: 890px) {
+  body {
+    font-size: 0.9rem;
+  }
+  .h6, h6 {
+    font-size: 0.9rem;
+  }
+  .sidebar {
+    width: 28%
+  }
+  .app-main-column {
+    width: 68%;
+  }
 }

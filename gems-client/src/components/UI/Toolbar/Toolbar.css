@@ -4,11 +4,13 @@
     justify-content: space-around;
     padding: 5px;
 }
+
 .nav-upper-line-tel,
 .nav-upper-line-address {
     font-size: 10px;
     line-height: 2.2;
 }
+
 .nav-upper-line-text {
     font-family: 'Cormorant Infant', serif;
 }
@@ -23,7 +25,6 @@
 
 .navbar {
     padding: 0;
-    height: 45px;
 }
 
 .nav-link {
@@ -35,7 +36,7 @@
 }
 
 .nav-item {
-    line-height: 2.8;
+    line-height: 2.1;
 }
 
 #app .navbar-collapse .navbar-nav {
@@ -43,18 +44,30 @@
     font-family: 'Roboto', sans-serif;
 }
 
-#app .navbar-dark .navbar-nav .nav-link {
+#app .navbar-dark .navbar-nav .nav-item a.nav-link {
     color: #fff;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,1)
 }
 
 .nav-item-discount {
     background: #c00;
 }
 
-.navbar-dark .navbar-nav .nav-item-discount .nav-link {
-    color: rgba(255,255,255,.7);
+.navbar-dark .navbar-nav .nav-item-discount .nav-link.active {
+    color: #c00;
 }
 
-.navbar-dark .navbar-nav .nav-item-discount .nav-link.active {
-    color: rgba(255,255,255,1);
+.navbar {
+    background: #000;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: black;
+    background: white;
 }

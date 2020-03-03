@@ -1,8 +1,14 @@
 a.page-link {
-    color: rgb(33, 37, 41);;
+    color: rgb(128, 128, 128);
+    font-family: Spartan, sans-serif;
     font-size: 0.75rem;
-    padding: 0.125rem 0.75rem;
+    padding: 0.125rem 0.25rem;
     line-height: 1.125rem;
+    border: none;
+}
+
+a.page-link:hover {
+    color: black;
 }
 
 li.page-item.disabled {
@@ -22,6 +28,15 @@ li.page-item.disabled {
 .hide-pagination {
     display: none;
 }
+
+.pagination .page-item.active .page-link {
+    background-color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+
 
 
 

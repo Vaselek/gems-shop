@@ -5,6 +5,7 @@ import {fetchGems} from "../../store/actions/gemsActions";
 import {useSelector, useDispatch} from 'react-redux';
 import {cloneDeep} from 'lodash';
 import {defaultGemsLimit} from "../../constants";
+import Octicon, {TriangleLeft, TriangleRight} from '@primer/octicons-react';
 
 
 const GemsPagination = () => {
@@ -48,8 +49,8 @@ const GemsPagination = () => {
   return (
     <div>
       <ReactPaginate
-        previousLabel={'<'}
-        nextLabel={'>'}
+        previousLabel={<Octicon icon={TriangleLeft} size='small' ariaLabel='Previous'/>}
+        nextLabel={<Octicon icon={TriangleRight} size='small' ariaLabel='Previous'/>}
         breakLabel={'...'}
         pageCount={pageCount}
         marginPagesDisplayed={1}
@@ -62,9 +63,9 @@ const GemsPagination = () => {
         pageClassName={'page-item'}
         pageLinkClassName={'page-link'}
         previousClassName={'page-item'}
-        previousLinkClassName={'page-link'}
+        previousLinkClassName={'previous-page-link page-link'}
         nextClassName={'page-item'}
-        nextLinkClassName={'page-link'}
+        nextLinkClassName={'next-page-link page-link'}
         activeClassName={'active'}
         activeLinkClassName={getActiveLinkClassName()}
         forcePage={currentPage}

@@ -63,6 +63,7 @@ class Gems extends Component {
                   discount={gem.discount}
                 />
               ))}
+              <div style={{flexGrow: 1}}></div>
             </div>
           </Col>
         </Row>

@@ -27,11 +27,7 @@ const renderTableRowWithItem = (title, item) => (
 );
 
 const renderJewelleryDescription = (description) => (
-  description && (<span className='description'>{description}</span>)
-);
-
-const renderJewelleryCode = (code) => (
-  code && (<span className='code'>{code}</span>)
+  description && (<div className='description-block'>Описание: <span className='description'>{description}</span></div>)
 );
 
 const renderDetails = (jewellery) => {
@@ -44,11 +40,11 @@ const renderDetails = (jewellery) => {
           { renderTableRowWithItems('Металл', jewellery.metals)}
           { renderTableRowWithItems('Покрытие', jewellery.coatings)}
           { renderTableRowWithItem('Вес', jewellery.weight)}
+          { renderTableRowWithItem('Код изделия', jewellery.code)}
           </tbody>
         </table>
         {(jewellery.code || jewellery.description) &&
         (<div>
-          {renderJewelleryCode(jewellery.code)}
           {renderJewelleryDescription(jewellery.description)}
         </div>)
         }
@@ -82,7 +78,9 @@ const GemListItem = props => {
           { '-' + props.discount + '%'}
         </div>
       }
-      <CardImg top width="100%" src={apiURL + '/' + props.image} alt="Card image cap" />
+      <div className='image-container'>
+        <CardImg top width="100%" className="img img-fluid img-responsive full-width" src={apiURL + '/' + props.image} alt="Card image cap" />
+      </div>
       <CardBody>
         <div className='jewellery-item-main-details'>
           <CardTitle className='jewellery-item-title'>
