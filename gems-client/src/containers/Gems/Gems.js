@@ -67,6 +67,10 @@ class Gems extends Component {
             </div>
           </Col>
         </Row>
+        <Row className='gems-sorting-pagination-wrapper'>
+          <Sorting />
+          <GemsPagination />
+        </Row>
       </Fragment>
     );
   }

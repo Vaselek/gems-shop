@@ -5,6 +5,7 @@ body {
   font-family: 'Alegreya Sans', sans-serif;
   font-weight: 300;
 }
+
 .app-container {
   margin-top: 45px;
   display: flex;
@@ -16,17 +17,73 @@ body {
   margin: 0 -15px 0 0;
 }
 
+
+@media (max-width: 995px) {
+
+  .jewellery-item.card {
+    width: 45%;
+  }
+
+}
+
 @media (max-width: 890px) {
+
   body {
     font-size: 0.9rem;
   }
+
   .h6, h6 {
     font-size: 0.9rem;
   }
+
   .sidebar {
     width: 28%
   }
+
   .app-main-column {
     width: 68%;
   }
+
+}
+
+@media (max-width: 770px) {
+
+  .jewellery-item.card {
+    width: 90%;
+  }
+
+  .nav-upper-line {
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .nav-upper-line-tel {
+    order: 3;
+  }
+
+  .nav-upper-line-text {
+    order: 1;
+  }
+
+  .nav-upper-line-address {
+    order: 2;
+  }
+
+}
+
+@media (max-width: 450px) {
+
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar,
+  .app-main-column {
+    width: 100%;
+  }
+
+  .jewellery-item.card {
+    width: 90%;
+  }
+
 }
