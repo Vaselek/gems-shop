@@ -39,6 +39,7 @@ class Gems extends Component {
   }
 
   render() {
+    console.log(this.props.gems)
     return (
       <Fragment>
         <Row className='gems-sorting-pagination-wrapper'>
@@ -48,7 +49,7 @@ class Gems extends Component {
         <Row>
           <Col>
             <div className='gems-list'>
-              {this.props.gems && this.props.gems.map(gem => (
+              {this.props.gems.length !== 0 && this.props.gems.map(gem => (
                 <GemListItem
                   key={gem.id}
                   id={gem.id}
@@ -67,10 +68,10 @@ class Gems extends Component {
             </div>
           </Col>
         </Row>
-        <Row className='gems-sorting-pagination-wrapper'>
+        { this.props.gems.length !== 0 && (<Row className='gems-sorting-pagination-wrapper'>
           <Sorting />
           <GemsPagination />
-        </Row>
+        </Row>) }
       </Fragment>
     );
   }
