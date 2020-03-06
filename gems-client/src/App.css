@@ -14,7 +14,7 @@ body {
 
 .app-main-column {
   width: 75%;
-  margin: 0 -15px 0 0;
+  margin: 0;
 }
 
 
@@ -37,7 +37,7 @@ body {
   }
 
   .sidebar {
-    width: 28%
+    width: 27%
   }
 
   .app-main-column {

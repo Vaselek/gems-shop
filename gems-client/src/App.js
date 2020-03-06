@@ -9,6 +9,7 @@ import Routes from "./Routes";
 
 import "./App.css"
 import {fetchCategories} from "./store/actions/categoriesActions";
+import Footer from "./components/Footer/Footer";
 
 
 class App extends Component {
@@ -30,6 +31,7 @@ class App extends Component {
         <Container className='app-container'>
           <Routes user={this.props.user} />
         </Container>
+        <Footer  />
       </Fragment>
     );
   }

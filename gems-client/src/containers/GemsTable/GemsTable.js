@@ -245,7 +245,6 @@ const GemsTable = () => {
   }];
 
   const handleTableChange = (type, { page, sizePerPage, sortField, sortOrder, filters}) => {
-    debugger
     if (gemParams) {
       const newGemParams = { ...gemParams };
       if (type === 'pagination') {
