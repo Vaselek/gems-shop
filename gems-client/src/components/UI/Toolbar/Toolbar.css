@@ -9,6 +9,12 @@
 .nav-upper-line-address {
     font-size: 10px;
     line-height: 2.2;
+    width: 20%;
+    text-align: center;
+}
+
+.nav-upper-line-address {
+    display: flex;
 }
 
 .nav-upper-line-text {

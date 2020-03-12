@@ -45,10 +45,14 @@ export const fetchGem = (id) => {
 };
 
 export const fetchGems = (gemParams) => {
-  const { categoryId, filter, sort, pagination } = gemParams;
+  const { categoryId, filter, sort, pagination, search } = gemParams;
   return dispatch => {
     let path = '/gems';
     let delimeter ='?';
+    if (search) {
+      path += delimeter + 'search=' + search;
+      delimeter = '&';
+    }
     if (categoryId)  {
       path += delimeter + 'categoryId=' + categoryId;
       delimeter = '&';

@@ -12,6 +12,7 @@ import UserMenu from "./Menus/UserMenu";
 import AnonymousMenu from "./Menus/AnonymousMenu";
 import './Toolbar.css'
 import {startCase, toLower} from "lodash";
+import Search from "../../../containers/Search/Search";
 
 
 const Toolbar = ({user, logout, categories}) => {
@@ -25,11 +26,12 @@ const Toolbar = ({user, logout, categories}) => {
   return (
     <div>
     <div className="nav-upper-line">
-      <span className="nav-upper-line-tel">Тел.: +996 (555) 555-555</span>
-      <span className="nav-upper-line-text">Эксклюзивные украшения с натуральными камнями естесственного происхождения ручной работы</span>
-      <span className="nav-upper-line-address">
+      <div className="nav-upper-line-tel">Тел.: +996 (555) 555-555</div>
+      <div className="nav-upper-line-text">Эксклюзивные украшения с натуральными камнями естесственного происхождения ручной работы</div>
+      <div className="nav-upper-line-address">
+        <Search />
         {user ? <UserMenu user={user} logout={logout} /> : <AnonymousMenu/> }
-      </span>
+      </div>
     </div>
     <div className="nav-shop-title">AlsaRuiz</div>
     <Navbar dark expand="md">

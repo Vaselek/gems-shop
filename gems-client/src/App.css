@@ -59,14 +59,19 @@ body {
 
   .nav-upper-line-tel {
     order: 3;
+    width: 100%;
   }
 
   .nav-upper-line-text {
     order: 1;
+    width: 100%;
   }
 
   .nav-upper-line-address {
     order: 2;
+    width: 100%;
+    flex-direction: column;
+    margin: auto;
   }
 
 }

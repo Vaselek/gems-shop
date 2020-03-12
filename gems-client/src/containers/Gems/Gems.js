@@ -39,7 +39,6 @@ class Gems extends Component {
   }
 
   render() {
-    console.log(this.props.gems)
     return (
       <Fragment>
         <Row className='gems-sorting-pagination-wrapper'>
