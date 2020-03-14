@@ -48,6 +48,7 @@ class Gems extends Component {
         <Row>
           <Col>
             <div className='gems-list'>
+              {this.props.gems.length === 0 && <div>По заданным критериям товаров нет</div>}
               {this.props.gems.length !== 0 && this.props.gems.map(gem => (
                 <GemListItem
                   key={gem.id}

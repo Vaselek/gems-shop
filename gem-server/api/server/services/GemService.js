@@ -75,6 +75,34 @@ class GemService {
     }
   }
 
+  static async getAllFoundGems({search, offset, limit}) {
+    try {
+      const offsetCriteria = offset ? offset : defaultOffset;
+      const limitCriteria = limit ? limit : defaultLimit;
+      const whereOptions = {
+          [database.Sequelize.Op.or]: [
+            { 'code': { [database.Sequelize.Op.iLike]: '%' + search + '%' } },
+            { 'title': { [database.Sequelize.Op.iLike]: '%' + search + '%' } },
+            { 'description': { [database.Sequelize.Op.iLike]: '%' + search + '%' } },
+          ]
+      };
+
+      const gems = await database.Gem.findAll({
+        where: whereOptions,
+        include: ['categories', 'stones', 'coatings', 'metals'],
+        offset: offsetCriteria,
+        limit: limitCriteria
+      });
+
+      let responseData = {};
+      responseData.gems = gems;
+      responseData.totalCount = gems.length;
+      return responseData
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async validateRelatedObjects(ids, modelName) {
     if (!ids || ids.length === 0) return true;
     const areObjectsCorrect = await Promise.all(ids.map(async (id) => {

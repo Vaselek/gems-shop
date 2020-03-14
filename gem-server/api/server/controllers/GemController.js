@@ -6,6 +6,7 @@ const util = new Util();
 class GemController {
   static async getAllGems(req, res) {
     try {
+      let responseData;
       const categoryId = req.query.categoryId;
       const stoneIds = req.query.stoneIds;
       const metalIds = req.query.metalIds;
@@ -15,7 +16,12 @@ class GemController {
       const sortWithoutNull = req.query.withoutNull;
       const offset = req.query.offset;
       const limit = req.query.limit;
-      const responseData = await GemService.getAllGems({categoryId, stoneIds, metalIds, coatingIds, sortField, sortOrder, sortWithoutNull, offset, limit});
+      const search = req.query.search;
+      if (search) {
+        responseData = await GemService.getAllFoundGems({search, offset, limit});
+      } else {
+        responseData = await GemService.getAllGems({categoryId, stoneIds, metalIds, coatingIds, sortField, sortOrder, sortWithoutNull, offset, limit});
+      }
       util.setSuccess(200, 'Gems retrieved', responseData);
       return util.send(res);
     } catch (error) {
