@@ -1,20 +1,25 @@
-The app is a simple shop that consist of server (gem-server) and client parts.
+The app is an example of combining of an express-based server with a react-based client.
 
+============== CLIENT PART ==========================
+
+    * React
 
 ============== SERVER PART ==========================
 
     * NodeJs
-    * sequalize (ORM of PostgreSql)
-    * express (NodeJs framework)
-    * babel (convert ES6 to ES5)
-
-    Source: https://medium.com/@victorsteven/restful-api-with-nodejs-express-postgresql-sequelize-travis-mocha-coveralls-and-code-climate-f28715f7a014
+    * Sequalize (ORM of PostgreSql)
+    * Express (NodeJs framework)
+    * Babel (convert ES6 to ES5)
 
 
-In order to launch server part run:
+============== MODELS ==========================
 
-    * `npm run dev`
-
+    * Gem (has many to many association with Category, Coating, Stone and Metal models)
+    * Category
+    * User
+    * Coating
+    * Metal
+    * Stone
 
 ============== PostgreSQL server ======================
 
